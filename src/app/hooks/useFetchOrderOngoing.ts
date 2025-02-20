@@ -9,7 +9,9 @@ import { useUnauthorizedHandler } from "@/app/hooks/useUnauthorizedError";
 
 export function useFetchOrderOngoing<T>(urlEndpoint: string) {
   const [loading, setLoading] = useState(true);
-  const token = useSelector((state: RootState) => state.user.user.value.token);
+  const token = useSelector(
+    (state: RootState) => state.states.user.value.token
+  );
   const [data, setData] = useState<T>();
   const handleUnauthorized = useUnauthorizedHandler();
   useEffect(() => {

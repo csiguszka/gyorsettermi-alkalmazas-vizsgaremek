@@ -44,7 +44,7 @@ const chartConfig = {
 
 export function BarChart() {
   return (
-    <Card>
+    <Card className="card">
       <CardHeader>
         <CardTitle>Bar Chart - Multiple</CardTitle>
         <CardDescription>January - June 2024</CardDescription>

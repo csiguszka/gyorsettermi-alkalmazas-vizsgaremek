@@ -12,6 +12,7 @@ export default {
       colors: {
         background: "hsl(var(--background))",
         primary_opacity: "rgba(255, 147, 46, 0.47)",
+        muted_opacity: "rgba(51, 51, 51, 0.3)",
         foreground: "hsl(var(--foreground))",
         card: {
           DEFAULT: "hsl(var(--card))",

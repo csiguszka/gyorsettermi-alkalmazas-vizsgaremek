@@ -7,7 +7,7 @@ import { decoded, role } from "../model/decoded-model";
 
 export function useLoginValidation(roles?: role[]) {
   const [loading, setLoading] = useState(true);
-  const user = useSelector((state: RootState) => state.user.user.value);
+  const user = useSelector((state: RootState) => state.states.user.value);
   const router = useRouter();
 
   useEffect(() => {

@@ -1,4 +1,6 @@
+import { Loader2 } from "lucide-react";
+
 function Loading() {
-  return <div className="text-center">Betöltés...</div>;
+  return <Loader2 className="ml-2 h-4 w-4 animate-spin" />;
 }
 export default Loading;

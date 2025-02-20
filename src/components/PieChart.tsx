@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { TrendingUp } from "lucide-react";
-import { Label, Pie, PieChart } from "recharts";
+import { Label, Pie, PieChart as RechartsPieChart } from "recharts";
 
 import {
   Card,
@@ -52,13 +52,13 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function Dashboard() {
+export function PieChart() {
   const totalVisitors = React.useMemo(() => {
     return chartData.reduce((acc, curr) => acc + curr.visitors, 0);
   }, []);
 
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-col card">
       <CardHeader className="items-center pb-0">
         <CardTitle>Pie Chart - Donut with Text</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
@@ -68,7 +68,7 @@ export function Dashboard() {
           config={chartConfig}
           className="mx-auto aspect-square max-h-[250px]"
         >
-          <PieChart>
+          <RechartsPieChart>
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
@@ -110,7 +110,7 @@ export function Dashboard() {
                 }}
               />
             </Pie>
-          </PieChart>
+          </RechartsPieChart>
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
