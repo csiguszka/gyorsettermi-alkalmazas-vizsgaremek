@@ -14,7 +14,7 @@ body {
     @apply shadow-xl shadow-primary_opacity hover:bg-primary_opacity !important;
   }
   .btn_outline {
-    @apply bg-card hover:bg-primary_opacity !important;
+    @apply bg-card hover:bg-primary_opacity dark:border dark:border-foreground hover:text-foreground !important;
   }
   .btn_destructive {
     @apply hover:bg-primary_opacity !important;
@@ -68,8 +68,8 @@ body {
     --destructive-foreground: 0, 0%, 88%;
     --border: 29, 100%, 60%;
     --input: 165, 8%, 9%;
-    --ring: 35, 100%, 76%;
-    --radius: 0.01rem;
+    --ring: 29, 100%, 59%;
+    --radius: 1rem;
     --chart-1: 29, 100%, 59%;
     --chart-2: 22, 100%, 50%;
     --chart-3: 41, 100%, 31%;
@@ -88,15 +88,15 @@ body {
 
   /* Input */
   input {
-    @apply text-primary placeholder:text-primary placeholder:opacity-80 !important;
+    @apply text-primary placeholder:text-primary placeholder:opacity-80 dark:border dark:border-solid dark:border-primary !important;
   }
 
   /* Select */
+  button[role="combobox"] {
+    @apply rounded-b-none dark:border dark:border-solid dark:border-primary hover:bg-primary_opacity hover:text-foreground !important;
+  }
   button[role="combobox"] span {
     @apply text-primary opacity-80 rounded-none !important;
-  }
-  button[role="combobox"] {
-    @apply rounded-b-none !important;
   }
   button[role="combobox"] svg {
     @apply text-primary opacity-100 !important;
