@@ -10,7 +10,6 @@ body {
   .menu {
     @apply flex items-center space-x-4 text-xl font-bold cursor-pointer hover:text-muted-foreground;
   }
-
 }
 
 @layer base {
@@ -21,7 +20,7 @@ body {
     --card-foreground: 0, 0%, 5%;
     --popover: 217 100% 95%;
     --popover-foreground: 217 100% 10%;
-    --primary: 29, 100%, 59%;
+    --primary: 29, 100%, 59%; /* rgb(255, 147, 46) */
     --primary-foreground: 0, 0%, 0%;
     --secondary: 0, 0%, 85%;
     --secondary-foreground: 0 0% 0%;
@@ -34,7 +33,7 @@ body {
     --border: 29, 100%, 60%;
     --input: 29, 100%, 59%;
     --ring: 35, 100%, 76%;
-    --radius: 1.0rem;
+    --radius: 1rem;
     --chart-1: 29, 100%, 59%;
     --chart-2: 22, 100%, 50%;
     --chart-3: 41, 100%, 31%;
@@ -78,24 +77,27 @@ body {
     @apply bg-background text-foreground;
   }
   input {
-    @apply text-primary placeholder:text-primary placeholder:opacity-80 !important
+    @apply text-primary placeholder:text-primary placeholder:opacity-80 !important;
   }
   button[role="combobox"] span {
-    @apply text-primary opacity-80 rounded-none !important
+    @apply text-primary opacity-80 rounded-none !important;
   }
   button[role="combobox"] {
-    @apply rounded-b-none !important
+    @apply rounded-b-none !important;
   }
-  button[role="combobox"] svg{
-    @apply text-primary opacity-100 !important
+  button[role="combobox"] svg {
+    @apply text-primary opacity-100 !important;
   }
-  div[role="presentation"]{
-    @apply bg-white !important 
+  div[role="presentation"] {
+    @apply bg-white !important;
   }
-  div[role="listbox"]{
-    @apply rounded-t-none !important
+  div[role="listbox"] {
+    @apply rounded-t-none !important;
   }
-  div[role="option"]{
-    @apply text-primary !important
+  div[role="option"] {
+    @apply text-primary hover:bg-backgroundOpacity47 !important;
+  }
+  div[role="option"][aria-selected="true"] {
+    @apply bg-backgroundOpacity47;
   }
 }
