@@ -10,62 +10,71 @@ body {
   .menu {
     @apply flex items-center space-x-4 text-xl font-bold cursor-pointer hover:text-muted-foreground;
   }
+  .btn {
+    @apply shadow-xl shadow-primary_opacity hover:bg-primary_opacity !important;
+  }
+  .btn_outline {
+    @apply bg-card hover:bg-primary_opacity dark:border dark:border-foreground hover:text-foreground !important;
+  }
+  .btn_destructive {
+    @apply hover:bg-primary_opacity !important;
+  }
 }
 
 @layer base {
   :root {
-    --background: 217 100% 95%;
-    --foreground: 217 5% 10%;
-    --card: 217 50% 90%;
-    --card-foreground: 217 5% 15%;
+    --background: 30, 100%, 97%;
+    --foreground: 0, 0%, 5%;
+    --card: 0, 0%, 100%;
+    --card-foreground: 0, 0%, 5%;
     --popover: 217 100% 95%;
     --popover-foreground: 217 100% 10%;
-    --primary: 217 45% 27%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 217 30% 70%;
+    --primary: 29, 100%, 59%; /* rgb(255, 147, 46) */
+    --primary-foreground: 0, 0%, 0%;
+    --secondary: 0, 0%, 85%;
     --secondary-foreground: 0 0% 0%;
-    --muted: 179 30% 85%;
-    --muted-foreground: 217 5% 35%;
+    --muted: 0, 0%, 100%;
+    --muted-foreground: 0, 0%, 0%;
     --accent: 179 30% 80%;
     --accent-foreground: 217 5% 15%;
-    --destructive: 0 100% 30%;
-    --destructive-foreground: 217 5% 90%;
-    --border: 217 30% 50%;
-    --input: 217 30% 26%;
-    --ring: 217 45% 27%;
-    --radius: 0.3rem;
-    --chart-1: 221 83.2% 53.3%;
-    --chart-2: 212 95.1% 68%;
-    --chart-3: 216 92.2% 60%;
-    --chart-4: 210 98.2% 78%;
-    --chart-5: 212 97% 87.1%;
+    --destructive: 5, 100%, 60%;
+    --destructive-foreground: 0, 0%, 5%;
+    --border: 29, 100%, 60%;
+    --input: 29, 100%, 59%;
+    --ring: 35, 100%, 76%;
+    --radius: 1rem;
+    --chart-1: 29, 100%, 59%;
+    --chart-2: 22, 100%, 50%;
+    --chart-3: 41, 100%, 31%;
+    --chart-4: 35, 100%, 76%;
+    --chart-5: 30, 100%, 97%;
   }
   .dark {
-    --background: 217 50% 10%;
-    --foreground: 217 5% 90%;
-    --card: 217 50% 10%;
-    --card-foreground: 217 5% 90%;
-    --popover: 217 50% 5%;
-    --popover-foreground: 217 5% 90%;
-    --primary: 217 45% 27%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 217 30% 20%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 179 30% 25%;
-    --muted-foreground: 217 5% 60%;
-    --accent: 179 30% 25%;
-    --accent-foreground: 217 5% 90%;
-    --destructive: 0 100% 30%;
-    --destructive-foreground: 217 5% 90%;
-    --border: 217 30% 26%;
-    --input: 217 30% 26%;
-    --ring: 217 45% 27%;
-    --radius: 0.3rem;
-    --chart-1: 221 83.2% 53.3%;
-    --chart-2: 212 95.1% 68%;
-    --chart-3: 216 92.2% 60%;
-    --chart-4: 210 98.2% 78%;
-    --chart-5: 212 97% 87.1%;
+    --background: 200, 9%, 19%;
+    --foreground: 0, 0%, 88%;
+    --card: 165, 8%, 9%;
+    --card-foreground: 0, 0%, 88%;
+    --popover: 217 100% 95%;
+    --popover-foreground: 217 100% 10%;
+    --primary: 29, 100%, 59%;
+    --primary-foreground: 165, 8%, 9%;
+    --secondary: 0, 0%, 29%;
+    --secondary-foreground: 0, 0%, 88%;
+    --muted: 0, 0%, 29%;
+    --muted-foreground: 0, 0%, 88%;
+    --accent: 179 30% 80%;
+    --accent-foreground: 217 5% 15%;
+    --destructive: 5, 100%, 60%;
+    --destructive-foreground: 0, 0%, 88%;
+    --border: 29, 100%, 60%;
+    --input: 165, 8%, 9%;
+    --ring: 29, 100%, 59%;
+    --radius: 1rem;
+    --chart-1: 29, 100%, 59%;
+    --chart-2: 22, 100%, 50%;
+    --chart-3: 41, 100%, 31%;
+    --chart-4: 35, 100%, 76%;
+    --chart-5: 30, 100%, 97%;
   }
 }
 
@@ -75,5 +84,49 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Input */
+  input {
+    @apply text-primary placeholder:text-primary placeholder:opacity-80 dark:border dark:border-solid dark:border-primary !important;
+  }
+
+  /* Select */
+  button[role="combobox"] {
+    @apply rounded-b-none dark:border dark:border-solid dark:border-primary hover:bg-primary_opacity hover:text-foreground !important;
+  }
+  button[role="combobox"] span {
+    @apply text-primary opacity-80 rounded-none !important;
+  }
+  button[role="combobox"] svg {
+    @apply text-primary opacity-100 !important;
+  }
+  div[role="presentation"] {
+    @apply bg-card !important;
+  }
+  div[role="listbox"] {
+    @apply rounded-t-none !important;
+  }
+  div[role="option"] {
+    @apply text-primary hover:bg-primary_opacity !important;
+  }
+  div[role="option"][aria-selected="true"] {
+    @apply bg-primary_opacity;
+  }
+
+  /* Combobox */
+  div[role="dialog"] div {
+    @apply bg-card;
+  }
+  div[role="dialog"] div svg[class*="lucide-search"] {
+    @apply text-foreground opacity-100;
+  }
+
+  /* Pagination */
+  nav[role="navigation"] a {
+    @apply hover:bg-primary_opacity;
+  }
+  a[aria-current="page"] {
+    @apply bg-primary rounded-full;
   }
 }
