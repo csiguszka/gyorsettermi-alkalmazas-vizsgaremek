@@ -121,4 +121,12 @@ body {
   div[role="dialog"] div svg[class*="lucide-search"] {
     @apply text-foreground opacity-100;
   }
+
+  /* Pagination */
+  nav[role="navigation"] a {
+    @apply hover:bg-primary_opacity;
+  }
+  a[aria-current="page"] {
+    @apply bg-primary rounded-full;
+  }
 }
