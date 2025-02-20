@@ -76,9 +76,13 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Input */
   input {
     @apply text-primary placeholder:text-primary placeholder:opacity-80 !important;
   }
+
+  /* Select */
   button[role="combobox"] span {
     @apply text-primary opacity-80 rounded-none !important;
   }
@@ -89,7 +93,7 @@ body {
     @apply text-primary opacity-100 !important;
   }
   div[role="presentation"] {
-    @apply bg-white !important;
+    @apply bg-card !important;
   }
   div[role="listbox"] {
     @apply rounded-t-none !important;
@@ -99,5 +103,13 @@ body {
   }
   div[role="option"][aria-selected="true"] {
     @apply bg-backgroundOpacity47;
+  }
+
+  /* Combobox */
+  div[role="dialog"] div {
+    @apply bg-card;
+  }
+  div[role="dialog"] div svg[class*="lucide-search"] {
+    @apply text-foreground opacity-100;
   }
 }
