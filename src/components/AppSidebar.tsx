@@ -35,7 +35,7 @@ export function AppSheet() {
       </SheetTrigger>
       <SheetContent
         side={"left"}
-        className="flex flex-col gap-2 w-screen sm:w-[250px] bg-muted border-none"
+        className="flex flex-col gap-2 w-screen sm:w-[250px] bg-card dark:bg-muted border-none"
       >
         <section className="flex justify-between items-center mt-3">
           <SheetTitle className="text-xl">Menü</SheetTitle>
