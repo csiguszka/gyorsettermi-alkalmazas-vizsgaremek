@@ -10,6 +10,15 @@ body {
   .menu {
     @apply flex items-center space-x-4 text-xl font-bold cursor-pointer hover:text-muted-foreground;
   }
+  .btn {
+    @apply shadow-xl shadow-primary_opacity hover:bg-primary_opacity !important;
+  }
+  .btn_outline {
+    @apply bg-card hover:bg-primary_opacity !important;
+  }
+  .btn_destructive {
+    @apply hover:bg-primary_opacity !important;
+  }
 }
 
 @layer base {
@@ -29,7 +38,7 @@ body {
     --accent: 179 30% 80%;
     --accent-foreground: 217 5% 15%;
     --destructive: 5, 100%, 60%;
-    --destructive-foreground: 217 5% 90%;
+    --destructive-foreground: 0, 0%, 5%;
     --border: 29, 100%, 60%;
     --input: 29, 100%, 59%;
     --ring: 35, 100%, 76%;
@@ -99,10 +108,10 @@ body {
     @apply rounded-t-none !important;
   }
   div[role="option"] {
-    @apply text-primary hover:bg-backgroundOpacity47 !important;
+    @apply text-primary hover:bg-primary_opacity !important;
   }
   div[role="option"][aria-selected="true"] {
-    @apply bg-backgroundOpacity47;
+    @apply bg-primary_opacity;
   }
 
   /* Combobox */

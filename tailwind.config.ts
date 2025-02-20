@@ -11,7 +11,7 @@ export default {
     extend: {
       colors: {
         background: "hsl(var(--background))",
-        backgroundOpacity47: "rgba(255, 147, 46, 0.47)",
+        primary_opacity: "rgba(255, 147, 46, 0.47)",
         foreground: "hsl(var(--foreground))",
         card: {
           DEFAULT: "hsl(var(--card))",

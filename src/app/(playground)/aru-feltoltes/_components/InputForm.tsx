@@ -51,8 +51,12 @@ export default function InputForm() {
         </form>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant="outline">Cancel</Button>
-        <Button>Deploy</Button>
+        <Button variant="outline" className="btn_outline">
+          Cancel
+        </Button>
+        <Button variant="destructive" className="btn_destructive">
+          Törlés
+        </Button>
       </CardFooter>
     </Card>
   );
