@@ -8,22 +8,42 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+
 function OrderCardKitchen({ order }: { order: Order }) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{order.costumerID}</CardTitle>
+    <Card className="card">
+      <CardHeader className="text-center text-3xl">
+        <CardTitle>{order._id.slice(19, 23)}</CardTitle>
       </CardHeader>
       <CardContent>
-        {order.orderedProducts.map((product) => (
-          <div key={product._id} className="flex justify-between">
-            <p>{product.name}</p>
-            <p>{product.quantity}</p>
-          </div>
-        ))}
+      <Table>
+      <TableCaption>A list of your recent invoices.</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-[100px]">Extra húsos szendvics</TableHead>
+          <TableHead className="text-right font-bold">2 db</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+          <TableRow>
+            <TableCell className="w-[100px]">Sültkrumpli</TableCell>
+            <TableCell className="text-right font-bold">1 db</TableCell>
+          </TableRow>
+      </TableBody>
+    </Table>
       </CardContent>
       <CardFooter>
-        <Button>Kész</Button>
+        <Button className="btn">Késznek jelölés</Button>
       </CardFooter>
     </Card>
   );

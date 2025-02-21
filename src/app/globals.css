@@ -20,7 +20,7 @@ body {
     @apply hover:bg-primary_opacity !important;
   }
   .card {
-    @apply border-none;
+    @apply border-none shadow-xl !important;
   }
 }
 
