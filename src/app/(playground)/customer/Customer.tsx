@@ -1,10 +1,10 @@
 "use client";
 
-import { useFectchGet } from "@/app/hooks/useFectchGet";
 import Loading from "@/components/Loading";
 import Screen from "@/components/Screen";
 import OrderCardCustomer from "./components/OrderCardCustomer";
 import { Order } from "@/app/model/order-model";
+import { useFectchGet } from "@/app/hooks/useFetchGet";
 
 function Customer() {
   const { loading, data: orders } = useFectchGet<Order[]>("/order/ongoing");

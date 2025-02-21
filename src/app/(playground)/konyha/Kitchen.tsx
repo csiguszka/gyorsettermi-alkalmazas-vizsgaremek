@@ -1,11 +1,11 @@
 "use client";
 
-import { useFectchGet } from "@/app/hooks/useFectchGet";
 import OrderCardKitchen from "./_components/OrderCardKitchen";
 import Loading from "@/components/Loading";
 import Screen from "@/components/Screen";
 import { Order } from "@/app/model/order-model";
 import IfFullScreen from "@/components/IfFullScreen";
+import { useFectchGet } from "@/app/hooks/useFetchGet";
 
 function Kitchen() {
   const { loading, data: orders } = useFectchGet<Order[]>("/order/ongoing");

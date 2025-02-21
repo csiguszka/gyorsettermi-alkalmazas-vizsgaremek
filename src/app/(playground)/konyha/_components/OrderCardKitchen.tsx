@@ -16,7 +16,7 @@ function OrderCardKitchen({ order }: { order: Order }) {
   return (
     <Card className="card">
       <CardHeader className="text-center text-3xl">
-        <CardTitle>{order._id.slice(19, 23)}</CardTitle>
+        <CardTitle>{order.orderNumber}</CardTitle>
       </CardHeader>
       <CardContent>
         <Table list={list} />

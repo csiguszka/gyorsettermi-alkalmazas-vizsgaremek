@@ -15,7 +15,6 @@ import {
   Menu,
   NotebookText,
   Package,
-  PackagePlus,
   User,
 } from "lucide-react";
 import Link from "next/link";
@@ -68,14 +67,6 @@ export function AppSheet() {
         <Link href={"/arukezeles"} className="menu" onClick={handleLinkClick}>
           <Package />
           <h3>Árukezelés</h3>
-        </Link>
-        <Link
-          href={"/aru-feltoltes"}
-          className="menu"
-          onClick={handleLinkClick}
-        >
-          <PackagePlus />
-          <h3>Áru feltöltés</h3>
         </Link>
         <Link
           href={"/megrendelesek"}

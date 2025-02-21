@@ -4,6 +4,7 @@ export interface Order {
   isFinished: boolean;
   orderedTime: string;
   orderedProducts: OrderedProduct[];
+  orderNumber?: number;
 }
 
 interface OrderedProduct {
