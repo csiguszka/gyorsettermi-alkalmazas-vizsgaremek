@@ -1,29 +1,13 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import { AppSheet } from "@/components/AppSidebar";
 import SignOut from "./SignOut";
 import Logo from "./Logo";
 import Link from "next/link";
+import IfFullScreen from "./IfFullScreen";
 
 function Nav() {
-  const [isFullscreen, setIsFullscreen] = useState(false);
-
-  useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-
-    document.addEventListener("fullscreenchange", handleFullscreenChange);
-
-    return () => {
-      document.removeEventListener("fullscreenchange", handleFullscreenChange);
-    };
-  }, []);
-
   return (
     <>
-      {!isFullscreen && (
+      <IfFullScreen>
         <nav className="bg-card h-[65px] sticky top-0 z-50">
           <div className="flex items-center p-3 bg-muted_opacity h-[65px]">
             {/* Bal oldali elem (AppSheet) */}
@@ -44,7 +28,7 @@ function Nav() {
             </div>
           </div>
         </nav>
-      )}
+      </IfFullScreen>
     </>
   );
 }

@@ -7,7 +7,6 @@ import Authorize from "@/components/Authorize";
 import { AreaChart } from "@/components/AreaChart";
 import { BarChartDouble } from "@/components/BarChartDouble";
 import Overview from "@/components/Overview";
-import { ComboboxDemo } from "../aru-feltoltes/_components/Combobox";
 
 export default function Home() {
   return (

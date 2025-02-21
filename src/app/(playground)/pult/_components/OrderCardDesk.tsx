@@ -1,4 +1,5 @@
 import { Order } from "@/app/model/order-model";
+import Table from "@/components/Table";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,21 +10,20 @@ import {
 } from "@/components/ui/card";
 
 function OrderCardDesk({ order }: { order: Order }) {
+  const list = order.orderedProducts.map((product) => {
+    return { name: product.name, value: product.quantity.toString() };
+  });
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{order.costumerID}</CardTitle>
+    <Card className="card">
+      <CardHeader className="text-center text-3xl">
+        <CardTitle>{order._id.slice(19, 23)}</CardTitle>
       </CardHeader>
       <CardContent>
-        {order.orderedProducts.map((product) => (
-          <div key={product._id} className="flex justify-between">
-            <p>{product.name}</p>
-            <p>{product.quantity}</p>
-          </div>
-        ))}
+        <Table list={list} />
+        <p className="mt-2">Megrendelés összege: 3000 Ft</p>
       </CardContent>
-      <CardFooter>
-        <Button>Kiadva</Button>
+      <CardFooter className="float-right">
+        <Button className="btn">Kiadottnak jelölés</Button>
       </CardFooter>
     </Card>
   );

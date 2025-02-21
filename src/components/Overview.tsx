@@ -1,11 +1,5 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableFooter,
-  TableRow,
-} from "@/components/ui/table";
-import { Card, CardContent } from "./ui/card";
+import Table from "./Table";
+import { Card } from "./ui/card";
 
 const datas = [
   {
@@ -33,18 +27,7 @@ const datas = [
 export default function Overview() {
   return (
     <Card className="card p-5">
-      <Table>
-        <TableBody>
-          {datas.map((data) => (
-            <TableRow key={data.name}>
-              <TableCell className="font-medium">{data.name}</TableCell>
-              <TableCell className="text-right font-bold">
-                {data.value}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <Table list={datas} />
     </Card>
   );
 }

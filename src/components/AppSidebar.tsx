@@ -10,6 +10,7 @@ import {
 import {
   Drumstick,
   ForkKnife,
+  HandPlatter,
   Home,
   Menu,
   Package,
@@ -53,7 +54,7 @@ export function AppSheet() {
           <h3>Konyha kijelző</h3>
         </Link>
         <Link href={"/pult"} className="menu" onClick={handleLinkClick}>
-          <Store />
+          <HandPlatter />
           <h3>Pult kijelző</h3>
         </Link>
         <Link href={"/customer"} className="menu" onClick={handleLinkClick}>
