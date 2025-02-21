@@ -1,4 +1,5 @@
 export interface Material {
+  _id: string;
   inStock: number;
-  name: string;
+  unit: string;
 }

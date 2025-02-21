@@ -1,19 +1,17 @@
 import {
-  Pagination,
+  Pagination as ShadcnuiPagination,
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
 } from "@/components/ui/pagination";
 
-export function PaginationDemo() {
+export function Pagination() {
   return (
-    <Pagination>
+    <ShadcnuiPagination>
       <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious href="#" />
+        <PaginationItem className="hidden sm:block">
+          <div>.</div>
         </PaginationItem>
         <PaginationItem>
           <PaginationLink href="#">1</PaginationLink>
@@ -29,10 +27,10 @@ export function PaginationDemo() {
         <PaginationItem>
           <PaginationEllipsis />
         </PaginationItem>
-        <PaginationItem>
-          <PaginationNext href="#" />
+        <PaginationItem className="hidden sm:block">
+          <div>.</div>
         </PaginationItem>
       </PaginationContent>
-    </Pagination>
+    </ShadcnuiPagination>
   );
 }

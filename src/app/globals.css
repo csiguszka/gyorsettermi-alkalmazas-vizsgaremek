@@ -100,12 +100,12 @@ body {
 
   /* Input */
   input {
-    @apply text-primary mb-4 placeholder:text-primary placeholder:opacity-80 dark:border dark:border-solid dark:border-primary !important;
+    @apply text-primary mt-0 placeholder:text-primary placeholder:opacity-80 dark:border dark:border-solid dark:border-primary !important;
   }
 
   /* Select */
   button[role="combobox"] {
-    @apply rounded-b-none dark:border dark:border-solid dark:border-primary hover:bg-primary_opacity hover:text-foreground !important;
+    @apply rounded-b-none m-0 dark:border dark:border-solid dark:border-primary hover:bg-primary_opacity hover:text-foreground !important;
   }
   button[role="combobox"] span {
     @apply text-primary opacity-80 rounded-none !important;

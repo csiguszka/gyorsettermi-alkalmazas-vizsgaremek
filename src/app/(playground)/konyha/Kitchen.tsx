@@ -1,6 +1,6 @@
 "use client";
 
-import { useFetchOrderOngoing } from "@/app/hooks/useFetchOrderOngoing";
+import { useFectchGet } from "@/app/hooks/useFectchGet";
 import OrderCardKitchen from "./_components/OrderCardKitchen";
 import Loading from "@/components/Loading";
 import Screen from "@/components/Screen";
@@ -8,8 +8,7 @@ import { Order } from "@/app/model/order-model";
 import IfFullScreen from "@/components/IfFullScreen";
 
 function Kitchen() {
-  const { loading, data: orders } =
-    useFetchOrderOngoing<Order[]>("/order/ongoing");
+  const { loading, data: orders } = useFectchGet<Order[]>("/order/ongoing");
 
   if (loading) {
     return <Loading />;

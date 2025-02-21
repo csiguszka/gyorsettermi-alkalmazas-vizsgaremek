@@ -19,9 +19,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import URL from "@/app/url"
+import URL from "@/app/url";
 import axios from "axios";
-import router from "next/router";
 import { useToast } from "@/hooks/use-toast";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
@@ -55,7 +54,7 @@ const formSchema = z
 
 export function Registration() {
   const { toast } = useToast();
-  const user = useSelector((state: RootState) => state.states.user.value)
+  const user = useSelector((state: RootState) => state.states.user.value);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -72,7 +71,9 @@ export function Registration() {
     console.log(dataToSubmit);
 
     axios
-      .post(`${URL}/user/register/admin`, dataToSubmit, {headers: {'Accept-Language': 'hu', 'Authorization': user.token}})
+      .post(`${URL}/user/register/admin`, dataToSubmit, {
+        headers: { "Accept-Language": "hu", Authorization: user.token },
+      })
       .then(function (response) {
         toast({
           variant: "default",
@@ -82,11 +83,12 @@ export function Registration() {
         // router.push("/");
       })
       .catch(function (error) {
-        const description = error.response.status === 400 ? "Van már ilyen nevű dolgozó" : ""
+        const description =
+          error.response.status === 400 ? "Van már ilyen nevű dolgozó" : "";
         toast({
           variant: "destructive",
           title: "Nem sikerült az új dolgozót felvenni",
-          description: description
+          description: description,
         });
         console.log(error);
       });
@@ -94,12 +96,16 @@ export function Registration() {
 
   return (
     <Form {...form}>
-      <form id="newEmploy" onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form
+        id="newEmploy"
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-3"
+      >
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="">
               <FormLabel className="font-bold">
                 Felhasználónév <span className="text-red-600">*</span>
               </FormLabel>
@@ -122,7 +128,7 @@ export function Registration() {
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="">
               <FormLabel className="font-bold">
                 Email <span className="text-red-600">*</span>
               </FormLabel>
@@ -141,7 +147,7 @@ export function Registration() {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="">
               <FormLabel className="font-bold">
                 Jelszó <span className="text-red-600">*</span>
               </FormLabel>
@@ -165,7 +171,7 @@ export function Registration() {
           control={form.control}
           name="passwordRepeat"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="">
               <FormLabel className="font-bold">
                 Jelszó újra <span className="text-red-600">*</span>
               </FormLabel>
@@ -204,9 +210,7 @@ export function Registration() {
                   <SelectItem value="counter">Pultban dolgozó</SelectItem>
                 </SelectContent>
               </Select>
-              <FormMessage>
-                {form.formState.errors.role?.message}
-              </FormMessage>
+              <FormMessage>{form.formState.errors.role?.message}</FormMessage>
             </FormItem>
           )}
         />

@@ -1,13 +1,13 @@
 "use client";
 
-import  URL  from "@/app/url";
+import URL from "@/app/url";
 import { RootState } from "@/state/store";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useUnauthorizedHandler } from "@/app/hooks/useUnauthorizedError";
 
-export function useFetchOrderOngoing<T>(urlEndpoint: string) {
+export function useFectchGet<T>(urlEndpoint: string) {
   const [loading, setLoading] = useState(true);
   const token = useSelector(
     (state: RootState) => state.states.user.value.token

@@ -1,15 +1,14 @@
 "use client";
 
-import { useFetchOrderOngoing } from "@/app/hooks/useFetchOrderOngoing";
 import Loading from "@/components/Loading";
 import Screen from "@/components/Screen";
 import { Order } from "@/app/model/order-model";
 import OrderCardDesk from "./_components/OrderCardDesk";
 import IfFullScreen from "@/components/IfFullScreen";
+import { useFectchGet } from "@/app/hooks/useFetchGet";
 
 function Desk() {
-  const { loading, data: orders } =
-    useFetchOrderOngoing<Order[]>("/order/ongoing");
+  const { loading, data: orders } = useFectchGet<Order[]>("/order/ongoing");
 
   if (loading) {
     return <Loading />;

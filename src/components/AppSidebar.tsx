@@ -13,9 +13,9 @@ import {
   HandPlatter,
   Home,
   Menu,
+  NotebookText,
   Package,
   PackagePlus,
-  Store,
   User,
 } from "lucide-react";
 import Link from "next/link";
@@ -65,9 +65,9 @@ export function AppSheet() {
           <Drumstick />
           <h3>Étlap</h3>
         </Link>
-        <Link href={"/arukeszlet"} className="menu" onClick={handleLinkClick}>
+        <Link href={"/arukezeles"} className="menu" onClick={handleLinkClick}>
           <Package />
-          <h3>Árukészlet</h3>
+          <h3>Árukezelés</h3>
         </Link>
         <Link
           href={"/aru-feltoltes"}
@@ -76,6 +76,14 @@ export function AppSheet() {
         >
           <PackagePlus />
           <h3>Áru feltöltés</h3>
+        </Link>
+        <Link
+          href={"/megrendelesek"}
+          className="menu"
+          onClick={handleLinkClick}
+        >
+          <NotebookText />
+          <h3>Megrendelések</h3>
         </Link>
       </SheetContent>
     </Sheet>
