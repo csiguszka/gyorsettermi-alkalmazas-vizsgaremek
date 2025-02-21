@@ -3,7 +3,7 @@ import { Login } from "./_components/Login";
 
 const LoginPage = () => {
   return (
-    <FormCard title="Bejelentkezés">
+    <FormCard formId="login" submitButtonText="Bejelentkezés" title="Bejelentkezés">
       <Login />
     </FormCard>
   );

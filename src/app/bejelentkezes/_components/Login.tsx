@@ -14,13 +14,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { URL } from "@/app/url";
+import URL from "@/app/url";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { changeUser } from "@/state/user";
-import Loading from "@/components/Loading";
-import { useState } from "react";
 
 const formSchema = z.object({
   name: z.string().min(4, {
@@ -62,7 +60,7 @@ export function Login() {
           variant: "default",
           title: "Sikeres bejelnetkezés",
         });
-        console.log(response.data.token);
+        console.log(response.data);
         dispatch(
           changeUser({ token: response.data.token, role: response.data.role })
         );
@@ -123,19 +121,3 @@ export function Login() {
   );
 }
 
-export function LoginSubmit() {
-  const [loading, setLoading] = useState(false);
-  return (
-    <Button
-      type="submit"
-      form="login"
-      className="btn"
-      onClick={() => setLoading(true)}
-    >
-      <div className="flex items-center gap-1">
-        Bejelentkezés
-        {loading && <Loading />}
-      </div>
-    </Button>
-  );
-}

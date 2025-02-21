@@ -1,4 +1,3 @@
-import { LoginSubmit } from "@/app/bejelentkezes/_components/Login";
 import Logo from "./Logo";
 import { ModeToggle } from "./ModeToggle";
 import {
@@ -9,13 +8,18 @@ import {
   CardTitle,
 } from "./ui/card";
 import { LanguageToggle } from "./LanguageToggle";
+import { FormSubmitButton } from "./FormSubmitButton";
 
 function FormCard({
   children,
   title,
+  submitButtonText,
+  formId
 }: {
   children: React.ReactNode;
   title: string;
+  submitButtonText: string;
+  formId: string;
 }) {
   return (
     <div className="flex justify-center items-center h-screen p-2">
@@ -36,7 +40,7 @@ function FormCard({
         </CardHeader>
         <CardContent>{children}</CardContent>
         <CardFooter>
-          <LoginSubmit />
+          <FormSubmitButton text={submitButtonText} formId={formId}/>
         </CardFooter>
       </Card>
     </div>

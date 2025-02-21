@@ -1,6 +1,6 @@
 "use client";
 
-import { URL } from "@/app/url";
+import  URL  from "@/app/url";
 import { RootState } from "@/state/store";
 import axios from "axios";
 import { useEffect, useState } from "react";

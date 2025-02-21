@@ -5,7 +5,7 @@ import { Registration } from "./_components/Registration";
 function page() {
   return (
     <Authorize roles={["admin"]}>
-      <FormCard title="Új dolgozó felvétele">
+      <FormCard title="Új dolgozó felvétele" submitButtonText="Regisztració" formId="newEmploy">
         <Registration />
       </FormCard>
     </Authorize>
