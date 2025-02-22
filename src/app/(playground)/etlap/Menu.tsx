@@ -7,7 +7,7 @@ import Loading from "@/components/Loading";
 function Menu() {
   const { loading, data: food } = useFectchGet<Food[]>("/food/all");
   if (loading) {
-    return <Loading />;
+    return <Loading isCentered={true} />;
   }
   if (!food) {
     return <div>Egyetlen Étel sincs az étlapon!</div>;

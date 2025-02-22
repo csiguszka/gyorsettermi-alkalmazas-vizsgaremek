@@ -11,7 +11,7 @@ function Kitchen() {
   const { loading, data: orders } = useFectchGet<Order[]>("/order/ongoing");
 
   if (loading) {
-    return <Loading />;
+    return <Loading isCentered={true} />;
   }
 
   return (

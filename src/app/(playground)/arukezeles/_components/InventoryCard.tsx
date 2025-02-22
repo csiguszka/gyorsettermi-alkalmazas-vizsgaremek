@@ -20,21 +20,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-function InventoryCard({ materials }: { materials: Material[] }) {
-  const statuses = [
-    {
-      value: "no",
-      label: "Nincs raktáron",
-    },
-    {
-      value: "less",
-      label: "Kevés van raktáron",
-    },
-    {
-      value: "yes",
-      label: "Van raktáron",
-    },
-  ];
+interface InventoryCardProps {
+  materials: Material[];
+  tableSelectedIdx: number | null;
+  tableRowClickHandle: (id: number) => void;
+  newButtonHandle: () => void;
+}
+
+function InventoryCard({
+  materials,
+  tableSelectedIdx,
+  tableRowClickHandle,
+  newButtonHandle,
+}: InventoryCardProps) {
   const list = materials.map((material) => {
     return {
       name: material._id,
@@ -66,11 +64,15 @@ function InventoryCard({ materials }: { materials: Material[] }) {
         </div>
       </CardHeader>
       <CardContent>
-        <Table list={list}></Table>
+        <Table
+          list={list}
+          RowSelectedIdx={tableSelectedIdx}
+          onClick={tableRowClickHandle}
+        ></Table>
       </CardContent>
       <CardFooter>
         <div className="flex justify-around w-full items-center">
-          <PlusButton />
+          <PlusButton clickHandle={newButtonHandle} />
           <Pagination />
         </div>
       </CardFooter>

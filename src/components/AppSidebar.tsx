@@ -16,6 +16,7 @@ import {
   NotebookText,
   Package,
   User,
+  UserPlus,
 } from "lucide-react";
 import Link from "next/link";
 import { LanguageToggle } from "./LanguageToggle";
@@ -75,6 +76,10 @@ export function AppSheet() {
         >
           <NotebookText />
           <h3>Megrendelések</h3>
+        </Link>
+        <Link href={"/regisztracio"} className="menu" onClick={handleLinkClick}>
+          <UserPlus />
+          <h3>Új dolgozó felvétele</h3>
         </Link>
       </SheetContent>
     </Sheet>

@@ -15,7 +15,7 @@ function Orders() {
   }>("/order/page/1");
   console.log(data);
   if (loading || data === undefined) {
-    return <Loading />;
+    return <Loading isCentered={true} />;
   }
   const list = data.orders.map((order) => {
     order.orderNumber = order.orderNumber || 0;
