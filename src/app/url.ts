@@ -1,1 +1,2 @@
-export const URL = "https://mateszadam.koyeb.app";
+const URL = "https://mateszadam.koyeb.app";
+export default URL

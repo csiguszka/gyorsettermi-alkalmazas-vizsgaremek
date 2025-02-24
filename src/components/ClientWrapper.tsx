@@ -11,16 +11,7 @@ export default function ClientWrapper({
 }) {
   return (
     <Provider store={store}>
-      <PersistGate
-        // loading={
-        //   <div className="flex items-center justify-center h-screen">
-        //     Betöltés...
-        //   </div>
-        // }
-        persistor={persistor}
-      >
-        {children}
-      </PersistGate>
+      <PersistGate persistor={persistor}>{children}</PersistGate>
     </Provider>
   );
 }

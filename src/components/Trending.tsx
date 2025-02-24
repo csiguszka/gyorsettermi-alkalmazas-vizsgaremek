@@ -2,7 +2,7 @@ import TrendingCard from "./TrendingCard";
 
 function Trending() {
   return (
-    <div className="grid grid-cols-2 gap-3 justify-between md:flex-row md:flex md:gap-3 md:justify-between">
+    <div className="flex flex-col gap-3 sm:grid sm:grid-cols-2 lg:grid-cols-4">
       <TrendingCard
         value={100}
         label="Total Users"

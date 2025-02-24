@@ -1,18 +1,21 @@
 "use client";
 
-import { useFetchOrderOngoing } from "@/app/hooks/useFetchOrderOngoing";
+import { useFectchGet } from "@/app/hooks/useFetchGet";
 import { Food } from "@/app/model/food-model";
 import Loading from "@/components/Loading";
-import MenuCard from "./_components/MenuCard";
 
 function Menu() {
-  const { loading, data: food } = useFetchOrderOngoing<Food[]>("/food/all");
+  const { loading, data: food } = useFectchGet<Food[]>("/food/all");
   if (loading) {
-    return <Loading />;
+    return <Loading isCentered={true} />;
   }
   if (!food) {
     return <div>Egyetlen Étel sincs az étlapon!</div>;
   }
-  return <MenuCard food={food} />;
+  return (
+    <div>
+      <h1>Étlap</h1>
+    </div>
+  );
 }
 export default Menu;

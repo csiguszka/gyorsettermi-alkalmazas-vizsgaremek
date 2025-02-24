@@ -1,30 +1,19 @@
 import { Order } from "@/app/model/order-model";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 
 function OrderCardCustomer({ order }: { order: Order }) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{order.costumerID}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        {order.orderedProducts.map((product) => (
-          <div key={product._id} className="flex justify-between">
-            <p>{product.name}</p>
-            <p>{product.quantity}</p>
-          </div>
-        ))}
-      </CardContent>
-      <CardFooter>
-        <Button>Kész</Button>
-      </CardFooter>
+    <Card className="p-10 card">
+      {order.orderedProducts.map((product, id) => (
+        <div
+          key={id}
+          className="flex w-full h-full justify-center items-center"
+        >
+          <h1 className="text-5xl text-primary sm:text-8xl">
+            {order.orderNumber}
+          </h1>
+        </div>
+      ))}
     </Card>
   );
 }

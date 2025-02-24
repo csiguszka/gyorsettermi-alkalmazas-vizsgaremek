@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import axios from "axios";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -14,10 +13,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { URL } from "@/app/url";
+import URL from "@/app/url";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
-import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { changeUser } from "@/state/user";
@@ -40,7 +37,6 @@ const formSchema = z.object({
   // }),
 });
 export function Login() {
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
   const { toast } = useToast();
@@ -56,7 +52,6 @@ export function Login() {
 
   const onSubmit = (data: { name: string; password: string }) => {
     console.log(data);
-    setLoading(true);
     axios
       .post(`${URL}/user/login`, data)
       .then(function (response) {
@@ -64,11 +59,10 @@ export function Login() {
           variant: "default",
           title: "Sikeres bejelnetkezés",
         });
-        console.log(response.data.token);
+        console.log(response.data);
         dispatch(
           changeUser({ token: response.data.token, role: response.data.role })
         );
-        setLoading(false);
         router.push("/");
       })
       .catch(function (error) {
@@ -78,27 +72,26 @@ export function Login() {
           description: "Helytelen felhasználónév vagy jelszó.",
         });
         console.log(error);
-        setLoading(false);
       });
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form
+        id="login"
+        className="flex flex-col gap-3"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-bold">
-                Felhasználónév <span className="text-red-600">*</span>
+              <FormLabel>
+                Felhasználónév <span className="text-destructive">*</span>
               </FormLabel>
               <FormControl>
-                <Input
-                  className="shadow-md"
-                  placeholder="Felhasználónév"
-                  {...field}
-                />
+                <Input placeholder="Felhasználónév" {...field} />
               </FormControl>
               <FormMessage>
                 {form.formState.errors.name &&
@@ -113,16 +106,11 @@ export function Login() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-bold">
-                Jelszó <span className="text-red-600">*</span>
+              <FormLabel>
+                Jelszó <span className="text-destructive">*</span>
               </FormLabel>
               <FormControl>
-                <Input
-                  className="shadow-md"
-                  placeholder="Jelszó"
-                  type="password"
-                  {...field}
-                />
+                <Input placeholder="Jelszó" type="password" {...field} />
               </FormControl>
               <FormMessage>
                 {form.formState.errors.password &&
@@ -131,11 +119,6 @@ export function Login() {
             </FormItem>
           )}
         />
-
-        <Button type="submit" className="w-full">
-          Bejelentkezés
-          {loading && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
-        </Button>
       </form>
     </Form>
   );

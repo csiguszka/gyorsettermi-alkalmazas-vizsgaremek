@@ -1,4 +1,4 @@
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { TrendingDown, TrendingUp, MoveRight } from "lucide-react";
 
@@ -11,44 +11,40 @@ interface props {
 
 function TrendingCard({ value, label, rating, destination }: props) {
   return (
-    <Card className="w-full">
-      <CardContent className="flex justify-between pt-3">
-        <span className="font-bold text-2xl">{value}</span>
-        <div
+    <Card className="w-full card grid grid-cols-[auto_50px] grid-rows-2 px-5 py-2">
+      <span className="font-bold text-2xl self-end">{value}</span>
+      <div
+        className={cn(
+          "flex items-center justify-center rounded-md row-span-2 w-12 h-12 justify-self-end self-center",
+          destination === "up"
+            ? "bg-green-200"
+            : destination === "down"
+            ? "bg-[#ffafaf]"
+            : "bg-gray-200"
+        )}
+      >
+        {destination === "up" ? (
+          <TrendingUp className="text-green-400" />
+        ) : destination === "down" ? (
+          <TrendingDown className="text-red-600" />
+        ) : (
+          <MoveRight className="text-gray-500" />
+        )}
+      </div>
+      <p className="text-sm">
+        {label}{" "}
+        <span
           className={cn(
-            "p-3 rounded-md",
             destination === "up"
-              ? "bg-muted"
+              ? "text-green-400"
               : destination === "down"
-              ? "bg-[#ffafaf]"
-              : "bg-gray-200"
+              ? "text-red-600"
+              : "text-gray-500"
           )}
         >
-          {destination === "up" ? (
-            <TrendingUp className="text-green-400" />
-          ) : destination === "down" ? (
-            <TrendingDown className="text-red-600" />
-          ) : (
-            <MoveRight className="text-gray-500" />
-          )}
-        </div>
-      </CardContent>
-      <CardFooter className="lg:-mt-10">
-        <p>
-          {label}{" "}
-          <span
-            className={cn(
-              destination === "up"
-                ? "text-green-400"
-                : destination === "down"
-                ? "text-red-600"
-                : "text-gray-500"
-            )}
-          >
-            {rating}
-          </span>
-        </p>
-      </CardFooter>
+          {rating}
+        </span>
+      </p>
     </Card>
   );
 }
