@@ -90,7 +90,7 @@ export function Login() {
               <FormLabel>
                 Felhasználónév <span className="text-destructive">*</span>
               </FormLabel>
-              <FormControl>
+              <FormControl data-cy="name">
                 <Input placeholder="Felhasználónév" {...field} />
               </FormControl>
               <FormMessage>
@@ -109,7 +109,7 @@ export function Login() {
               <FormLabel>
                 Jelszó <span className="text-destructive">*</span>
               </FormLabel>
-              <FormControl>
+              <FormControl data-cy="password">
                 <Input placeholder="Jelszó" type="password" {...field} />
               </FormControl>
               <FormMessage>

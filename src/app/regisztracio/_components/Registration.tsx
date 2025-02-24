@@ -58,11 +58,11 @@ export function Registration() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "1236",
-      email: "test@sanyi.com",
-      password: "Test123!",
-      passwordRepeat: "Test123!",
-      role: "Kitchen",
+      name: "",
+      email: "",
+      password: "",
+      passwordRepeat: "",
+      role: "",
     },
   });
 
@@ -111,6 +111,8 @@ export function Registration() {
               </FormLabel>
               <FormControl>
                 <Input
+                  type="text"
+                  data-cy="name"
                   className="shadow-md"
                   placeholder="Felhasználónév"
                   {...field}
@@ -133,7 +135,12 @@ export function Registration() {
                 Email <span className="text-red-600">*</span>
               </FormLabel>
               <FormControl>
-                <Input className="shadow-md" placeholder="Email" {...field} />
+                <Input
+                  data-cy="email"
+                  className="shadow-md"
+                  placeholder="Email"
+                  {...field}
+                />
               </FormControl>
               <FormMessage>
                 {form.formState.errors.email &&
@@ -153,6 +160,7 @@ export function Registration() {
               </FormLabel>
               <FormControl>
                 <Input
+                  data-cy="password"
                   className="shadow-md"
                   placeholder="Jelszó"
                   type="password"
@@ -177,6 +185,7 @@ export function Registration() {
               </FormLabel>
               <FormControl>
                 <Input
+                  data-cy="passwordRepeat"
                   className="shadow-md"
                   placeholder="Jelszó"
                   type="password"
@@ -202,12 +211,19 @@ export function Registration() {
               <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
                   <SelectTrigger className="shadow-md">
-                    <SelectValue placeholder="Dolgozó státusza" />
+                    <SelectValue
+                      data-cy="role"
+                      placeholder="Dolgozó státusza"
+                    />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="Kitchen">Konyhai dolgozó</SelectItem>
-                  <SelectItem value="Admin">Pultban dolgozó</SelectItem>
+                  <SelectItem data-cy="kitchen" value="kitchen">
+                    Konyhai dolgozó
+                  </SelectItem>
+                  <SelectItem data-cy="salesman" value="salesman">
+                    Pultban dolgozó
+                  </SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage>{form.formState.errors.role?.message}</FormMessage>
