@@ -1,3 +1,12 @@
+# Telepítés & Tesztelés
+
+frontend:
+npm i --legacy-peer-deps
+npm run dev
+
+testek indítása:
+npx cypress open
+
 # Adminisztrációs Felület (Webapp)
 
 ## Dashboard (Manager)
