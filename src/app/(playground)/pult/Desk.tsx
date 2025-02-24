@@ -8,7 +8,7 @@ import IfFullScreen from "@/components/IfFullScreen";
 import { useFectchGet } from "@/app/hooks/useFetchGet";
 
 function Desk() {
-  const { loading, data: orders } = useFectchGet<Order[]>("/order/ongoing");
+  const { loading, data: orders } = useFectchGet<Order[]>("/order/salesman");
 
   if (loading) {
     return <Loading isCentered={true} />;

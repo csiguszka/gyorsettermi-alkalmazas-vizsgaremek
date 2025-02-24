@@ -7,7 +7,7 @@ import { Order } from "@/app/model/order-model";
 import { useFectchGet } from "@/app/hooks/useFetchGet";
 
 function Customer() {
-  const { loading, data: orders } = useFectchGet<Order[]>("/order/ongoing");
+  const { loading, data: orders } = useFectchGet<Order[]>("/order/salesman");
 
   if (loading) {
     return <Loading isCentered={true} />;

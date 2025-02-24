@@ -1,13 +1,13 @@
 "use client";
 
 import { Material } from "@/app/model/material-model";
+import DeleteButton from "@/components/DeleteButton";
 import Loading from "@/components/Loading";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RootState } from "@/state/store";
-import { Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -21,6 +21,7 @@ interface InventoryFormCardProps {
     successFunction: (d: Material) => void,
     failedModify: () => void
   ) => void;
+  handleDelete?: () => void;
 }
 
 function InventoryFormCard({
@@ -28,10 +29,12 @@ function InventoryFormCard({
   handleSubmit,
   successHandle,
   failedHandle,
+  handleDelete,
 }: InventoryFormCardProps) {
   const token = useSelector(
     (state: RootState) => state.states.user.value.token
   );
+
   useEffect(() => {
     setUnit(material.unit || "");
     setStock(material.inStock);
@@ -102,7 +105,7 @@ function InventoryFormCard({
             >
               Mentés {isLoading && <Loading />}
             </Button>
-            <Trash2 className="text-destructive cursor-pointer" />
+            {handleDelete && <DeleteButton onClick={handleDelete} />}
           </div>
         </form>
       </CardHeader>

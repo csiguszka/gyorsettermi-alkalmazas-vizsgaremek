@@ -62,12 +62,12 @@ export function Registration() {
       email: "test@sanyi.com",
       password: "Test123!",
       passwordRepeat: "Test123!",
-      role: "kitchen",
+      role: "Kitchen",
     },
   });
 
   const onSubmit = (data: any) => {
-    const { passwordRepeat, role, ...dataToSubmit } = data;
+    const { passwordRepeat, ...dataToSubmit } = data;
     console.log(dataToSubmit);
 
     axios
@@ -206,8 +206,8 @@ export function Registration() {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="kitchen">Konyhai dolgozó</SelectItem>
-                  <SelectItem value="counter">Pultban dolgozó</SelectItem>
+                  <SelectItem value="Kitchen">Konyhai dolgozó</SelectItem>
+                  <SelectItem value="Admin">Pultban dolgozó</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage>{form.formState.errors.role?.message}</FormMessage>
