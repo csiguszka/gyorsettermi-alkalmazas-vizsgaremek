@@ -42,6 +42,7 @@ function InventoryFormCard({
   }, [material]);
 
   const [unit, setUnit] = useState<string>(material.unit || "");
+  const [error, setError] = useState<string>("");
   const [name, setName] = useState<string>(material._id);
   const [stock, setStock] = useState<number>(material.inStock);
   const [isLoading, setIsloading] = useState(false);
@@ -56,6 +57,14 @@ function InventoryFormCard({
           className="flex flex-col gap-2"
           onSubmit={(e) => {
             e.preventDefault();
+            if (unit === "") {
+              setError("A mértékegység megadása kötelező!")
+              setIsloading(false)
+              return
+            }
+            if (material.unit === unit) {
+              setUnit("")
+            }
             handleSubmit(
               {
                 _id: name,
@@ -85,7 +94,7 @@ function InventoryFormCard({
             <Input
               placeholder="Mértékegység"
               value={unit}
-              onChange={(e) => setUnit(e.target.value)}
+              onChange={(e) => {setError(""); setUnit(e.target.value); }}
             />
           </div>
           <div>
@@ -97,6 +106,9 @@ function InventoryFormCard({
               onChange={(e) => setStock(Number(e.target.value))}
             />
           </div>
+          {
+           error && <p className="text-destructive">{error}</p>
+          }
           <div className="flex flex-row justify-between">
             <Button
               className="btn"

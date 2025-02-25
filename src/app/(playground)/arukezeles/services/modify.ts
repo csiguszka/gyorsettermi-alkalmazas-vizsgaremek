@@ -20,10 +20,17 @@ export const modifyStock = (
     })
     .then(function () {
       successFunction(d);
-      //TODO send the unit update if we have. Do not send quantity update if we do not have
+      //TODO send the unit update if we have, do not send if we do not have changes
+      if (d.unit !== "") {
+        // modifyUnit(d._id, d.unit)
+      }
     })
     .catch(function (error) {
       console.log(error);
       failedModify();
     });
 };
+
+export const modifyUnit = () => {
+
+}

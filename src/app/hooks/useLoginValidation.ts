@@ -3,7 +3,9 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 import { decoded, role } from "../model/decoded-model";
+import URL from "@/app/url";
 
 export function useLoginValidation(roles?: role[]) {
   const [loading, setLoading] = useState(true);
@@ -18,6 +20,18 @@ export function useLoginValidation(roles?: role[]) {
         const decoded = jwtDecode(user.token) as decoded;
         if (roles?.includes(decoded.name) || decoded.name === "admin") {
           //todo token validacio kuldese a backendre
+          axios
+            .get(`${URL}/token/validate`, {
+              headers: { "Accept-Language": "hu", Authorization: user.token },
+            })
+            .then(function () {
+              console.log("Sikeres bejelentkezés")
+            })
+            .catch(function (error) {
+              console.log("Nem sikerült bejelentkezni")
+              console.log(error);
+              router.push("/bejelentkezes");
+            });
           setLoading(false);
         } else {
           router.push("/bejelentkezes");
