@@ -13,8 +13,9 @@ export function useLoginValidation(roles?: role[]) {
   const router = useRouter();
 
   useEffect(() => {
+    const loginRoute = `/bejelentkezes?route=${window.location.pathname}`
     if (!user.token) {
-      router.push("/bejelentkezes");
+      router.push(loginRoute);
     } else {
       try {
         const decoded = jwtDecode(user.token) as decoded;
@@ -30,15 +31,15 @@ export function useLoginValidation(roles?: role[]) {
             .catch(function (error) {
               console.log("Nem sikerült bejelentkezni")
               console.log(error);
-              router.push("/bejelentkezes");
+              router.push(loginRoute);
             });
           setLoading(false);
         } else {
-          router.push("/bejelentkezes");
+          router.push(loginRoute);
         }
       } catch (error) {
         console.error("Invalid token:", error);
-        router.push("/bejelentkezes");
+        router.push(loginRoute);
       }
     }
   }, [user, router]);

@@ -16,8 +16,10 @@ import { Input } from "@/components/ui/input";
 import URL from "@/app/url";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { changeUser } from "@/state/user";
+import { useEffect, useState } from "react";
 
 const formSchema = z.object({
   name: z.string().min(4, {
@@ -39,6 +41,7 @@ const formSchema = z.object({
 export function Login() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const searchParams = useSearchParams();
   const { toast } = useToast();
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -49,6 +52,8 @@ export function Login() {
       password: "admin",
     },
   });
+  const redirectRoute = searchParams.get("route") || "/";
+  console.log(redirectRoute);
 
   const onSubmit = (data: { name: string; password: string }) => {
     console.log(data);
@@ -63,7 +68,14 @@ export function Login() {
         dispatch(
           changeUser({ token: response.data.token, role: response.data.role })
         );
-        router.push("/");
+        if (response.data.token === "kitchen") {
+          router.push("/konyha");
+        } else if (response.data.token === "salesman") {
+          router.push("/pult");
+        } else {
+          console.log(redirectRoute);
+          router.push(redirectRoute);
+        }
       })
       .catch(function (error) {
         toast({
