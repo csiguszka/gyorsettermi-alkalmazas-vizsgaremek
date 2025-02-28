@@ -13,23 +13,23 @@ export function useLoginValidation(roles?: role[]) {
   const router = useRouter();
 
   useEffect(() => {
-    const loginRoute = `/bejelentkezes?route=${window.location.pathname}`
+    const loginRoute = `/bejelentkezes?route=${window.location.pathname}`;
     if (!user.token) {
       router.push(loginRoute);
     } else {
       try {
         const decoded = jwtDecode(user.token) as decoded;
-        if (roles?.includes(decoded.name) || decoded.name === "admin") {
+        if (roles?.includes(decoded?.role) || decoded?.role === "admin") {
           //todo token validacio kuldese a backendre
           axios
             .get(`${URL}/token/validate`, {
               headers: { "Accept-Language": "hu", Authorization: user.token },
             })
             .then(function () {
-              console.log("Sikeres bejelentkezés")
+              console.log("Sikeres bejelentkezés");
             })
             .catch(function (error) {
-              console.log("Nem sikerült bejelentkezni")
+              console.log("Nem sikerült bejelentkezni");
               console.log(error);
               router.push(loginRoute);
             });

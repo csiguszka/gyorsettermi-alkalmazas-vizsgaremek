@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 
 interface InventoryFormCardProps {
   material: Material;

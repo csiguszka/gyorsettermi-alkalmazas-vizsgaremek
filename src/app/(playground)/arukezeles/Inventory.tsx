@@ -21,14 +21,11 @@ function Inventory() {
 
   useEffect(() => {
     if (data) {
-      console.log(data.items);
-      console.log("huhu");
       setMaterials(data.items);
       setMaxPage(data.pageCount);
     }
   }, [data]);
 
-  console.log(loading, materials);
   if (loading || materials === undefined) {
     return <Loading isCentered={true} />;
   }
