@@ -35,7 +35,7 @@ function InventoryCard({
 }: InventoryCardProps) {
   const list = materials.map((material) => {
     return {
-      name: material._id,
+      name: material.name,
       value: material.inStock.toString() + " " + material.unit,
     };
   });

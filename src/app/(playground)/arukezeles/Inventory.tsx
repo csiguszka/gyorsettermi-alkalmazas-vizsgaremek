@@ -7,22 +7,28 @@ import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import InventoryCard from "./_components/InventoryCard";
 import InventoryFormCard from "./_components/InventoryFormCard";
-import { modifyStock } from "./services/modify";
 import { createStock } from "./services/create";
+import { PaginationResponse } from "@/app/model/pagination-model";
 
 function Inventory() {
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const [isNew, setIsNew] = useState(false);
   const { toast } = useToast();
   const [materials, setMaterials] = useState<Material[]>([]);
-  const { loading, data } = useFectchGet<Material[]>("/material/all");
+  const [maxPage, setMaxPage] = useState<number>(1);
+  const { loading, data } =
+    useFectchGet<PaginationResponse<Material[]>>("/inventory");
 
   useEffect(() => {
     if (data) {
-      setMaterials(data);
+      console.log(data.items);
+      console.log("huhu");
+      setMaterials(data.items);
+      setMaxPage(data.pageCount);
     }
   }, [data]);
 
+  console.log(loading, materials);
   if (loading || materials === undefined) {
     return <Loading isCentered={true} />;
   }
@@ -92,14 +98,19 @@ function Inventory() {
         {selectedIdx !== null && (
           <InventoryFormCard
             material={materials[selectedIdx]}
-            handleSubmit={modifyStock}
             successHandle={successModify}
             failedHandle={failedModify}
           />
         )}
         {isNew && (
           <InventoryFormCard
-            material={{ _id: "", inStock: 0 }}
+            material={{
+              _id: "",
+              inStock: 0,
+              name: "",
+              englishName: "",
+              unit: "",
+            }}
             handleSubmit={createStock}
             successHandle={successCreate}
             failedHandle={failedCreate}

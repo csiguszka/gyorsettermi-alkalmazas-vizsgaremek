@@ -17,7 +17,7 @@ function Customer() {
     console.log(orders),
     (
       <Screen>
-        <div className="flex flex-col-reverse sm:flex-row gap-3 w-full">
+        <div className="flex flex-col-reverse sm:flex-row gap-5 w-full">
           <div className="sm:w-1/2">
             <h1 className="text-5xl text-center sm:text-6xl mb-5">Készül</h1>
             <div className="grid sm:flex flex-col lg:grid grid-cols-2 gap-5">
