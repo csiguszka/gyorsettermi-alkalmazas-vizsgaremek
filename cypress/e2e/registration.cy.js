@@ -1,7 +1,6 @@
-let authToken: string;
-
 beforeEach(() => {
-  const mockToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzkzYmI2MjE5YmZmOTJiYWY5ODBhZGUiLCJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4iLCJlbWFpbCI6IiIsInByb2ZpbGVQaWN0dXJlIjoiY29vbC1zdmdyZXBvLWNvbS5zdmciLCJpYXQiOjE3NDA0NzQ1ODIsImV4cCI6MTc0MDUxNzc4Mn0.aBlKc6GBpOAH9_dCqXK5CK8ejRVLQPB1C0OCCUgCuH9";
+  const mockToken =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzkzYmI2MjE5YmZmOTJiYWY5ODBhZGUiLCJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4iLCJlbWFpbCI6IiIsInByb2ZpbGVQaWN0dXJlIjoiY29vbC1zdmdyZXBvLWNvbS5zdmciLCJpYXQiOjE3NDA0NzQ1ODIsImV4cCI6MTc0MDUxNzc4Mn0.aBlKc6GBpOAH9_dCqXK5CK8ejRVLQPB1C0OCCUgCuH9";
   cy.visit("http://localhost:3000");
 
   cy.window().then((win) => {
@@ -35,7 +34,9 @@ describe("template spec", () => {
     cy.get("[data-cy=submit]").click();
     cy.contains("A felhasználó név túl rövid.").should("exist");
     cy.contains("Az email nem megfelelő formátumú.").should("exist");
-    cy.contains("A jelszónak legalább 8 karakter hosszúnak kell lennie.").should("exist");
+    cy.contains(
+      "A jelszónak legalább 8 karakter hosszúnak kell lennie."
+    ).should("exist");
     cy.contains("Kérjük válassza ki a dolgozó státuszát.").should("exist");
   });
 
