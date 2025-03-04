@@ -1,2 +1,2 @@
-const URL = "https://mateszadam.koyeb.app";
-export default URL
+const ENDPOINTURL = "https://mateszadam.koyeb.app";
+export default ENDPOINTURL;

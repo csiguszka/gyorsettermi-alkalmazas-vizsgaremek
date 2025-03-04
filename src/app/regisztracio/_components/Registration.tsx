@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import URL from "@/app/url";
+import ENDPOINTURL from "@/app/url";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { useSelector } from "react-redux";
@@ -71,7 +71,7 @@ export function Registration() {
     console.log(dataToSubmit);
 
     axios
-      .post(`${URL}/user/register/admin`, dataToSubmit, {
+      .post(`${ENDPOINTURL}/user/register/admin`, dataToSubmit, {
         headers: { "Accept-Language": "hu", Authorization: user.token },
       })
       .then(function (response) {

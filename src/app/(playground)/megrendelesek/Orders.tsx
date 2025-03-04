@@ -13,7 +13,6 @@ function Orders() {
     pageCount: number;
     orders: Order[];
   }>("/order/page/1");
-  console.log(data);
   if (loading || data === undefined) {
     return <Loading isCentered={true} />;
   }

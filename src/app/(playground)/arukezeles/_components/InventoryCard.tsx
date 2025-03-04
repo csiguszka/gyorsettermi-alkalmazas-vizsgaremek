@@ -35,7 +35,7 @@ function InventoryCard({
 }: InventoryCardProps) {
   const list = materials.map((material) => {
     return {
-      name: material._id,
+      name: material.name,
       value: material.inStock.toString() + " " + material.unit,
     };
   });
@@ -55,6 +55,7 @@ function InventoryCard({
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>Státusz</SelectLabel>
+                <SelectItem value="all">Összes alapanyag</SelectItem>
                 <SelectItem value="no">Nincs raktáron</SelectItem>
                 <SelectItem value="less">Kevés van raktáron</SelectItem>
                 <SelectItem value="yes">Raktáron van</SelectItem>

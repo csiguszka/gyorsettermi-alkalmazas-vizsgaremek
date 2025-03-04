@@ -19,7 +19,6 @@ function Table({
     return <p>Nincs elérhető adat.</p>;
   }
 
-  console.log(RowSelectedIdx);
   return (
     <ShadcnuiTable>
       <TableHeader>

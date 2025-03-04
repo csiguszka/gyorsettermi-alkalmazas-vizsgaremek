@@ -13,9 +13,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import URL from "@/app/url";
+import ENDPOINTURL from "@/app/url";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { changeUser } from "@/state/user";
 
@@ -39,6 +40,7 @@ const formSchema = z.object({
 export function Login() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const searchParams = useSearchParams();
   const { toast } = useToast();
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -49,21 +51,26 @@ export function Login() {
       password: "admin",
     },
   });
+  const redirectRoute = searchParams.get("route") || "/";
 
   const onSubmit = (data: { name: string; password: string }) => {
-    console.log(data);
     axios
-      .post(`${URL}/user/login`, data)
+      .post(`${ENDPOINTURL}/user/login`, data)
       .then(function (response) {
         toast({
           variant: "default",
           title: "Sikeres bejelnetkezés",
         });
-        console.log(response.data);
         dispatch(
           changeUser({ token: response.data.token, role: response.data.role })
         );
-        router.push("/");
+        if (response.data.token === "kitchen") {
+          router.push("/konyha");
+        } else if (response.data.token === "salesman") {
+          router.push("/pult");
+        } else {
+          router.push(redirectRoute);
+        }
       })
       .catch(function (error) {
         toast({

@@ -7,19 +7,24 @@ import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import InventoryCard from "./_components/InventoryCard";
 import InventoryFormCard from "./_components/InventoryFormCard";
-import { modifyStock } from "./services/modify";
-import { createStock } from "./services/create";
+import { PaginationResponse } from "@/app/model/pagination-model";
+import { useFetchPatch } from "@/app/hooks/useFetchPatch";
 
 function Inventory() {
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const [isNew, setIsNew] = useState(false);
   const { toast } = useToast();
   const [materials, setMaterials] = useState<Material[]>([]);
-  const { loading, data } = useFectchGet<Material[]>("/material/all");
+  const [maxPage, setMaxPage] = useState<number>(1);
+  const patchFunction = useFetchPatch();
+
+  const { loading, data } =
+    useFectchGet<PaginationResponse<Material[]>>("/inventory");
 
   useEffect(() => {
     if (data) {
-      setMaterials(data);
+      setMaterials(data.items);
+      setMaxPage(data.pageCount);
     }
   }, [data]);
 
@@ -30,6 +35,31 @@ function Inventory() {
   const tableRowClickHandle = (id: number) => {
     setSelectedIdx(id);
     setIsNew(false);
+  };
+
+  const modify = (d: Material) => {
+    interface materialFetch_model {
+      name: string;
+      englishName: string;
+      unit: string;
+    }
+    interface inventoryFetch_model {
+      materialId: string;
+      quantity: number;
+      message: string;
+    }
+    const newMaterial: materialFetch_model = {
+      name: d.name,
+      englishName: d.name,
+      unit: d.unit,
+    };
+    const newInventory: inventoryFetch_model = {
+      materialId: d._id,
+      quantity: d.inStock,
+      message: "Változtatás az admin oldalon",
+    };
+    patchFunction<materialFetch_model>("/material", d._id, newMaterial);
+    patchFunction<inventoryFetch_model>("/inventory", d._id, newInventory);
   };
 
   const successModify = (d: Material) => {
@@ -53,6 +83,10 @@ function Inventory() {
       variant: "destructive",
       title: "Sikertelen áru frissítés",
     });
+  };
+
+  const create = (d: Material) => {
+    console.log(d);
   };
 
   const successCreate = (d: Material) => {
@@ -92,17 +126,19 @@ function Inventory() {
         {selectedIdx !== null && (
           <InventoryFormCard
             material={materials[selectedIdx]}
-            handleSubmit={modifyStock}
-            successHandle={successModify}
-            failedHandle={failedModify}
+            handleSubmit={modify}
           />
         )}
         {isNew && (
           <InventoryFormCard
-            material={{ _id: "", inStock: 0 }}
-            handleSubmit={createStock}
-            successHandle={successCreate}
-            failedHandle={failedCreate}
+            material={{
+              _id: "",
+              inStock: 0,
+              name: "",
+              englishName: "",
+              unit: "",
+            }}
+            handleSubmit={create}
           />
         )}
       </div>

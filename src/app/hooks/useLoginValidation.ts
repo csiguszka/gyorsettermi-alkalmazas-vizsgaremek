@@ -3,7 +3,9 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 import { decoded, role } from "../model/decoded-model";
+import ENDPOINTURL from "@/app/url";
 
 export function useLoginValidation(roles?: role[]) {
   const [loading, setLoading] = useState(true);
@@ -11,20 +13,30 @@ export function useLoginValidation(roles?: role[]) {
   const router = useRouter();
 
   useEffect(() => {
+    const loginRoute = `/bejelentkezes?route=${window.location.pathname}`;
     if (!user.token) {
-      router.push("/bejelentkezes");
+      router.push(loginRoute);
     } else {
       try {
         const decoded = jwtDecode(user.token) as decoded;
-        if (roles?.includes(decoded.name) || decoded.name === "admin") {
+        if (roles?.includes(decoded?.role) || decoded?.role === "admin") {
           //todo token validacio kuldese a backendre
+          axios
+            .get(`${ENDPOINTURL}/token/validate`, {
+              headers: { "Accept-Language": "hu", Authorization: user.token },
+            })
+            .then(function () {})
+            .catch(function (error) {
+              console.log(error);
+              router.push(loginRoute);
+            });
           setLoading(false);
         } else {
-          router.push("/bejelentkezes");
+          router.push(loginRoute);
         }
       } catch (error) {
         console.error("Invalid token:", error);
-        router.push("/bejelentkezes");
+        router.push(loginRoute);
       }
     }
   }, [user, router]);
