@@ -14,7 +14,7 @@ function FormCard({
   children,
   title,
   submitButtonText,
-  formId
+  formId,
 }: {
   children: React.ReactNode;
   title: string;
@@ -40,7 +40,7 @@ function FormCard({
         </CardHeader>
         <CardContent>{children}</CardContent>
         <CardFooter>
-          <FormSubmitButton text={submitButtonText} formId={formId}/>
+          <FormSubmitButton text={submitButtonText} formId={formId} />
         </CardFooter>
       </Card>
     </div>

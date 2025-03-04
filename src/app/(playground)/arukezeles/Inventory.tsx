@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { Material } from "@/app/model/material-model";
@@ -117,7 +118,7 @@ function Inventory() {
     <div>
       <h1 className="text-center mb-5">Árukezelés</h1>
       <div className="flex flex-col w-full justify-center lg:flex-row lg:justify-around gap-3">
-        <InventoryCard
+        {/* <InventoryCard
           materials={materials}
           tableSelectedIdx={selectedIdx}
           tableRowClickHandle={tableRowClickHandle}
@@ -140,7 +141,7 @@ function Inventory() {
             }}
             handleSubmit={create}
           />
-        )}
+        )} */}
       </div>
     </div>
   );
