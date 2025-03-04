@@ -30,7 +30,7 @@ body {
     --foreground: 0, 0%, 5%;
     --card: 0, 0%, 100%;
     --card-foreground: 0, 0%, 5%;
-    --popover: 217 100% 95%;
+    --popover: 0 0% 100%;
     --popover-foreground: 217 100% 10%;
     --primary: 29, 100%, 59%;
     --primary-foreground: 0, 0%, 0%;
@@ -57,8 +57,8 @@ body {
     --foreground: 0, 0%, 88%;
     --card: 165, 8%, 9%;
     --card-foreground: 0, 0%, 88%;
-    --popover: 217 100% 95%;
-    --popover-foreground: 217 100% 10%;
+    --popover: 165, 8%, 9%;
+    --popover-foreground: 0, 0%, 88%;
     --primary: 29, 100%, 59%;
     --primary-foreground: 165, 8%, 9%;
     --secondary: 0, 0%, 29%;
@@ -124,6 +124,11 @@ body {
   }
   div[role="option"][aria-selected="true"] {
     @apply bg-primary_opacity;
+  }
+
+  /* DataPicker */
+  div[id*="day-picker"][role="presentation"] {
+    @apply bg-popover !important;
   }
 
   /* Combobox */

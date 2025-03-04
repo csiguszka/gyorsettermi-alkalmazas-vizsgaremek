@@ -5,7 +5,7 @@ import { TrendingDown, TrendingUp, MoveRight } from "lucide-react";
 interface props {
   value: number | string;
   label: string;
-  rating: string;
+  rating: number;
   destination: "up" | "down" | "same";
 }
 
@@ -42,7 +42,8 @@ function TrendingCard({ value, label, rating, destination }: props) {
               : "text-gray-500"
           )}
         >
-          {rating}
+          {/* {destination === "down" ? <span>-</span> : <span>+</span>} */}
+          {rating.toFixed(2).toString()}%
         </span>
       </p>
     </Card>

@@ -1,6 +1,6 @@
 import { RootState } from "@/state/store";
 import { useSelector } from "react-redux";
-import URL from "@/app/url";
+import ENDPOINTURL from "@/app/url";
 import axios from "axios";
 
 export function useFetchPost<T>(urlEndpoint: string, data: T) {
@@ -9,7 +9,7 @@ export function useFetchPost<T>(urlEndpoint: string, data: T) {
   );
   axios
     .post(
-      `${URL}${urlEndpoint}`,
+      `${ENDPOINTURL}${urlEndpoint}`,
       { data },
       {
         headers: { "Accept-Language": "hu", Authorization: token },

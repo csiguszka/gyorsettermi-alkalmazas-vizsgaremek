@@ -1,6 +1,6 @@
 "use client";
 
-import URL from "@/app/url";
+import ENDPOINTURL from "@/app/url";
 import { RootState } from "@/state/store";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -17,7 +17,9 @@ export function useFectchGet<T>(
   );
   const [data, setData] = useState<T>();
   const handleUnauthorized = useUnauthorizedHandler();
-  const url = `${URL}${urlEndpoint}?${new URLSearchParams(attrs).toString()}`;
+  const url = `${ENDPOINTURL}${urlEndpoint}?${new URLSearchParams(
+    attrs
+  ).toString()}`;
   console.log(url);
   useEffect(() => {
     async function fetchData() {

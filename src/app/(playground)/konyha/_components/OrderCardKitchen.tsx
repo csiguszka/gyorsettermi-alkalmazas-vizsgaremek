@@ -11,10 +11,10 @@ import {
 } from "@/components/ui/card";
 
 function OrderCardKitchen({ order }: { order: Order }) {
-  const fetchFunction = useFetchPatch("/order/finish", order._id);
+  const fetchFunction = useFetchPatch();
   const handleClick = () => {
     console.log("clicked");
-    fetchFunction();
+    fetchFunction("/order/finish", order._id);
   };
   const list = order.orderedProducts.map((product) => {
     return { name: product.name, value: product.quantity.toString() };

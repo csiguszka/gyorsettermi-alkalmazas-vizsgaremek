@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import ClientWrapper from "@/components/ClientWrapper";
 import { ThemeProvider } from "next-themes";
+import QueryProvider from "@/components/QueryProvider"; // Ezt importáljuk
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,17 +32,21 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${nunitosans.variable} antialiased`}
       >
-        <ClientWrapper>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Toaster />
-            {children}
-          </ThemeProvider>
-        </ClientWrapper>
+        <QueryProvider>
+          {" "}
+          {/* Az új QueryProvider */}
+          <ClientWrapper>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Toaster />
+              {children}
+            </ThemeProvider>
+          </ClientWrapper>
+        </QueryProvider>
       </body>
     </html>
   );

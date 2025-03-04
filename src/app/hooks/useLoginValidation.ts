@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { decoded, role } from "../model/decoded-model";
-import URL from "@/app/url";
+import ENDPOINTURL from "@/app/url";
 
 export function useLoginValidation(roles?: role[]) {
   const [loading, setLoading] = useState(true);
@@ -22,14 +22,11 @@ export function useLoginValidation(roles?: role[]) {
         if (roles?.includes(decoded?.role) || decoded?.role === "admin") {
           //todo token validacio kuldese a backendre
           axios
-            .get(`${URL}/token/validate`, {
+            .get(`${ENDPOINTURL}/token/validate`, {
               headers: { "Accept-Language": "hu", Authorization: user.token },
             })
-            .then(function () {
-              console.log("Sikeres bejelentkezés");
-            })
+            .then(function () {})
             .catch(function (error) {
-              console.log("Nem sikerült bejelentkezni");
               console.log(error);
               router.push(loginRoute);
             });

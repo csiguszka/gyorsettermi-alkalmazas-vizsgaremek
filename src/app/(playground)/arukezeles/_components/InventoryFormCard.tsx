@@ -7,30 +7,44 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 interface InventoryFormCardProps {
   material: Material;
-  successHandle: (d: Material) => void;
-  failedHandle: () => void;
   handleDelete?: () => void;
+  handleSubmit: (d: Material) => void;
 }
 
 function InventoryFormCard({
   material,
-  successHandle,
-  failedHandle,
+  handleSubmit,
   handleDelete,
 }: InventoryFormCardProps) {
+  useEffect(() => {
+    setUnit(material.unit);
+    setError("");
+    setName(material.name);
+    setStock(material.inStock);
+    setIsloading(false);
+  }, [material]);
+
   const [unit, setUnit] = useState<string>(material.unit || "");
   const [error, setError] = useState<string>("");
   const [name, setName] = useState<string>(material.name);
   const [stock, setStock] = useState<number>(material.inStock);
   const [isLoading, setIsloading] = useState(false);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(name, unit, stock);
+    const newMaterial: Material = {
+      _id: material._id,
+      englishName: name,
+      name: name,
+      inStock: stock,
+      unit: unit,
+    };
+    handleSubmit(newMaterial);
+    setIsloading(false);
   };
 
   return (
@@ -39,7 +53,10 @@ function InventoryFormCard({
         <h2 className="text-center">
           {material.name ? material.name : "Új alapanyag"}
         </h2>
-        <form className="flex flex-col gap-2" onSubmit={(e) => handleSubmit(e)}>
+        <form
+          className="flex flex-col gap-2"
+          onSubmit={(e) => handleFormSubmit(e)}
+        >
           <div>
             <Label>Név</Label>
             <Input

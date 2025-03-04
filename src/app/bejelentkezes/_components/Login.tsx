@@ -13,13 +13,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import URL from "@/app/url";
+import ENDPOINTURL from "@/app/url";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { changeUser } from "@/state/user";
-import { useEffect, useState } from "react";
 
 const formSchema = z.object({
   name: z.string().min(4, {
@@ -53,18 +52,15 @@ export function Login() {
     },
   });
   const redirectRoute = searchParams.get("route") || "/";
-  console.log(redirectRoute);
 
   const onSubmit = (data: { name: string; password: string }) => {
-    console.log(data);
     axios
-      .post(`${URL}/user/login`, data)
+      .post(`${ENDPOINTURL}/user/login`, data)
       .then(function (response) {
         toast({
           variant: "default",
           title: "Sikeres bejelnetkezés",
         });
-        console.log(response.data);
         dispatch(
           changeUser({ token: response.data.token, role: response.data.role })
         );
@@ -73,7 +69,6 @@ export function Login() {
         } else if (response.data.token === "salesman") {
           router.push("/pult");
         } else {
-          console.log(redirectRoute);
           router.push(redirectRoute);
         }
       })
