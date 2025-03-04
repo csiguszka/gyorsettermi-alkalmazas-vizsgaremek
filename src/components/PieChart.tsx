@@ -17,7 +17,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { useFectchGet } from "@/app/hooks/useFetchGet";
 
 const chartConfig = {
   visitors: {

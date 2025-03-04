@@ -1,5 +1,4 @@
 import { PenBox } from "lucide-react";
-import DeleteButton from "./DeleteButton";
 
 function ModifyDeleteButtons() {
   return (

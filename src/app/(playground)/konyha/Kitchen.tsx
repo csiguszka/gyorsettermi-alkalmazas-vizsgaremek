@@ -6,7 +6,6 @@ import Screen from "@/components/Screen";
 import { Order } from "@/app/model/order-model";
 import IfFullScreen from "@/components/IfFullScreen";
 import { useFectchGet } from "@/app/hooks/useFetchGet";
-import { PaginationResponse } from "@/app/model/pagination-model";
 
 function Kitchen() {
   const { loading, data: orders } = useFectchGet<Order[]>("/order/kitchen");
