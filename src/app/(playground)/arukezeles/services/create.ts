@@ -10,7 +10,7 @@ export const createStock = (
 ) => {
   const stockData = {
     name: d._id,
-    quantity: d.quantity,
+    quantity: d.inStock,
     message: "Létrehozás",
   };
   console.log(stockData);
