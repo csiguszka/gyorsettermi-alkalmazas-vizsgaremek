@@ -17,6 +17,16 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import ENDPOINTURL from "@/app/url";
+import { dateInterval } from "@/app/model/dateInterval";
+import { useSelector } from "react-redux";
+import { RootState } from "@/state/store";
+
+interface categorizedOrder {
+  _id: number;
+  count: number;
+}
 
 const chartConfig = {
   visitors: {
@@ -40,8 +50,16 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function PieChart() {
-  // const {loading, data} =
+export function PieChart({ date }: { date: dateInterval }) {
+  console.log("hmmmmm");
+  const categories = [2000, 5000, 20000];
+  const { token } = useSelector((state: RootState) => state.states.user.value);
+  const { data } = useSuspenseQuery({
+    queryKey: ["categorizedOrders", date.startDate, date.endDate],
+    queryFn: () =>
+      getCategorizedOrders(date.startDate, date.endDate, categories, token),
+  });
+  console.log(JSON.stringify(data));
   const chartData = [
     { browser: "one", visitors: 275, fill: "var(--color-one)" },
     { browser: "two", visitors: 200, fill: "var(--color-two)" },
@@ -119,3 +137,31 @@ export function PieChart() {
     </Card>
   );
 }
+
+const getCategorizedOrders = async (
+  startDate: string,
+  endDate: string,
+  categories: number[],
+  token: string | null
+): Promise<categorizedOrder[]> => {
+  if (!token) {
+    window.location.href = "/bejelentkezes";
+    return Promise.reject("Nincs token, átirányítás történt.");
+  }
+  const response = await fetch(
+    `${ENDPOINTURL}/dashboard/categorizedOrders?startDate=${startDate}&endDate=${endDate}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    }
+  );
+  console.log("response status:", response.status);
+  console.log("response text:", await response.text());
+
+  if (!response.ok) {
+    throw new Error("Hiba történt az adatok lekérésekor");
+  }
+  return response.json();
+};
