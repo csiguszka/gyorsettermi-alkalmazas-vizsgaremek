@@ -6,19 +6,21 @@ import Screen from "@/components/Screen";
 import { Order } from "@/app/model/order-model";
 import IfFullScreen from "@/components/IfFullScreen";
 import { useFectchGet } from "@/app/hooks/useFetchGet";
-import { PaginationResponse } from "@/app/model/pagination-model";
+import MyWebSocketComponent from "@/components/MyWebSocketComponent";
 
 function Kitchen() {
   const { loading, data: orders } = useFectchGet<Order[]>("/order/kitchen");
-  console.log(orders);
+  // console.log(orders);
   if (loading) {
     return <Loading isCentered={true} />;
   }
+  
 
   return (
     <Screen>
       <IfFullScreen>
         <h1 className="text-center text-4xl mb-5">Konyhai kijelző</h1>
+        <MyWebSocketComponent/>
       </IfFullScreen>
       <div className="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {orders?.map((order) => {
