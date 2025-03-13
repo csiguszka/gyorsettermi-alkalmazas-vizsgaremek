@@ -19,32 +19,62 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-];
+import { useSelector } from "react-redux";
+import { RootState } from "@/state/store";
+import { useQuery } from "@tanstack/react-query";
+import { dateInterval } from "@/app/model/dateInterval";
+import ENDPOINTURL from "@/app/url";
+import SkeletonChartCard from "./skeletons/SkeletonChart";
+import { useMemo } from "react";
+
 
 const chartConfig = {
   desktop: {
-    label: "Desktop",
+    label: "Elkészítés",
     color: "hsl(var(--chart-1))",
   },
   mobile: {
-    label: "Mobile",
+    label: "Kiadása",
     color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig;
 
-export function BarChartDouble() {
+interface cookingTime_model {
+  orders: {
+    _id: string,
+    avgCookingTime: number,
+    avgHandoverTime: number,
+  }[]
+}
+
+export function BarChartDouble({date} : {date: dateInterval}) {
+  const {token} = useSelector((state: RootState) => state.states.user.value)
+  const {data, isPending} = useQuery({
+    queryKey: ["cookingTime", date.endDate],
+    queryFn: () => getCookingTime(date.endDate, token),
+    staleTime: Infinity
+  })
+console.log(data)
+  const chartData = useMemo(() => {
+    return [
+      { month: "Hétfő", desktop: data?.orders?.[0].avgCookingTime, mobile: data?.orders?.[0].avgHandoverTime },
+      { month: "Kedd", desktop: data?.orders?.[1].avgCookingTime, mobile: data?.orders?.[1].avgHandoverTime },
+      { month: "Szerda", desktop: data?.orders?.[2].avgCookingTime, mobile: data?.orders?.[2].avgHandoverTime },
+      { month: "Csütörtök", desktop: data?.orders?.[3].avgCookingTime, mobile: data?.orders?.[3].avgHandoverTime },
+      { month: "Péntek", desktop: data?.orders?.[4].avgCookingTime, mobile: data?.orders?.[4].avgHandoverTime },
+      { month: "Szombat", desktop: data?.orders?.[5].avgCookingTime, mobile: data?.orders?.[5].avgHandoverTime },
+      { month: "Vasárnap", desktop: data?.orders?.[6].avgCookingTime, mobile: data?.orders?.[6].avgHandoverTime },
+    ];
+  }, [data]) 
+
+  if (isPending) {
+    <SkeletonChartCard/>
+  }
+
   return (
     <Card className="card">
       <CardHeader>
-        <CardTitle>Bar Chart - Stacked + Legend</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle className="text-center">Rendelésre szánt átlagos idő</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -74,14 +104,42 @@ export function BarChartDouble() {
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+      <CardFooter className="flex-col gap-2 text-sm">
+      <div className="font-medium leading-none grid grid-cols-2 gap-2">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-chart-1"></div>
+            <span>Elkészítés</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-chart-2"></div>
+            <span>Kiadás</span>
+          </div>
         </div>
       </CardFooter>
     </Card>
   );
+}
+
+
+const getCookingTime = async (endDate: string, token: string | null): Promise<cookingTime_model> => {
+  if (!token) {
+    window.location.href = "/bejelentkezes";
+    return Promise.reject("Nincs token, átirányítás történt.");
+  }
+
+  try {
+    const response = await fetch(
+      `${ENDPOINTURL}/dashboard/cookingTime?date=${endDate}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    
+    return response.json();
+  } catch (error) {
+    throw new Error("Something went wrong")
+  }
 }

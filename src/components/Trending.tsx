@@ -1,15 +1,13 @@
 import { dateInterval } from "@/app/model/dateInterval";
-import Profit from "./dashboard/Profit";
-import RegisteredUsers from "./dashboard/RegisteredUsers";
 import Loading from "./Loading";
-import { Suspense } from "react";
-import TrendingCardSkeleton from "./TrendingCartSkeleton";
+import Profit from "./dashboard/Profit";
 import SoldProducts from "./dashboard/SoldProducts";
 import Order from "./dashboard/Order";
+import RegisteredUsers from "./dashboard/RegisteredUsers";
 
 function Trending({ selectedDate }: { selectedDate: Date | undefined }) {
   if (!selectedDate) {
-    return <Loading />;
+    return <Loading />
   }
   selectedDate.setHours(0, 0, 0, 0);
   const endDate = new Date(selectedDate);
@@ -33,18 +31,10 @@ function Trending({ selectedDate }: { selectedDate: Date | undefined }) {
 
   return (
     <div className="flex flex-col gap-3 sm:grid sm:grid-cols-2 lg:grid-cols-4">
-      <Suspense fallback={<TrendingCardSkeleton />}>
-        <Profit currentDate={currentInterval} prevDate={prevInterval} />
-      </Suspense>
-      <Suspense fallback={<TrendingCardSkeleton />}>
-        <SoldProducts currentDate={currentInterval} prevDate={prevInterval} />
-      </Suspense>
-      <Suspense fallback={<TrendingCardSkeleton />}>
-        <Order currentDate={currentInterval} prevDate={prevInterval} />
-      </Suspense>
-      <Suspense fallback={<TrendingCardSkeleton />}>
-        <RegisteredUsers date={currentInterval} />
-      </Suspense>
+      <Profit currentDate={currentInterval} prevDate={prevInterval}/>
+      <SoldProducts currentDate={currentInterval} prevDate={prevInterval} />
+      <Order currentDate={currentInterval} prevDate={prevInterval} />
+      <RegisteredUsers date={currentInterval} />
     </div>
   );
 }

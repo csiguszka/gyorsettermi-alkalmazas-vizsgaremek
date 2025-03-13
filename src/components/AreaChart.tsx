@@ -22,14 +22,23 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-];
+import { dateInterval } from "@/app/model/dateInterval";
+import { useSelector } from "react-redux";
+import { userAgent } from "next/server";
+import { RootState } from "@/state/store";
+import { useQuery } from "@tanstack/react-query";
+import ENDPOINTURL from "@/app/url";
+import { useMemo } from "react";
+import { access } from "fs";
+import SkeletonChartCard from "./skeletons/SkeletonChart";
+
+
+interface AreaModel {
+  orders: {
+    _id: number,
+    count: number
+  }[]
+}
 
 const chartConfig = {
   desktop: {
@@ -38,14 +47,44 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function AreaChart() {
+export function AreaChart({date}: {date: dateInterval}) {
+  const {token} = useSelector((state: RootState) => state.states.user.value)
+  const {data, isPending} = useQuery({
+    queryKey: ["areaChart", date.endDate],
+    queryFn: () => getAreaChartDate(date.endDate, token),
+    staleTime: Infinity
+  })
+
+  const chartData = useMemo(() => {
+    const timeRanges = [
+      { label: "0h", range: [0, 3] },
+      { label: "4h", range: [4, 7] },
+      { label: "8h", range: [8, 11] },
+      { label: "12h", range: [12, 15] },
+      { label: "16h", range: [16, 19] },
+      { label: "24h", range: [20, 24] }
+    ];
+
+    
+    return timeRanges.map(({ label, range }) => {
+      const count = data?.orders.reduce((acc, curr) =>
+        curr._id >= range[0] && curr._id <= range[1] ? acc + curr.count : acc,
+        0
+      );
+      return { month: label, desktop: count };
+    });
+  }, [data]);
+  
+
+  
+  if (isPending) {
+    return <SkeletonChartCard/>
+  }
+
   return (
     <Card className="card">
       <CardHeader>
-        <CardTitle>Area Chart</CardTitle>
-        <CardDescription>
-          Showing total visitors for the last 6 months
-        </CardDescription>
+        <CardTitle className="text-center">Rendelések időbeli átlagos alakulása a héten</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -59,6 +98,7 @@ export function AreaChart() {
           >
             <CartesianGrid vertical={false} />
             <XAxis
+              domain={[0, "auto"]}
               dataKey="month"
               tickLine={false}
               axisLine={false}
@@ -79,18 +119,37 @@ export function AreaChart() {
           </RechartsAreaChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter>
-        <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2">
-            <div className="flex items-center gap-2 font-medium leading-none">
-              Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-            </div>
-            <div className="flex items-center gap-2 leading-none text-muted-foreground">
-              January - June 2024
-            </div>
+      <CardFooter className="flex-col gap-2 text-sm">
+      <div className="w-full flex font-medium leading-none justify-center">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-chart-1"></div>
+            <span>Megrendelések</span>
           </div>
         </div>
       </CardFooter>
     </Card>
   );
+}
+
+const getAreaChartDate = async (endDate: string, token: string | null): Promise<AreaModel> => {
+  if (!token) {
+    window.location.href = "/bejelentkezes";
+    return Promise.reject("Nincs token, átirányítás történt.");
+  }
+
+  try {
+    const response = await fetch(
+      `${ENDPOINTURL}/dashboard/timeOfOrders?date=${endDate}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    
+    return response.json();
+  } catch (error) {
+    throw new Error("Something went wrong")
+  }
 }
