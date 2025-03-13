@@ -4,7 +4,7 @@ import TrendingCard from "../TrendingCard";
 import { getRatioDestination } from "@/app/helpers/getRatioDestination";
 import { dateInterval } from "@/app/model/dateInterval";
 import ENDPOINTURL from "@/app/url";
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import TrendingCardSkeleton from "../skeletons/TrendingCartSkeleton";

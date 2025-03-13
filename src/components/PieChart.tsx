@@ -185,7 +185,7 @@ const getCategorizedOrders = async (
     );
     
     return response.json();
-  } catch (error) {
+  } catch (_err) {
     throw new Error("Something went wrong")
   }
 

@@ -1,6 +1,5 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
 import {
   Area,
   AreaChart as RechartsAreaChart,
@@ -11,7 +10,6 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -24,12 +22,10 @@ import {
 } from "@/components/ui/chart";
 import { dateInterval } from "@/app/model/dateInterval";
 import { useSelector } from "react-redux";
-import { userAgent } from "next/server";
 import { RootState } from "@/state/store";
 import { useQuery } from "@tanstack/react-query";
 import ENDPOINTURL from "@/app/url";
 import { useMemo } from "react";
-import { access } from "fs";
 import SkeletonChartCard from "./skeletons/SkeletonChart";
 
 
@@ -149,7 +145,7 @@ const getAreaChartDate = async (endDate: string, token: string | null): Promise<
     );
     
     return response.json();
-  } catch (error) {
+  } catch (_err) {
     throw new Error("Something went wrong")
   }
 }

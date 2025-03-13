@@ -6,7 +6,6 @@ import { BarChart } from "./BarChart";
 import { BarChartDouble } from "./BarChartDouble";
 import { PieChart } from "./PieChart";
 import { dateInterval } from "@/app/model/dateInterval";
-import { Button } from "./ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 const getMondayOfCurrentWeek = (referenceDate: Date = new Date()) => {

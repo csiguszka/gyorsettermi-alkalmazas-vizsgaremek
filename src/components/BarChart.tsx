@@ -132,7 +132,7 @@ const getOrdersAndSoldProducts = async (endDate: string, token: string | null): 
     );
     
     return response.json();
-  } catch (error) {
+  } catch (_err) {
     throw new Error("Something went wrong")
   }
 }

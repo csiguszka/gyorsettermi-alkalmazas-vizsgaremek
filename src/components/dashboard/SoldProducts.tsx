@@ -3,7 +3,7 @@
 import { dateInterval } from "@/app/model/dateInterval";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
-import { useQuery, useSuspenseQueries } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import ENDPOINTURL from "@/app/url";
 import { getRatioDestination } from "@/app/helpers/getRatioDestination";
 import TrendingCard from "../TrendingCard";

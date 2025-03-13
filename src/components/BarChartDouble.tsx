@@ -1,12 +1,10 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -139,7 +137,7 @@ const getCookingTime = async (endDate: string, token: string | null): Promise<co
     );
     
     return response.json();
-  } catch (error) {
+  } catch (_err) {
     throw new Error("Something went wrong")
   }
 }
