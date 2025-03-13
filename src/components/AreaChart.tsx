@@ -145,7 +145,14 @@ const getAreaChartDate = async (endDate: string, token: string | null): Promise<
     );
     
     return response.json();
-  } catch (_err) {
-    throw new Error("Something went wrong")
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(`Something went wrong: ${error.message}`);
+    } else {
+      throw new Error("Something went wrong");
+    }
   }
-}
+};
+
+
+
