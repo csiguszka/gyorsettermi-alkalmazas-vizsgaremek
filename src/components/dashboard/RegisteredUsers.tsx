@@ -4,9 +4,10 @@ import TrendingCard from "../TrendingCard";
 import { getRatioDestination } from "@/app/helpers/getRatioDestination";
 import { dateInterval } from "@/app/model/dateInterval";
 import ENDPOINTURL from "@/app/url";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
+import TrendingCardSkeleton from "../skeletons/TrendingCartSkeleton";
 
 interface RegisteredUsersData {
   filteredUsers: number;
@@ -18,10 +19,15 @@ function RegisteredUsers({ date }: { date: dateInterval }) {
     (state: RootState) => state.states.user.value.token
   );
 
-  const { data } = useSuspenseQuery({
+  const { data, isPending } = useQuery({
     queryKey: ["registeredUsers", date.startDate, date.endDate],
     queryFn: () => getRegisteredUsersCount(date.startDate, date.endDate, token),
+    staleTime: Infinity
   });
+
+  if (data === undefined || isPending) {
+    return <TrendingCardSkeleton/>
+  }
 
   const rating =
     Number(data.totalUsers) /

@@ -20,7 +20,6 @@ export function useLoginValidation(roles?: role[]) {
       try {
         const decoded = jwtDecode(user.token) as decoded;
         if (roles?.includes(decoded?.role) || decoded?.role === "admin") {
-          //todo token validacio kuldese a backendre
           axios
             .get(`${ENDPOINTURL}/token/validate`, {
               headers: { "Accept-Language": "hu", Authorization: user.token },

@@ -3,11 +3,12 @@
 import { dateInterval } from "@/app/model/dateInterval";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
-import { useSuspenseQueries } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import ENDPOINTURL from "@/app/url";
 import { getRatioDestination } from "@/app/helpers/getRatioDestination";
 import TrendingCard from "../TrendingCard";
 import { ratioCalculator } from "@/app/helpers/ratioCalculator";
+import TrendingCardSkeleton from "../skeletons/TrendingCartSkeleton";
 
 interface profit {
   revenue: number;
@@ -23,26 +24,34 @@ function Profit({
   const token = useSelector(
     (state: RootState) => state.states.user.value.token
   );
-  const [{ data: currentProfit }, { data: prevProfit }] = useSuspenseQueries({
-    queries: [
-      {
-        queryKey: ["revenue", currentDate.startDate, currentDate.endDate],
-        queryFn: () =>
-          getRevenue(currentDate.startDate, currentDate.endDate, token),
-      },
-      {
-        queryKey: ["prevRevenue", prevDate.startDate, prevDate.endDate],
-        queryFn: () => getRevenue(prevDate.startDate, prevDate.endDate, token),
-      },
-    ],
+  const { data: currentProfit, isPending } = useQuery({
+    queryKey: ["revenue", currentDate.startDate, currentDate.endDate],
+    queryFn: () =>
+      getRevenue(currentDate.startDate, currentDate.endDate, token),
+    staleTime: Infinity,
   });
 
-  const rating = ratioCalculator(currentProfit.revenue, prevProfit.revenue);
+  const { data: prevProfit, isPending: isPendingPrev } = useQuery({
+    queryKey: ["prevRevenue", prevDate.startDate, prevDate.endDate],
+    queryFn: () => getRevenue(prevDate.startDate, prevDate.endDate, token),
+    staleTime: Infinity,
+  });
+
+  if (
+    isPending ||
+    isPendingPrev ||
+    currentProfit === undefined ||
+    prevProfit === undefined
+  ) {
+    return <TrendingCardSkeleton />;
+  }
+
+  const rating = ratioCalculator(currentProfit?.revenue, prevProfit?.revenue);
   const destination = getRatioDestination(rating);
 
   return (
     <TrendingCard
-      value={currentProfit.revenue}
+      value={currentProfit?.revenue}
       label="Forgalom"
       rating={rating}
       destination={destination}

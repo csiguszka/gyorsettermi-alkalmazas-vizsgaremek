@@ -3,11 +3,12 @@
 import { dateInterval } from "@/app/model/dateInterval";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
-import { useSuspenseQueries } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import ENDPOINTURL from "@/app/url";
 import { getRatioDestination } from "@/app/helpers/getRatioDestination";
 import TrendingCard from "../TrendingCard";
 import { ratioCalculator } from "@/app/helpers/ratioCalculator";
+import TrendingCardSkeleton from "../skeletons/TrendingCartSkeleton";
 
 interface soldProducts {
   soldProducts: number;
@@ -23,25 +24,22 @@ function SoldProducts({
   const token = useSelector(
     (state: RootState) => state.states.user.value.token
   );
-  const [{ data: currentSoldProducts }, { data: prevSoldProducts }] =
-    useSuspenseQueries({
-      queries: [
-        {
-          queryKey: [
-            "soldProducts",
-            currentDate.startDate,
-            currentDate.endDate,
-          ],
-          queryFn: () =>
-            getSoldProducts(currentDate.startDate, currentDate.endDate, token),
-        },
-        {
-          queryKey: ["prevSoldProducts", prevDate.startDate, prevDate.endDate],
-          queryFn: () =>
-            getSoldProducts(prevDate.startDate, prevDate.endDate, token),
-        },
-      ],
-    });
+  const {data: currentSoldProducts, isPending} = useQuery({
+    queryKey: ["soldProducts", currentDate.startDate, currentDate.endDate],
+    queryFn: () => getSoldProducts(currentDate.startDate, currentDate.endDate, token),
+    staleTime: Infinity
+  });
+
+  const {data: prevSoldProducts, isPending: isPendingPrev} = useQuery({
+    queryKey: ["prevSoldProducts", prevDate.startDate, prevDate.endDate],
+    queryFn: () => getSoldProducts(prevDate.startDate, prevDate.endDate, token),
+    staleTime: Infinity
+  });
+
+  if (isPending || isPendingPrev || prevSoldProducts === undefined || currentSoldProducts === undefined) {
+    return <TrendingCardSkeleton/>
+  }
+
 
   const rating = ratioCalculator(
     currentSoldProducts.soldProducts,
