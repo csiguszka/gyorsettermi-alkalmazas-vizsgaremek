@@ -19,7 +19,7 @@ export function useLoginValidation(roles?: role[]) {
     } else {
       try {
         const decoded = jwtDecode(user.token) as decoded;
-        if (roles?.includes(decoded?.role) || decoded?.role === "admin") {
+        if (roles?.includes(decoded?.name) || decoded?.name === "admin") {
           //todo token validacio kuldese a backendre
           axios
             .get(`${ENDPOINTURL}/token/validate`, {
