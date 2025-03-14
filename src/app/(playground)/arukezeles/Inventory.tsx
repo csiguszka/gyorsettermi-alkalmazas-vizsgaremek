@@ -4,7 +4,6 @@ import { Material } from "@/app/model/material-model";
 import Loading from "@/components/Loading";
 import { useFectchGet } from "@/app/hooks/useFetchGet";
 import { useEffect, useState } from "react";
-import { useToast } from "@/hooks/use-toast";
 import InventoryCard from "./_components/InventoryCard";
 import InventoryFormCard from "./_components/InventoryFormCard";
 import { PaginationResponse } from "@/app/model/pagination-model";
@@ -13,7 +12,6 @@ import { useFetchPatch } from "@/app/hooks/useFetchPatch";
 function Inventory() {
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const [isNew, setIsNew] = useState(false);
-  const { toast } = useToast();
   const [materials, setMaterials] = useState<Material[]>([]);
   const [maxPage, setMaxPage] = useState<number>(1);
   const patchFunction = useFetchPatch();

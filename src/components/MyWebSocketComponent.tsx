@@ -10,7 +10,7 @@ interface MyWebSocketComponentProps {
 
 function playSound() {
   try {
-    var audio = new Audio('/notification.wav');
+    const audio = new Audio('/notification.wav');
     audio.play().catch(error => {
       console.log("A hang nem játszható le: ", error.message);
     });

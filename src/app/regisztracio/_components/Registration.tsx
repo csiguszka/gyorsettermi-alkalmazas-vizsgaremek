@@ -65,8 +65,9 @@ export function Registration() {
       role: "",
     },
   });
-// @ts-ignore:
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (data: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { passwordRepeat: _passwordRepeat, ...dataToSubmit } = data;
     console.log(dataToSubmit);
 
