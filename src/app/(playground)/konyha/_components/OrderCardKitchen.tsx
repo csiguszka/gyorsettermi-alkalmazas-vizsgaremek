@@ -10,15 +10,29 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-function OrderCardKitchen({ order }: { order: Order }) {
+function OrderCardKitchen({
+  order,
+  onRemoveOrder,
+}: {
+  order: Order;
+  onRemoveOrder: (orderId: string) => void;
+}) {
   const fetchFunction = useFetchPatch();
-  const handleClick = () => {
+
+  const handleClick = async () => {
     console.log("clicked");
-    fetchFunction("/order/finish", order._id);
+    try {
+      await fetchFunction("/order/finish", order._id); // Küldés a backendnek
+      onRemoveOrder(order._id); // Rendelés eltávolítása a frontendről
+    } catch (error) {
+      console.error("Hiba történt:", error);
+    }
   };
+
   const list = order.orderedProducts.map((product) => {
     return { name: product.name, value: product.quantity.toString() };
   });
+
   return (
     <Card className="card">
       <CardHeader className="text-center text-3xl">
@@ -29,11 +43,12 @@ function OrderCardKitchen({ order }: { order: Order }) {
         <p className="mt-2">Leadás ennyi ideje: 20 perc</p>
       </CardContent>
       <CardFooter className="float-right">
-        <Button className="btn" onClick={() => handleClick()}>
+        <Button className="btn" onClick={handleClick}>
           Elkészültnek jelölés
         </Button>
       </CardFooter>
     </Card>
   );
 }
+
 export default OrderCardKitchen;
