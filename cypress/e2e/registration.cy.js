@@ -1,6 +1,32 @@
+// Cypress test script for registration functionality
+
+let authToken;
+
+before(() => {
+  // Navigate to login page
+  cy.visit("http://localhost:3000/bejelentkezes");
+  cy.url().should("eq", "http://localhost:3000/bejelentkezes");
+
+  // Arrange
+  cy.intercept("POST", "/user/login").as("loginRequest");
+  const nameInput = cy.get("[data-cy=name]");
+  const passwordInput = cy.get("[data-cy=password]");
+  const button = cy.get("[data-cy=submit]");
+
+  // Act
+  nameInput.clear().type("admin");
+  passwordInput.clear().type("admin");
+  button.click();
+
+  // Assert
+  cy.wait("@loginRequest").then((interception) => {
+    expect(interception.response?.statusCode).to.eq(200);
+    expect(interception.response?.body.token).to.be.a("string");
+    authToken = interception.response?.body.token.toString();
+  });
+});
+
 beforeEach(() => {
-  const mockToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzkzYmI2MjE5YmZmOTJiYWY5ODBhZGUiLCJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4iLCJlbWFpbCI6IiIsInByb2ZpbGVQaWN0dXJlIjoiY29vbC1zdmdyZXBvLWNvbS5zdmciLCJpYXQiOjE3NDA0NzQ1ODIsImV4cCI6MTc0MDUxNzc4Mn0.aBlKc6GBpOAH9_dCqXK5CK8ejRVLQPB1C0OCCUgCuH9";
   cy.visit("http://localhost:3000");
 
   cy.window().then((win) => {
@@ -8,7 +34,7 @@ beforeEach(() => {
       win.store.dispatch({
         type: "user/changeUser",
         payload: {
-          token: mockToken,
+          token: authToken,
           role: "admin",
         },
       });
@@ -20,7 +46,7 @@ beforeEach(() => {
   cy.visit("http://localhost:3000/regisztracio");
 });
 
-describe("template spec", () => {
+describe("Registration Form Tests", () => {
   it("should render the registration form correctly", () => {
     cy.get("[data-cy=name]").should("exist");
     cy.get("[data-cy=email]").should("exist");
@@ -67,12 +93,13 @@ describe("template spec", () => {
     cy.get("[data-cy=kitchen]").click();
     cy.get("[data-cy=submit]").click();
 
-    // Ellenőrizzük, hogy POST kérést küldött el
+    // Verify POST request
     cy.wait("@registerRequest").then((interception) => {
       expect(interception.request.body).to.include({
         name: uniqueName,
         email: uniqueEmail,
       });
+      expect(interception.response.statusCode).to.eq(201);
     });
   });
 
@@ -90,7 +117,7 @@ describe("template spec", () => {
     cy.get("[data-cy=salesman]").click();
     cy.get("[data-cy=submit]").click();
 
-    // Ellenőrizzük, hogy a hibaüzenet megjelenik
+    // Verify error message
     cy.wait("@registerRequest");
     cy.contains("Van már ilyen nevű dolgozó").should("exist");
   });

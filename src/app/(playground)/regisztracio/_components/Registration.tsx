@@ -65,11 +65,10 @@ export function Registration() {
       role: "",
     },
   });
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (data: any) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { passwordRepeat, ...dataToSubmit } = data;
+    const { passwordRepeat: _passwordRepeat, ...dataToSubmit } = data;
     console.log(dataToSubmit);
 
     axios

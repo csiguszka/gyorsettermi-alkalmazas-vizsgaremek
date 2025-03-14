@@ -71,7 +71,7 @@ const getRegisteredUsersCount = async (
   );
 
   if (!response.ok) {
-    throw new Error("Hiba történt az adatok lekérésekor");
+    return Promise.reject("Hiba történt az adatok lekérésekor.");
   }
 
   return response.json();
