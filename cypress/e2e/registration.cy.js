@@ -18,10 +18,10 @@ before(() => {
 
   // assert
   cy.wait("@loginRequest").then((interception) => {
-    expect(interception.response.statusCode).to.eq(200);
+    expect(interception.response?.statusCode).to.eq(200);
     // get token
-    expect(interception.response.body.token).to.be.a("string");
-    authToken = interception.response.body.token.toString();
+    expect(interception.response?.body.token).to.be.a("string");
+    authToken = interception.response?.body.token.toString();
 
     // save token
     // Cypress.env("authToken", authToken);
