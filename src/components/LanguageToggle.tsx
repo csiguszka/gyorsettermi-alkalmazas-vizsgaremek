@@ -12,7 +12,6 @@ import {
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
-import { cn } from "@/lib/utils";
 import { useDispatch } from "react-redux";
 import { changeLang } from "@/state/lang";
 

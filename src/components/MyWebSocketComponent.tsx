@@ -37,7 +37,6 @@ const MyWebSocketComponent: React.FC<MyWebSocketComponentProps> = ({ setOrders, 
     }
   }, [lastJsonMessage, setOrders]);
 
-  const states = ['Connecting', 'Open', 'Closing', 'Closed'];
   const colors = ['bg-yellow-300', 'bg-green-500', 'bg-orange-500', 'bg-red-500'];
 
   return (

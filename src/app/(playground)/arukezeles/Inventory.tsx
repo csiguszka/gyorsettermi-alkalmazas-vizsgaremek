@@ -62,51 +62,51 @@ function Inventory() {
     patchFunction<inventoryFetch_model>("/inventory", d._id, newInventory);
   };
 
-  const successModify = (d: Material) => {
-    toast({
-      variant: "default",
-      title: "Áru frissítve",
-    });
-    setMaterials((prevState) => {
-      const newList = [...prevState];
-      const idx = newList.findIndex((item) => item._id === d._id);
-      newList[idx] = {
-        ...newList[idx],
-        inStock: d.inStock,
-      };
-      return newList;
-    });
-  };
+  // const successModify = (d: Material) => {
+  //   toast({
+  //     variant: "default",
+  //     title: "Áru frissítve",
+  //   });
+  //   setMaterials((prevState) => {
+  //     const newList = [...prevState];
+  //     const idx = newList.findIndex((item) => item._id === d._id);
+  //     newList[idx] = {
+  //       ...newList[idx],
+  //       inStock: d.inStock,
+  //     };
+  //     return newList;
+  //   });
+  // };
 
-  const failedModify = () => {
-    toast({
-      variant: "destructive",
-      title: "Sikertelen áru frissítés",
-    });
-  };
+  // const failedModify = () => {
+  //   toast({
+  //     variant: "destructive",
+  //     title: "Sikertelen áru frissítés",
+  //   });
+  // };
 
   const create = (d: Material) => {
     console.log(d);
   };
 
-  const successCreate = (d: Material) => {
-    toast({
-      variant: "default",
-      title: "Áru létrehozva",
-    });
-    setMaterials((prevState) => {
-      const newList = [...prevState];
-      newList.unshift(d);
-      return newList;
-    });
-  };
+  // const successCreate = (d: Material) => {
+  //   toast({
+  //     variant: "default",
+  //     title: "Áru létrehozva",
+  //   });
+  //   setMaterials((prevState) => {
+  //     const newList = [...prevState];
+  //     newList.unshift(d);
+  //     return newList;
+  //   });
+  // };
 
-  const failedCreate = () => {
-    toast({
-      variant: "destructive",
-      title: "Az áru létrehozása sikertelen",
-    });
-  };
+  // const failedCreate = () => {
+  //   toast({
+  //     variant: "destructive",
+  //     title: "Az áru létrehozása sikertelen",
+  //   });
+  // };
 
   const newMaterialButtonClickHandle = () => {
     setSelectedIdx(null);
@@ -129,6 +129,7 @@ function Inventory() {
             handleSubmit={modify}
           />
         )}
+        {maxPage}
         {isNew && (
           <InventoryFormCard
             material={{

@@ -65,9 +65,9 @@ export function Registration() {
       role: "",
     },
   });
-
+// @ts-ignore:
   const onSubmit = (data: any) => {
-    const { passwordRepeat, ...dataToSubmit } = data;
+    const { passwordRepeat: _passwordRepeat, ...dataToSubmit } = data;
     console.log(dataToSubmit);
 
     axios

@@ -29,6 +29,7 @@ export const store = configureStore({
 });
 
 if (typeof window !== "undefined") {
+  //ts ignore:
   (window as any).store = store;
 }
 
