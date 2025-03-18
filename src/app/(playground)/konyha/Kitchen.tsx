@@ -9,10 +9,12 @@ import IfFullScreen from "@/components/IfFullScreen";
 import { useFectchGet } from "@/app/hooks/useFetchGet";
 import MyWebSocketComponent from "@/components/MyWebSocketComponent";
 
-
 function Kitchen() {
-  const { loading, data: initialOrders } = useFectchGet<Order[]>("/order/kitchen");
+  const { loading, data: initialOrders } =
+    useFectchGet<Order[]>("/order/kitchen");
   const [orders, setOrders] = useState<Order[]>(initialOrders || []);
+
+  console.log(orders);
 
   useEffect(() => {
     if (initialOrders) {
@@ -21,7 +23,9 @@ function Kitchen() {
   }, [initialOrders]);
 
   const handleRemoveOrder = (orderId: string) => {
-    setOrders((prevOrders) => prevOrders.filter((order) => order._id !== orderId));
+    setOrders((prevOrders) =>
+      prevOrders.filter((order) => order._id !== orderId)
+    );
   };
 
   if (loading) {
@@ -32,11 +36,15 @@ function Kitchen() {
     <Screen>
       <IfFullScreen>
         <h1 className="text-center text-4xl mb-5">Konyhai kijelző</h1>
-        <MyWebSocketComponent setOrders={setOrders} name="kitchen" />
+        <MyWebSocketComponent<Order> setOrders={setOrders} name="kitchen" />
       </IfFullScreen>
       <div className="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {orders.map((order) => (
-          <OrderCardKitchen key={order._id} order={order} onRemoveOrder={handleRemoveOrder} />
+          <OrderCardKitchen
+            key={order._id}
+            order={order}
+            onRemoveOrder={handleRemoveOrder}
+          />
         ))}
       </div>
     </Screen>

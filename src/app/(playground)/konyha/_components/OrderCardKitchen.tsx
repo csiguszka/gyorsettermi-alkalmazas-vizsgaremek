@@ -30,8 +30,15 @@ function OrderCardKitchen({
   };
 
   const list = order.orderedProducts.map((product) => {
-    return { name: product.name, value: product.quantity.toString() };
+    return { name: product.details.name, value: product.quantity + " db" };
   });
+
+  const past = new Date(order.orderedTime);
+  const now = new Date();
+  const diffMs = now.getTime() - past.getTime();
+  const diffMinutes = Math.floor(diffMs / (1000 * 60));
+  const hours = Math.floor(diffMinutes / 60);
+  const minutes = diffMinutes % 60;
 
   return (
     <Card className="card">
@@ -40,7 +47,9 @@ function OrderCardKitchen({
       </CardHeader>
       <CardContent>
         <Table list={list} />
-        <p className="mt-2">Leadás ennyi ideje: 20 perc</p>
+        <p className="mt-2">
+          Leadás ennyi ideje: {hours !== 0 && `${hours} óra és`} {minutes} perc
+        </p>
       </CardContent>
       <CardFooter className="float-right">
         <Button className="btn" onClick={handleClick}>

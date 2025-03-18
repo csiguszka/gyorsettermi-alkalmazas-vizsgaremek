@@ -1,15 +1,31 @@
 export interface Order {
   _id: string;
-  costumerID: string;
-  isFinished: boolean;
+  costumerId: string;
   orderedTime: string;
+  totalPrice: number;
+  finishedCokingTime: null;
+  finishedTime: null;
   orderedProducts: OrderedProduct[];
-  orderNumber?: number;
+  orderNumber: number;
 }
 
 interface OrderedProduct {
-  name: string;
   quantity: number;
+  details: Details;
+}
+
+interface Details {
+  name: string;
+  englishName: string;
+  materials: Material[];
+  price: number;
+  isEnabled: boolean;
+  categoryId: string;
+  subCategoryId: string[];
+  image: string;
+}
+
+interface Material {
   _id: string;
-  id: string;
+  quantity: number;
 }

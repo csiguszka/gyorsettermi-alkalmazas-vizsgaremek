@@ -30,7 +30,7 @@ function OrderCardDesk({
   };
 
   const list = order.orderedProducts.map((product) => {
-    return { name: product.name, value: product.quantity.toString() };
+    return { name: product.details.name, value: product.quantity + " db" };
   });
 
   return (
@@ -40,7 +40,7 @@ function OrderCardDesk({
       </CardHeader>
       <CardContent>
         <Table list={list} />
-        <p className="mt-2">Megrendelés összege: 3000 Ft</p>
+        <p className="mt-2">Megrendelés összege: {order.totalPrice} Ft</p>
       </CardContent>
       <CardFooter className="float-right">
         <Button className="btn" onClick={handleClick}>
