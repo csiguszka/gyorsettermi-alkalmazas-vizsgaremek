@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { Order } from "@/app/model/order-model";
 import ENDPOINTURL from "@/app/url";
 import useWebSocket from "react-use-websocket";
 
