@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import ENDPOINTURL from "@/app/url";
 import useWebSocket from "react-use-websocket";
+import { display } from "@/app/model/display-model";
 
-interface MyWebSocketComponentProps<T> {
-  setOrders: React.Dispatch<React.SetStateAction<T[]>>;
+interface MyWebSocketComponentProps {
+  setOrders: React.Dispatch<React.SetStateAction<display[]>>;
   setIsFirstReload: React.Dispatch<React.SetStateAction<boolean>>;
   name: "kitchen" | "salesman" | "display";
 }
@@ -20,28 +21,35 @@ function playSound() {
   }
 }
 
-const MyWebSocketComponent = <T,>({
+const DisplayWebsocket = ({
   setOrders,
   setIsFirstReload,
   name,
-}: MyWebSocketComponentProps<T>) => {
+}: MyWebSocketComponentProps) => {
   const socketUrl = `${ENDPOINTURL}/ws`;
 
-  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket<T>(
-    socketUrl,
-    {
+  const { sendJsonMessage, lastJsonMessage, readyState } =
+    useWebSocket<display>(socketUrl, {
       shouldReconnect: () => true,
       onOpen: () => {
         sendJsonMessage({ role: name });
       },
-    }
-  );
+    });
 
   useEffect(() => {
     if (lastJsonMessage) {
       setIsFirstReload(false);
-      setOrders((prevOrders) => [...prevOrders, lastJsonMessage]);
-      playSound();
+      setOrders((prevOrders) =>
+        prevOrders.some(
+          (order) => order.orderNumber === lastJsonMessage.orderNumber
+        )
+          ? prevOrders.map((order) =>
+              order.orderNumber === lastJsonMessage.orderNumber
+                ? lastJsonMessage
+                : order
+            )
+          : [...prevOrders, lastJsonMessage]
+      );
     }
   }, [lastJsonMessage, setOrders]);
 
@@ -59,4 +67,4 @@ const MyWebSocketComponent = <T,>({
   );
 };
 
-export default MyWebSocketComponent;
+export default DisplayWebsocket;

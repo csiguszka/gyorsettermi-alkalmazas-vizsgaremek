@@ -7,13 +7,15 @@ import { useFectchGet } from "@/app/hooks/useFetchGet";
 import { useEffect, useState } from "react";
 import MyWebSocketComponent from "@/components/MyWebSocketComponent";
 import { display } from "@/app/model/display-model";
+import DisplayWebsocket from "@/components/DisplayWebsocket";
 
 function Customer() {
   const { loading, data: initialOrders } =
     useFectchGet<display[]>("/order/display");
+  console.log(initialOrders);
   const [display, setDisplay] = useState<display[]>(initialOrders || []);
-  console.log("initialOrders", initialOrders);
-  console.log("newOrder", display);
+  const [isFirstReload, setIsFirstReload] = useState<boolean>(true);
+
   useEffect(() => {
     if (initialOrders) {
       setDisplay(initialOrders);
@@ -26,7 +28,11 @@ function Customer() {
 
   return (
     <Screen>
-      <MyWebSocketComponent<display> setOrders={setDisplay} name="display" />
+      <DisplayWebsocket
+        setIsFirstReload={setIsFirstReload}
+        setOrders={setDisplay}
+        name="display"
+      />
       <div className="flex flex-col-reverse sm:flex-row gap-5 w-full">
         <div className="sm:w-1/2">
           <h1 className="text-5xl text-center sm:text-6xl mb-5">Készül</h1>
@@ -34,7 +40,11 @@ function Customer() {
             {display?.map(
               (item, index) =>
                 item.finishedCokingTime === null && (
-                  <OrderCardCustomer key={index} display={item} />
+                  <OrderCardCustomer
+                    key={index}
+                    display={item}
+                    isFirstReload={isFirstReload}
+                  />
                 )
             )}
           </div>
@@ -45,8 +55,14 @@ function Customer() {
           <div className="grid sm:flex flex-col lg:grid grid-cols-2 gap-5">
             {display?.map(
               (item, index) =>
-                item.finishedCokingTime !== null && (
-                  <OrderCardCustomer key={index} display={item} />
+                item.finishedCokingTime !== null &&
+                (item.finishedTime === null ||
+                  item.finishedTime === undefined) && (
+                  <OrderCardCustomer
+                    key={index}
+                    display={item}
+                    isFirstReload={isFirstReload}
+                  />
                 )
             )}
           </div>

@@ -13,8 +13,7 @@ function Kitchen() {
   const { loading, data: initialOrders } =
     useFectchGet<Order[]>("/order/kitchen");
   const [orders, setOrders] = useState<Order[]>(initialOrders || []);
-
-  console.log(orders);
+  const [isFirstReload, setIsFirstReload] = useState<boolean>(true);
 
   useEffect(() => {
     if (initialOrders) {
@@ -36,14 +35,19 @@ function Kitchen() {
     <Screen>
       <IfFullScreen>
         <h1 className="text-center text-4xl mb-5">Konyhai kijelző</h1>
-        <MyWebSocketComponent<Order> setOrders={setOrders} name="kitchen" />
       </IfFullScreen>
+      <MyWebSocketComponent<Order>
+        setIsFirstReload={setIsFirstReload}
+        setOrders={setOrders}
+        name="kitchen"
+      />
       <div className="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {orders.map((order) => (
           <OrderCardKitchen
             key={order._id}
             order={order}
             onRemoveOrder={handleRemoveOrder}
+            isFirstReload={isFirstReload}
           />
         ))}
       </div>

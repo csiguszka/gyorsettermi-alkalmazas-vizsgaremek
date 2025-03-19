@@ -1,4 +1,5 @@
 export interface display {
-    orderNumber: 1017
+    orderNumber: number
     finishedCokingTime: string | null,
+    finishedTime: string | null
 }
