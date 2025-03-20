@@ -81,6 +81,10 @@ export function AppSheet() {
           <UserPlus />
           <h3>Új dolgozó felvétele</h3>
         </Link>
+        <Link href={"/felhasznalok"} className="menu" onClick={handleLinkClick}>
+          <User />
+          <h3>Felhasználók kezelése</h3>
+        </Link>
       </SheetContent>
     </Sheet>
   );

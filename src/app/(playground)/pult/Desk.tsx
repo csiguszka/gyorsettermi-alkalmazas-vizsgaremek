@@ -10,8 +10,10 @@ import MyWebSocketComponent from "@/components/MyWebSocketComponent";
 import { useEffect, useState } from "react";
 
 function Desk() {
-  const { loading, data: initialOrders } = useFectchGet<Order[]>("/order/salesman");
+  const { loading, data: initialOrders } =
+    useFectchGet<Order[]>("/order/salesman");
   const [orders, setOrders] = useState<Order[]>(initialOrders || []);
+  const [isFirstReload, setIsFirstReload] = useState<boolean>(true);
 
   useEffect(() => {
     if (initialOrders) {
@@ -20,7 +22,9 @@ function Desk() {
   }, [initialOrders]);
 
   const handleRemoveOrder = (orderId: string) => {
-    setOrders((prevOrders) => prevOrders.filter((order) => order._id !== orderId));
+    setOrders((prevOrders) =>
+      prevOrders.filter((order) => order._id !== orderId)
+    );
   };
 
   if (loading) {
@@ -31,11 +35,20 @@ function Desk() {
     <Screen>
       <IfFullScreen>
         <h1 className="text-center text-4xl mb-5">Pult kijelző</h1>
-        <MyWebSocketComponent setOrders={setOrders} name="salesman" />
       </IfFullScreen>
-      <div className="grid grid-cols-4 gap-3">
+      <MyWebSocketComponent
+        setIsFirstReload={setIsFirstReload}
+        setOrders={setOrders}
+        name="salesman"
+      />
+      <div className="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {orders?.map((order) => (
-          <OrderCardDesk key={order._id} order={order} onRemoveOrder={handleRemoveOrder} />
+          <OrderCardDesk
+            key={order._id}
+            order={order}
+            onRemoveOrder={handleRemoveOrder}
+            isFirstReload={isFirstReload}
+          />
         ))}
       </div>
     </Screen>

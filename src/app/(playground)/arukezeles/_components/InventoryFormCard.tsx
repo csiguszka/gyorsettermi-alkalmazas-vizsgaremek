@@ -11,27 +11,27 @@ import { FormEvent, useEffect, useState } from "react";
 
 interface InventoryFormCardProps {
   material: Material;
-  handleDelete?: () => void;
-  handleSubmit: (d: Material) => void;
+  handleDelete: (id: string) => void;
+  handleModify: (d: Material) => void;
 }
 
 function InventoryFormCard({
   material,
-  handleSubmit,
   handleDelete,
+  handleModify,
 }: InventoryFormCardProps) {
   useEffect(() => {
     setUnit(material.unit);
     setError("");
     setName(material.name);
-    setStock(material.inStock);
+    setStock(material.inStock ? material.inStock : 0);
     setIsloading(false);
   }, [material]);
 
   const [unit, setUnit] = useState<string>(material.unit || "");
   const [error, setError] = useState<string>("");
   const [name, setName] = useState<string>(material.name);
-  const [stock, setStock] = useState<number>(material.inStock);
+  const [stock, setStock] = useState<number>(material.inStock ? material.inStock : 0);
   const [isLoading, setIsloading] = useState(false);
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -43,7 +43,7 @@ function InventoryFormCard({
       inStock: stock,
       unit: unit,
     };
-    handleSubmit(newMaterial);
+    handleModify(newMaterial);
     setIsloading(false);
   };
 
@@ -94,7 +94,7 @@ function InventoryFormCard({
             >
               Mentés {isLoading && <Loading />}
             </Button>
-            {handleDelete && <DeleteButton onClick={handleDelete} />}
+            <DeleteButton onClick={() => handleDelete(material._id!)} />
           </div>
         </form>
       </CardHeader>

@@ -3,11 +3,23 @@
 import Loading from "@/components/Loading";
 import Screen from "@/components/Screen";
 import OrderCardCustomer from "./components/OrderCardCustomer";
-import { Order } from "@/app/model/order-model";
 import { useFectchGet } from "@/app/hooks/useFetchGet";
+import { useEffect, useState } from "react";
+import { display } from "@/app/model/display-model";
+import DisplayWebsocket from "@/components/DisplayWebsocket";
 
 function Customer() {
-  const { loading, data: orders } = useFectchGet<Order[]>("/order/salesman");
+  const { loading, data: initialOrders } =
+    useFectchGet<display[]>("/order/display");
+  console.log(initialOrders);
+  const [display, setDisplay] = useState<display[]>(initialOrders || []);
+  const [isFirstReload, setIsFirstReload] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (initialOrders) {
+      setDisplay(initialOrders);
+    }
+  }, [initialOrders]);
 
   if (loading) {
     return <Loading isCentered={true} />;
@@ -15,22 +27,43 @@ function Customer() {
 
   return (
     <Screen>
+      <DisplayWebsocket
+        setIsFirstReload={setIsFirstReload}
+        setOrders={setDisplay}
+        name="display"
+      />
       <div className="flex flex-col-reverse sm:flex-row gap-5 w-full">
         <div className="sm:w-1/2">
           <h1 className="text-5xl text-center sm:text-6xl mb-5">Készül</h1>
           <div className="grid sm:flex flex-col lg:grid grid-cols-2 gap-5">
-            {orders?.map((order) => {
-              return <OrderCardCustomer key={order._id} order={order} />;
-            })}
+            {display?.map(
+              (item, index) =>
+                item.finishedCokingTime === null && (
+                  <OrderCardCustomer
+                    key={index}
+                    display={item}
+                    isFirstReload={isFirstReload}
+                  />
+                )
+            )}
           </div>
         </div>
         <div className="w-2 bg-primary"></div>
         <div className="sm:w-1/2">
           <h1 className="text-5xl text-center sm:text-6xl mb-5">Elkészült</h1>
           <div className="grid sm:flex flex-col lg:grid grid-cols-2 gap-5">
-            {orders?.map((order) => {
-              return <OrderCardCustomer key={order._id} order={order} />;
-            })}
+            {display?.map(
+              (item, index) =>
+                item.finishedCokingTime !== null &&
+                (item.finishedTime === null ||
+                  item.finishedTime === undefined) && (
+                  <OrderCardCustomer
+                    key={index}
+                    display={item}
+                    isFirstReload={isFirstReload}
+                  />
+                )
+            )}
           </div>
         </div>
       </div>

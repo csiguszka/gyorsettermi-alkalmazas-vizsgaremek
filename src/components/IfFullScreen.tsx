@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 function IfFullScreen({ children }: { children: React.ReactNode }) {
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -31,7 +31,7 @@ function IfFullScreen({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  return isFullscreen ? null : <div>{children}</div>;
+  return isFullscreen ? null : <React.Fragment>{children}</React.Fragment>;
 }
 
 export default IfFullScreen;

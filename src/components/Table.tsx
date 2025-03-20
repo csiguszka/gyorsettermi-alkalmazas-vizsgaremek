@@ -32,8 +32,8 @@ function Table({
                 "bg-primary_opacity hover:bg-primary_opacity"
             )}
           >
-            <TableCell>{item.name}</TableCell>
-            <TableCell className="text-right font-bold float-right">
+            <TableCell className="text-lg">{item.name}</TableCell>
+            <TableCell className="text-lg text-right font-bold float-right">
               {item.value}
             </TableCell>
           </TableRow>

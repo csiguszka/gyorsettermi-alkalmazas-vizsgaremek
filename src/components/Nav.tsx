@@ -9,7 +9,7 @@ function Nav() {
     <>
       <IfFullScreen>
         <nav className="bg-card h-[65px] sticky top-0 z-50">
-          <div className="flex items-center p-3 bg-muted_opacity h-[65px]">
+          <div className="flex items-center p-3 sticky bg-muted_opacity h-[65px]">
             {/* Bal oldali elem (AppSheet) */}
             <div className="flex-1 flex justify-start">
               <AppSheet />
