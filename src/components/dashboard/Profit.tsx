@@ -67,7 +67,7 @@ const getRevenue = async (
 ): Promise<profit> => {
   if (!token) {
     window.location.href = "/bejelentkezes";
-    return Promise.reject("Nincs token, átirányítás történt.");
+    return Promise.reject("Nincs bejelentkezve, átirányítás történt.");
   }
   const response = await fetch(
     `${ENDPOINTURL}/dashboard/revenue?startDate=${startDate}&endDate=${endDate}`,

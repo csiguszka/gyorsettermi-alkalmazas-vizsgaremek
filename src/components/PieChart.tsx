@@ -73,7 +73,7 @@ export function PieChart({ date }: { date: dateInterval }) {
   
   const totalVisitors = useMemo(() => {
     return chartData.reduce((acc, curr) => acc + curr.visitors, 0);
-  }, [data]);
+  }, [chartData]);
   
   if (isPending) {
     return <SkeletonChartCard isRounded={false}/>
@@ -170,7 +170,7 @@ const getCategorizedOrders = async (
   try {
     if (!token) {
       window.location.href = "/bejelentkezes";
-      return Promise.reject("Nincs token, átirányítás történt.");
+      return Promise.reject("Nincs bejelentkezve, átirányítás történt.");
     }
     const categoriesUrl = categories.map((category) => `&categories=${category}`).join("");
 

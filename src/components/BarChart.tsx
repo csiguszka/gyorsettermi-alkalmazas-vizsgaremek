@@ -118,7 +118,7 @@ export function BarChart({date} : {date: dateInterval}) {
 const getOrdersAndSoldProducts = async (endDate: string, token: string | null): Promise<ordersAndSoldProducts_Model> => {
   if (!token) {
     window.location.href = "/bejelentkezes";
-    return Promise.reject("Nincs token, átirányítás történt.");
+    return Promise.reject("Nincs bejelentkezve, átirányítás történt.");
   }
   try {
     const response = await fetch(

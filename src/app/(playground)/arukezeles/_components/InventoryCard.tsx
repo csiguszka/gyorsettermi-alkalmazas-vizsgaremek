@@ -34,11 +34,13 @@ function InventoryCard({
   newButtonHandle,
 }: InventoryCardProps) {
   const list = materials.map((material) => {
+    console.log(material.unit);
     return {
       name: material.name,
-      value: material.inStock.toString() + " " + material.unit,
+      value: (material.inStock ? material.inStock.toString() : "0") + " " + material.unit,
     };
   });
+  console.log(list);
   return (
     <Card className="card max-w-full lg:w-1/3">
       <CardHeader>

@@ -1,7 +1,9 @@
 export interface Material {
-  _id: string;
+  _id?: string;
   name: string;
   englishName: string;
   unit: string;
-  inStock: number;
+  inStock?: number;
+  isEnough?: boolean;
+  usegeOneWeekAgo?: number;
 }

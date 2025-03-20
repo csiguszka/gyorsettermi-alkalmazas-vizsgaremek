@@ -5,7 +5,6 @@ import Screen from "@/components/Screen";
 import OrderCardCustomer from "./components/OrderCardCustomer";
 import { useFectchGet } from "@/app/hooks/useFetchGet";
 import { useEffect, useState } from "react";
-import MyWebSocketComponent from "@/components/MyWebSocketComponent";
 import { display } from "@/app/model/display-model";
 import DisplayWebsocket from "@/components/DisplayWebsocket";
 

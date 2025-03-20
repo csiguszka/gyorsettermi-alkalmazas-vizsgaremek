@@ -3,31 +3,42 @@
 
 import { Material } from "@/app/model/material-model";
 import Loading from "@/components/Loading";
-import { useFectchGet } from "@/app/hooks/useFetchGet";
 import { useEffect, useState } from "react";
 import InventoryCard from "./_components/InventoryCard";
 import InventoryFormCard from "./_components/InventoryFormCard";
 import { PaginationResponse } from "@/app/model/pagination-model";
-import { useFetchPatch } from "@/app/hooks/useFetchPatch";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
+import { RootState } from "@/state/store";
+import ENDPOINTURL from "@/app/url";
+import { useToast } from "@/hooks/use-toast";
+import NewMaterialForm from "./_components/NewMaterialForm";
 
 function Inventory() {
+  const { toast } = useToast();
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const [isNew, setIsNew] = useState(false);
   const [materials, setMaterials] = useState<Material[]>([]);
+  const [page, setPage] = useState<number>(1);
   const [maxPage, setMaxPage] = useState<number>(1);
-  const patchFunction = useFetchPatch();
+  const queryClient = useQueryClient();
 
-  const { loading, data } =
-    useFectchGet<PaginationResponse<Material[]>>("/inventory");
+  const { token } = useSelector((state: RootState) => state.states.user.value);
+
+  const { isPending, data } = useQuery({
+    queryKey: ["material", page],
+    queryFn: () => getMaterials(page, token),
+    enabled: !!token, // Csak akkor fut, ha van token
+  });
 
   useEffect(() => {
-    if (data) {
+    if (data?.items) {
       setMaterials(data.items);
-      setMaxPage(data.pageCount);
+      setMaxPage(data.pageCount || 1);
     }
   }, [data]);
 
-  if (loading || materials === undefined) {
+  if (isPending || materials === undefined) {
     return <Loading isCentered={true} />;
   }
 
@@ -36,87 +47,131 @@ function Inventory() {
     setIsNew(false);
   };
 
-  const modify = (d: Material) => {
-    interface materialFetch_model {
-      name: string;
-      englishName: string;
-      unit: string;
-    }
-    interface inventoryFetch_model {
-      materialId: string;
-      quantity: number;
-      message: string;
-    }
-    const newMaterial: materialFetch_model = {
-      name: d.name,
-      englishName: d.name,
-      unit: d.unit,
-    };
-    const newInventory: inventoryFetch_model = {
-      materialId: d._id,
-      quantity: d.inStock,
-      message: "Változtatás az admin oldalon",
-    };
-    patchFunction<materialFetch_model>("/material", d._id, newMaterial);
-    patchFunction<inventoryFetch_model>("/inventory", d._id, newInventory);
-  };
-
-  // const successModify = (d: Material) => {
-  //   toast({
-  //     variant: "default",
-  //     title: "Áru frissítve",
-  //   });
-  //   setMaterials((prevState) => {
-  //     const newList = [...prevState];
-  //     const idx = newList.findIndex((item) => item._id === d._id);
-  //     newList[idx] = {
-  //       ...newList[idx],
-  //       inStock: d.inStock,
-  //     };
-  //     return newList;
-  //   });
-  // };
-
-  // const failedModify = () => {
-  //   toast({
-  //     variant: "destructive",
-  //     title: "Sikertelen áru frissítés",
-  //   });
-  // };
-
-  const create = (d: Material) => {
-    console.log(d);
-  };
-
-  // const successCreate = (d: Material) => {
-  //   toast({
-  //     variant: "default",
-  //     title: "Áru létrehozva",
-  //   });
-  //   setMaterials((prevState) => {
-  //     const newList = [...prevState];
-  //     newList.unshift(d);
-  //     return newList;
-  //   });
-  // };
-
-  // const failedCreate = () => {
-  //   toast({
-  //     variant: "destructive",
-  //     title: "Az áru létrehozása sikertelen",
-  //   });
-  // };
-
   const newMaterialButtonClickHandle = () => {
     setSelectedIdx(null);
     setIsNew(true);
   };
 
+  const modify = async (d: Material) => {
+    if (!token) {
+      window.location.href = "/bejelentkezes";
+      return;
+    }
+
+    try {
+      const response = await fetch(`${ENDPOINTURL}/inventory`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify({
+          materialId: d._id,
+          quantity: d.inStock,
+          message: "Feltöltés",
+        }),
+      });
+
+      if (!response.ok) throw new Error("Sikertelen frissítés");
+
+      await fetch(`${ENDPOINTURL}/material/${d._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify({
+          name: d.name,
+          englishName: d.englishName,
+          unit: d.unit,
+        }),
+      });
+
+      toast({ title: "Az alapanyagot frissítettük", variant: "default" });
+      setSelectedIdx(0);
+      queryClient.invalidateQueries({ queryKey: ["material"] });
+
+    } catch (error) {
+      toast({
+        title: "Hiba történt",
+        description: error instanceof Error ? error.message : "Ismeretlen hiba",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const create = async (d: Material) => {
+    if (!token) {
+      window.location.href = "/bejelentkezes";
+      return;
+    }
+
+    try {
+      const response = await fetch(`${ENDPOINTURL}/material`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify(d),
+      });
+
+      if (!response.ok) throw new Error("Nem sikerült létrehozni");
+
+      const responseData = await response.json();
+      toast({ title: "Az alapanyagot sikeresen rögzítettük", variant: "default" });
+
+      setMaterials((prev) => [responseData, ...prev]);
+      setSelectedIdx(0);
+      setIsNew(false);
+      queryClient.invalidateQueries({ queryKey: ["material"] });
+
+    } catch (error) {
+      toast({
+        title: "Hiba történt",
+        description: error instanceof Error ? error.message : "Ismeretlen hiba",
+        variant: "destructive",
+      });
+    }
+  };
+
+  async function handleDelete(id: string) {
+    if (!token) {
+      window.location.href = "/bejelentkezes";
+      return;
+    }
+
+    try {
+      const response = await fetch(`${ENDPOINTURL}/material/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      });
+
+      if (!response.ok) throw new Error("Sikertelen törlés");
+
+      toast({ title: "Az alapanyagot sikeresen töröltük", variant: "default" });
+
+      setMaterials((prev) => prev.filter((item) => item._id !== id));
+      setSelectedIdx(null);
+      queryClient.invalidateQueries({ queryKey: ["material"] });
+
+    } catch (error) {
+      toast({
+        title: "Hiba történt",
+        description: error instanceof Error ? error.message : "Ismeretlen hiba",
+        variant: "destructive",
+      });
+    }
+  }
+
   return (
     <div>
       <h1 className="text-center mb-5">Árukezelés</h1>
       <div className="flex flex-col w-full justify-center lg:flex-row lg:justify-around gap-3">
-        {/* <InventoryCard
+        <InventoryCard
           materials={materials}
           tableSelectedIdx={selectedIdx}
           tableRowClickHandle={tableRowClickHandle}
@@ -125,24 +180,37 @@ function Inventory() {
         {selectedIdx !== null && (
           <InventoryFormCard
             material={materials[selectedIdx]}
-            handleSubmit={modify}
+            handleDelete={handleDelete}
+            handleModify={modify}
           />
         )}
-        {maxPage}
         {isNew && (
-          <InventoryFormCard
-            material={{
-              _id: "",
-              inStock: 0,
-              name: "",
-              englishName: "",
-              unit: "",
-            }}
-            handleSubmit={create}
-          />
-        )} */}
+          <NewMaterialForm material={{ name: "", englishName: "", unit: "" }} handleCreate={create} />
+        )}
       </div>
     </div>
   );
 }
 export default Inventory;
+
+async function getMaterials(page: number, token: string | null): Promise<PaginationResponse<Material[]>> {
+  if (!token) {
+    window.location.href = "/bejelentkezes";
+    return Promise.reject("Nincs bejelentkezve, átirányítás történt.");
+  }
+
+  try {
+    const headers: HeadersInit = token ? { Authorization: token } : {};
+
+    const response = await fetch(`${ENDPOINTURL}/material?page=${page}`, {
+      method: "GET",
+      headers,
+    });
+
+    if (!response.ok) throw new Error("Nem sikerült lekérni az adatokat");
+
+    return response.json();
+  } catch (error) {
+    throw new Error(error instanceof Error ? error.message : "Ismeretlen hiba");
+  }
+}
