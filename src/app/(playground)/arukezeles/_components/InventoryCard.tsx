@@ -19,6 +19,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { motion } from "motion/react";
+
+const MotionCard = motion.create(Card);
 
 interface InventoryCardProps {
   materials: Material[];
@@ -34,15 +37,22 @@ function InventoryCard({
   newButtonHandle,
 }: InventoryCardProps) {
   const list = materials.map((material) => {
-    console.log(material.unit);
     return {
       name: material.name,
-      value: (material.inStock ? material.inStock.toString() : "0") + " " + material.unit,
+      value:
+        (material.inStock ? material.inStock.toString() : "0") +
+        " " +
+        material.unit,
     };
   });
-  console.log(list);
   return (
-    <Card className="card max-w-full lg:w-1/3">
+    <MotionCard
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 100 }}
+      transition={{ type: "spring", stiffness: 100, duration: 0.5 }}
+      className="card max-w-full lg:w-1/3"
+    >
       <CardHeader>
         <h2 className="text-center">Alapanyagok</h2>
         <div className="flex flex-col sm:grid grid-cols-[auto_auto] gap-2">
@@ -79,7 +89,7 @@ function InventoryCard({
           <Pagination />
         </div>
       </CardFooter>
-    </Card>
+    </MotionCard>
   );
 }
 

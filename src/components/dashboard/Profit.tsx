@@ -29,12 +29,14 @@ function Profit({
     queryFn: () =>
       getRevenue(currentDate.startDate, currentDate.endDate, token),
     staleTime: Infinity,
+    enabled: !!token, 
   });
 
   const { data: prevProfit, isPending: isPendingPrev } = useQuery({
     queryKey: ["prevRevenue", prevDate.startDate, prevDate.endDate],
     queryFn: () => getRevenue(prevDate.startDate, prevDate.endDate, token),
     staleTime: Infinity,
+    enabled: !!token, 
   });
 
   if (

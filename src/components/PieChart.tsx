@@ -58,7 +58,8 @@ export function PieChart({ date }: { date: dateInterval }) {
     queryKey: ["categorizedOrders", date.startDate, date.endDate],
     queryFn: () =>
       getCategorizedOrders(date.startDate, date.endDate, categories, token),
-    staleTime: Infinity
+    staleTime: Infinity,
+    enabled: !!token, 
   });
   
   

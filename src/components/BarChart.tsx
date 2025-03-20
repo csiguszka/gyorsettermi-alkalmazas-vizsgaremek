@@ -55,7 +55,8 @@ export function BarChart({date} : {date: dateInterval}) {
   const {data, isPending} = useQuery({
     queryKey: ["ordersAndSoldProducts", date.endDate],
     queryFn: () => getOrdersAndSoldProducts(date.endDate, token),
-    staleTime: Infinity
+    staleTime: Infinity,
+    enabled: !!token, 
   })
   
   const chartData = useMemo(() => [

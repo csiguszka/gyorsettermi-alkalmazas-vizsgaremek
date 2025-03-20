@@ -13,7 +13,6 @@ export const createStock = (
     quantity: d.inStock,
     message: "Létrehozás",
   };
-  console.log(stockData);
   axios
     .post(`${ENDPOINTURL}/material/add`, stockData, {
       headers: { "Accept-Language": "hu", Authorization: token },

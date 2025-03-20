@@ -48,7 +48,8 @@ export function AreaChart({date}: {date: dateInterval}) {
   const {data, isPending} = useQuery({
     queryKey: ["areaChart", date.endDate],
     queryFn: () => getAreaChartDate(date.endDate, token),
-    staleTime: Infinity
+    staleTime: Infinity,
+    enabled: !!token, 
   })
 
   const chartData = useMemo(() => {

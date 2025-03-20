@@ -22,7 +22,8 @@ function RegisteredUsers({ date }: { date: dateInterval }) {
   const { data, isPending } = useQuery({
     queryKey: ["registeredUsers", date.startDate, date.endDate],
     queryFn: () => getRegisteredUsersCount(date.startDate, date.endDate, token),
-    staleTime: Infinity
+    staleTime: Infinity,
+    enabled: !!token, 
   });
 
   if (data === undefined || isPending) {

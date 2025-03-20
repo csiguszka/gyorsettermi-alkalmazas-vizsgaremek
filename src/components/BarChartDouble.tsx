@@ -50,7 +50,8 @@ export function BarChartDouble({date} : {date: dateInterval}) {
   const {data, isPending} = useQuery({
     queryKey: ["cookingTime", date.endDate],
     queryFn: () => getCookingTime(date.endDate, token),
-    staleTime: Infinity
+    staleTime: Infinity,
+    enabled: !!token, 
   })
 console.log(data)
   const chartData = useMemo(() => {
