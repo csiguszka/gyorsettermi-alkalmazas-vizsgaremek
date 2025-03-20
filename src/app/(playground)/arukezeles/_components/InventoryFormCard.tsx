@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { motion } from "motion/react";
 
 const MotionCard = motion.create(Card);
@@ -23,19 +23,12 @@ function InventoryFormCard({
   handleDelete,
   handleModify,
 }: InventoryFormCardProps) {
-  useEffect(() => {
-    setUnit(material.unit);
-    setError("");
-    setName(material.name);
-    setStock(material.inStock ? material.inStock : 0);
-    setIsloading(false);
-  }, [material]);
 
   const [unit, setUnit] = useState<string>(material.unit || "");
   const [error, setError] = useState<string>("");
   const [name, setName] = useState<string>(material.name);
   const [stock, setStock] = useState<number>(
-    material.inStock ? material.inStock : 0
+    0
   );
   const [isLoading, setIsloading] = useState(false);
 
@@ -88,7 +81,9 @@ function InventoryFormCard({
             />
           </div>
           <div>
-            <Label>Mennyiség {unit ? `(${unit})` : ""}</Label>
+            <Label>Mennyiség változás{unit ? `(${unit})` : ""}</Label>
+            <br />
+            <Label>Jelenlegi mennyiség: {material.inStock} {unit ? `${unit}` : ""}</Label>
             <Input
               type="number"
               placeholder="Pl: 1.5"
@@ -97,7 +92,7 @@ function InventoryFormCard({
             />
           </div>
           {error && <p className="text-destructive">{error}</p>}
-          <div className="flex flex-row justify-between">
+          <div className="flex flex-row justify-between items-center">
             <Button
               className="btn"
               type="submit"

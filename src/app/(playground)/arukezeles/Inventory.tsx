@@ -29,7 +29,7 @@ function Inventory() {
   const { isPending, data } = useQuery({
     queryKey: ["material", page],
     queryFn: () => getMaterials(page, token),
-    enabled: !!token, // Csak akkor fut, ha van token
+    enabled: !!token, 
   });
 
   useEffect(() => {

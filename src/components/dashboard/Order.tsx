@@ -27,13 +27,15 @@ function Order({
   const {data: currentOrder, isPending} = useQuery({
     queryKey: ["orderCount", currentDate.startDate, currentDate.endDate],
     queryFn: () => getOrder(currentDate.startDate, currentDate.endDate, token),
-    staleTime: Infinity
+    staleTime: Infinity,
+    enabled: !!token, 
   })
 
   const {data: prevOrder, isPending: isPendingPrev} = useQuery({
     queryKey: ["prevOrderCount", prevDate.startDate, prevDate.endDate],
     queryFn: () => getOrder(prevDate.startDate, prevDate.endDate, token),
-    staleTime: Infinity
+    staleTime: Infinity,
+    enabled: !!token, 
   })
 
   if (isPending || isPendingPrev || currentOrder === undefined || prevOrder === undefined) {

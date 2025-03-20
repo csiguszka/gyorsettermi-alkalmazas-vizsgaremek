@@ -27,13 +27,15 @@ function SoldProducts({
   const {data: currentSoldProducts, isPending} = useQuery({
     queryKey: ["soldProducts", currentDate.startDate, currentDate.endDate],
     queryFn: () => getSoldProducts(currentDate.startDate, currentDate.endDate, token),
-    staleTime: Infinity
+    staleTime: Infinity,
+    enabled: !!token, 
   });
 
   const {data: prevSoldProducts, isPending: isPendingPrev} = useQuery({
     queryKey: ["prevSoldProducts", prevDate.startDate, prevDate.endDate],
     queryFn: () => getSoldProducts(prevDate.startDate, prevDate.endDate, token),
-    staleTime: Infinity
+    staleTime: Infinity,
+    enabled: !!token, 
   });
 
   if (isPending || isPendingPrev || prevSoldProducts === undefined || currentSoldProducts === undefined) {
