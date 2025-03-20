@@ -13,6 +13,7 @@ import { RootState } from "@/state/store";
 import ENDPOINTURL from "@/app/url";
 import { useToast } from "@/hooks/use-toast";
 import NewMaterialForm from "./_components/NewMaterialForm";
+import { motion } from "framer-motion";
 
 function Inventory() {
   const { toast } = useToast();
@@ -59,6 +60,7 @@ function Inventory() {
     }
 
     try {
+      console.log(d.inStock)
       const response = await fetch(`${ENDPOINTURL}/inventory`, {
         method: "POST",
         headers: {
@@ -88,7 +90,7 @@ function Inventory() {
       });
 
       toast({ title: "Az alapanyagot frissítettük", variant: "default" });
-      setSelectedIdx(0);
+      setSelectedIdx(null);
       queryClient.invalidateQueries({ queryKey: ["material"] });
 
     } catch (error) {
@@ -113,7 +115,7 @@ function Inventory() {
           "Content-Type": "application/json",
           Authorization: token,
         },
-        body: JSON.stringify(d),
+        body: JSON.stringify({name: d.name, englishName: d.englishName, unit: d.unit}),
       });
 
       if (!response.ok) throw new Error("Nem sikerült létrehozni");
@@ -122,7 +124,7 @@ function Inventory() {
       toast({ title: "Az alapanyagot sikeresen rögzítettük", variant: "default" });
 
       setMaterials((prev) => [responseData, ...prev]);
-      setSelectedIdx(0);
+      setSelectedIdx(null);
       setIsNew(false);
       queryClient.invalidateQueries({ queryKey: ["material"] });
 

@@ -69,7 +69,6 @@ export function Registration() {
   const onSubmit = (data: any) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { passwordRepeat: _passwordRepeat, ...dataToSubmit } = data;
-    console.log(dataToSubmit);
 
     axios
       .post(`${ENDPOINTURL}/user/register/admin`, dataToSubmit, {

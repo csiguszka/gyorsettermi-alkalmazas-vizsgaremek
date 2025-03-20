@@ -8,6 +8,9 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FormEvent, useEffect, useState } from "react";
+import { motion } from "motion/react";
+
+const MotionCard = motion.create(Card);
 
 interface InventoryFormCardProps {
   material: Material;
@@ -31,7 +34,9 @@ function InventoryFormCard({
   const [unit, setUnit] = useState<string>(material.unit || "");
   const [error, setError] = useState<string>("");
   const [name, setName] = useState<string>(material.name);
-  const [stock, setStock] = useState<number>(material.inStock ? material.inStock : 0);
+  const [stock, setStock] = useState<number>(
+    material.inStock ? material.inStock : 0
+  );
   const [isLoading, setIsloading] = useState(false);
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -48,7 +53,13 @@ function InventoryFormCard({
   };
 
   return (
-    <Card className="card max-w-full lg:w-1/3">
+    <MotionCard
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ type: "spring", stiffness: 100, duration: 0.5 }}
+      className="card max-w-full lg:w-1/3"
+    >
       <CardHeader>
         <h2 className="text-center">
           {material.name ? material.name : "Új alapanyag"}
@@ -98,7 +109,7 @@ function InventoryFormCard({
           </div>
         </form>
       </CardHeader>
-    </Card>
+    </MotionCard>
   );
 }
 
