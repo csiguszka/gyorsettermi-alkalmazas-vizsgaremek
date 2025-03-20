@@ -9,18 +9,6 @@ interface MyWebSocketComponentProps {
   name: "kitchen" | "salesman" | "display";
 }
 
-function playSound() {
-  try {
-    const audio = new Audio("/notification.wav");
-    audio.play().catch((error) => {
-      console.log("A hang nem játszható le: ", error.message);
-    });
-  } catch (error) {
-    console.log(error);
-    console.log("Nem sikerült lejátszani a hangot: ");
-  }
-}
-
 const DisplayWebsocket = ({
   setOrders,
   setIsFirstReload,
