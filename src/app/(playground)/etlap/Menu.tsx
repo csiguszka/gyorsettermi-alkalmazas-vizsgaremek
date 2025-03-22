@@ -1,20 +1,41 @@
 "use client";
 
-import { useFectchGet } from "@/app/hooks/useFetchGet";
-import { Food } from "@/app/model/food-model";
-import Loading from "@/components/Loading";
+import { useState } from "react";
+import MainCategoryCard from "./_components/MainCategoryCard";
+import SubCategoryCard from "./_components/SubCategoryCard";
+import { Category } from "@/app/model/category-model";
+import FoodsCard from "./_components/FoodsCard";
 
 function Menu() {
-  const { loading, data: food } = useFectchGet<Food[]>("/food/all");
-  if (loading) {
-    return <Loading isCentered={true} />;
+  const [selectedMainCategory, setSelectedMainCategory] = useState<Category | null>(null);
+  const [selectedSubCategory, setSelectedSubCategory] = useState<Category | null>(null);
+
+  function setMainCategory(category?: Category) {
+    console.log("ittmain")
+    if (category) {
+      setSelectedMainCategory(category)
+    }else{
+      setSelectedMainCategory(null)
+    }
   }
-  if (!food) {
-    return <div>Egyetlen Étel sincs az étlapon!</div>;
+  function setSubCategory(category?: Category) {
+    console.log("ittsub")
+    if (category) {
+      setSelectedSubCategory(category)
+    }else{
+      setSelectedSubCategory(null)
+    }
   }
   return (
     <div>
-      <h1>Étlap</h1>
+      {
+        !selectedMainCategory ? <MainCategoryCard setMainCategory={setMainCategory} setSubCategory={setSubCategory}/>
+        : 
+        !selectedSubCategory ? 
+        <SubCategoryCard mainCategory={selectedMainCategory} setSubCategory={setSubCategory} setMainCategory={setMainCategory}/>
+        : 
+        <FoodsCard subCategory={selectedSubCategory} mainCategory={selectedMainCategory} setSubCategory={setSubCategory} setMainCategory={setMainCategory}/>
+      }
     </div>
   );
 }

@@ -32,7 +32,7 @@ function Customer() {
         setOrders={setDisplay}
         name="display"
       />
-      <div className="flex flex-col-reverse sm:flex-row gap-5 w-full">
+      <div className="flex flex-col-reverse sm:flex-row gap-10 w-full overflow-hidden">
         <div className="sm:w-1/2">
           <h1 className="text-5xl text-center sm:text-6xl mb-5">Készül</h1>
           <div className="grid sm:flex flex-col lg:grid grid-cols-2 gap-5">
@@ -48,7 +48,7 @@ function Customer() {
             )}
           </div>
         </div>
-        <div className="w-2 bg-primary"></div>
+        <div className="hidden sm:w-2 sm:bg-primary sm:fixed sm:block sm:left-[calc(50%-(0.5rem/2))] h-[calc(100vh-65px)]"></div>
         <div className="sm:w-1/2">
           <h1 className="text-5xl text-center sm:text-6xl mb-5">Elkészült</h1>
           <div className="grid sm:flex flex-col lg:grid grid-cols-2 gap-5">
