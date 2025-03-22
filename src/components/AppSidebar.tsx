@@ -56,13 +56,13 @@ export function AppSheet() {
           </Link>
         }
         {(user.role === "admin" || user.role === "kitchen") &&
-          <Link href={"/konyha"} className="menu" onClick={handleLinkClick}>
+          <Link href={"/kitchen"} className="menu" onClick={handleLinkClick}>
             <ForkKnife />
             <h3>Konyha kijelző</h3>
           </Link>
         }
         {(user.role === "admin" || user.role === "salesman") &&
-          <Link href={"/pult"} className="menu" onClick={handleLinkClick}>
+          <Link href={"/salesman"} className="menu" onClick={handleLinkClick}>
             <HandPlatter />
             <h3>Pult kijelző</h3>
           </Link>
@@ -72,20 +72,20 @@ export function AppSheet() {
           <h3>Vásárló kijelző</h3>
         </Link>
         {user.role === "admin" &&
-          <Link href={"/etlap"} className="menu" onClick={handleLinkClick}>
+          <Link href={"/menu"} className="menu" onClick={handleLinkClick}>
             <Drumstick />
             <h3>Étlap</h3>
           </Link>
         }
         {user.role === "admin" &&
-          <Link href={"/arukezeles"} className="menu" onClick={handleLinkClick}>
+          <Link href={"/material"} className="menu" onClick={handleLinkClick}>
             <Package />
             <h3>Árukezelés</h3>
           </Link>
         }
         {user.role === "admin" &&
           <Link
-            href={"/megrendelesek"}
+            href={"/orders"}
             className="menu"
             onClick={handleLinkClick}
           >
@@ -94,7 +94,7 @@ export function AppSheet() {
           </Link>
         }
         {user.role === "admin" &&
-          <Link href={"/regisztracio"} className="menu" onClick={handleLinkClick}>
+          <Link href={"/registration"} className="menu" onClick={handleLinkClick}>
             <UserPlus />
             <h3>Új dolgozó felvétele</h3>
           </Link>

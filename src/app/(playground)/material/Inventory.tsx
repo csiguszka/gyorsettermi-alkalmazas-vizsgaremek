@@ -39,6 +39,10 @@ function Inventory() {
     }
   }, [data]);
 
+  function setPageFn(num: number) {
+    setPage(num)
+  }
+
   if (isPending || materials === undefined) {
     return <Loading isCentered={true} />;
   }
@@ -178,6 +182,8 @@ function Inventory() {
           tableSelectedIdx={selectedIdx}
           tableRowClickHandle={tableRowClickHandle}
           newButtonHandle={newMaterialButtonClickHandle}
+          maxPage={maxPage}
+          setPage={setPageFn}
         />
         {selectedIdx !== null && (
           <InventoryFormCard
@@ -203,8 +209,9 @@ async function getMaterials(page: number, token: string | null): Promise<Paginat
 
   try {
     const headers: HeadersInit = token ? { Authorization: token } : {};
+    console.log(page)
 
-    const response = await fetch(`${ENDPOINTURL}/material?page=${page}`, {
+    const response = await fetch(`${ENDPOINTURL}/material?page=${page}&limit=2`, {
       method: "GET",
       headers,
     });

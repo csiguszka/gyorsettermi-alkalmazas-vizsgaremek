@@ -39,7 +39,7 @@ function OrderCardDesk({
   };
 
   const list = order.orderedProducts.map((product) => ({
-    name: product.details.name,
+    name: product.details?.name || "",
     value: product.quantity + " db",
   }));
 

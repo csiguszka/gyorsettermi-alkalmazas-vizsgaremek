@@ -70,9 +70,9 @@ export function Login() {
         );
         console.log(response.data.token + "ÁTIRÁNYÍTÁS")
         if (response.data.token === "kitchen") {
-          router.push("/konyha");
+          router.push("/kitchen");
         } else if (response.data.token === "salesman") {
-          router.push("/pult");
+          router.push("/salesman");
         } else {
           router.push(redirectRoute);
         }
@@ -91,9 +91,9 @@ export function Login() {
     console.log(user.role + "ÁTIRÁNYÍTÁS 2!")
     if (user) {
       if (user.role === "kitchen") {
-        router.push("/konyha");
+        router.push("/kitchen");
       } else if (user.role === "salesman") {
-        router.push("/pult");
+        router.push("/salesman");
       } else if (user.role === "admin") {
         router.push("/");
       }

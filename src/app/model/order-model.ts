@@ -15,7 +15,7 @@ interface OrderedProduct {
 }
 
 interface Details {
-  name: string;
+  name?: string;
   englishName: string;
   materials: Material[];
   price: number;
