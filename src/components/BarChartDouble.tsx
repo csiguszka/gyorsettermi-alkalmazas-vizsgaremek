@@ -122,7 +122,7 @@ console.log(data)
 
 const getCookingTime = async (endDate: string, token: string | null): Promise<cookingTime_model> => {
   if (!token) {
-    window.location.href = "/bejelentkezes";
+    window.location.href = "/login";
     return Promise.reject("Nincs bejelentkezve, átirányítás történt.");
   }
 

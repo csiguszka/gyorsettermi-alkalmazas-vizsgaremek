@@ -7,6 +7,7 @@ import WeeklyStatistics from "@/components/WeeklyStatistics";
 export default function Home() {
   return (
     <Authorize roles={["admin"]}>
+      <h1 className="text-center text-4xl mb-5">Vezérlőpult</h1>
       <div className="flex flex-col gap-3">
         <DailyStatistics />
         <WeeklyStatistics />

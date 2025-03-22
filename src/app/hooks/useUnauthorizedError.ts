@@ -11,6 +11,6 @@ export function useUnauthorizedHandler() {
       title: "Kérem azonosítsa magát bejelentkezéssel!",
     });
 
-    router.push("/bejelentkezes");
+    router.push("/login");
   };
 }

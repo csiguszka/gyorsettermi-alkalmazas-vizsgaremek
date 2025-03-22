@@ -66,7 +66,7 @@ function SubCategoryCard({mainCategory, setSubCategory, setMainCategory}: {mainC
 async function getSubCategories(mainCategoryId: string, token: string | null): Promise<Category[]> {
     try {
         if (!token) {
-            window.location.href = "/bejelentkezes";
+            window.location.href = "/login";
             return Promise.reject("Nincs bejelentkezve, átirányítás történt.");
         }
 

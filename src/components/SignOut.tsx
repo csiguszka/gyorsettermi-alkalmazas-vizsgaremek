@@ -19,7 +19,7 @@ function SignOut() {
       title: "Sikeres kijelentkezés",
       description: "Hamarosan átirányítjuk a bejelentkezéshez.",
     });
-    router.push("/bejelentkezes");
+    router.push("/login");
   }
   return (
     <div

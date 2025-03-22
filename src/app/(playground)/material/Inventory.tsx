@@ -59,7 +59,7 @@ function Inventory() {
 
   const modify = async (d: Material) => {
     if (!token) {
-      window.location.href = "/bejelentkezes";
+      window.location.href = "/login";
       return;
     }
 
@@ -108,7 +108,7 @@ function Inventory() {
 
   const create = async (d: Material) => {
     if (!token) {
-      window.location.href = "/bejelentkezes";
+      window.location.href = "/login";
       return;
     }
 
@@ -143,7 +143,7 @@ function Inventory() {
 
   async function handleDelete(id: string) {
     if (!token) {
-      window.location.href = "/bejelentkezes";
+      window.location.href = "/login";
       return;
     }
 
@@ -203,7 +203,7 @@ export default Inventory;
 
 async function getMaterials(page: number, token: string | null): Promise<PaginationResponse<Material[]>> {
   if (!token) {
-    window.location.href = "/bejelentkezes";
+    window.location.href = "/login";
     return Promise.reject("Nincs bejelentkezve, átirányítás történt.");
   }
 

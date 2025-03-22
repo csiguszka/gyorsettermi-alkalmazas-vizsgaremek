@@ -130,7 +130,7 @@ export function AreaChart({date}: {date: dateInterval}) {
 
 const getAreaChartDate = async (endDate: string, token: string | null): Promise<AreaModel> => {
   if (!token) {
-    window.location.href = "/bejelentkezes";
+    window.location.href = "/login";
     return Promise.reject("Nincs bejelentkezve, átirányítás történt.");
   }
 

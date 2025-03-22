@@ -76,7 +76,7 @@ function FoodsCard({ mainCategory, subCategory, setSubCategory, setMainCategory 
 async function getFoods(subCategoryId: string, token: string | null): Promise<PaginationResponse<Food[]>> {
     try {
         if (!token) {
-            window.location.href = "/bejelentkezes";
+            window.location.href = "/login";
             return Promise.reject("Nincs bejelentkezve, átirányítás történt.");
         }
 

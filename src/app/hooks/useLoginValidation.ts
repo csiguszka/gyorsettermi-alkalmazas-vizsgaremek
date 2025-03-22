@@ -16,7 +16,7 @@ export function useLoginValidation(roles?: role[]) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const loginRoute = `/bejelentkezes?route=${window.location.pathname}`;
+    const loginRoute = `/login?route=${window.location.pathname}`;
     if (!user.token) {
       console.log(user.token)
       console.log("Átirányítva a bejelnetkezéshez")
