@@ -19,6 +19,9 @@ import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { changeUser } from "@/state/user";
+import { useSelector } from "react-redux";
+import { RootState } from "@/state/store";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   name: z.string().min(4, {
@@ -41,6 +44,7 @@ export function Login() {
   const router = useRouter();
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
+  const user = useSelector((state: RootState) => state.states.user.value);
   const { toast } = useToast();
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -55,7 +59,10 @@ export function Login() {
 
   const onSubmit = (data: { name: string; password: string }) => {
     axios
-      .post(`${ENDPOINTURL}/user/login`, data)
+      .post(`${ENDPOINTURL}/user/login`, data, {  headers: {
+        'Content-Type': 'application/json',
+        'accept': '*/*'
+      }})
       .then(function (response) {
         toast({
           variant: "default",
@@ -64,10 +71,11 @@ export function Login() {
         dispatch(
           changeUser({ token: response.data.token, role: response.data.role })
         );
+        console.log(response.data.token + "ÁTIRÁNYÍTÁS")
         if (response.data.token === "kitchen") {
-          router.push("/konyha");
+          router.push("/kitchen");
         } else if (response.data.token === "salesman") {
-          router.push("/pult");
+          router.push("/salesman");
         } else {
           router.push(redirectRoute);
         }
@@ -81,6 +89,19 @@ export function Login() {
         console.log(error);
       });
   };
+  
+  useEffect(() => {
+    console.log(user.role + "ÁTIRÁNYÍTÁS 2!")
+    if (user) {
+      if (user.role === "kitchen") {
+        router.push("/kitchen");
+      } else if (user.role === "salesman") {
+        router.push("/salesman");
+      } else if (user.role === "admin") {
+        router.push("/");
+      }
+    }
+  }, [user, router]);
 
   return (
     <Form {...form}>

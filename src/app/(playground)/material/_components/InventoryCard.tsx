@@ -25,14 +25,18 @@ const MotionCard = motion.create(Card);
 
 interface InventoryCardProps {
   materials: Material[];
+  maxPage: number;
   tableSelectedIdx: number | null;
   tableRowClickHandle: (id: number) => void;
   newButtonHandle: () => void;
+  setPage: (num: number) => void
 }
 
 function InventoryCard({
   materials,
+  maxPage,
   tableSelectedIdx,
+  setPage,
   tableRowClickHandle,
   newButtonHandle,
 }: InventoryCardProps) {
@@ -86,7 +90,7 @@ function InventoryCard({
       <CardFooter>
         <div className="flex justify-around w-full items-center">
           <PlusButton clickHandle={newButtonHandle} />
-          <Pagination />
+          <Pagination maxPage={maxPage} setPage={setPage}/>
         </div>
       </CardFooter>
     </MotionCard>

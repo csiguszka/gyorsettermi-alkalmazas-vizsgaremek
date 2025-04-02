@@ -68,7 +68,7 @@ const getRevenue = async (
   token: string | null
 ): Promise<profit> => {
   if (!token) {
-    window.location.href = "/bejelentkezes";
+    window.location.href = "/login";
     return Promise.reject("Nincs bejelentkezve, átirányítás történt.");
   }
   const response = await fetch(

@@ -5,13 +5,20 @@ import {
   PaginationItem,
   PaginationLink,
 } from "@/components/ui/pagination";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-export function Pagination() {
+interface PaginationProps {
+  maxPage: number;
+  setPage: (num: number) => void
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function Pagination({maxPage, setPage}: PaginationProps) {
   return (
     <ShadcnuiPagination>
       <PaginationContent>
         <PaginationItem className="hidden sm:block">
-          <div>.</div>
+          <ChevronLeft/>
         </PaginationItem>
         <PaginationItem>
           <PaginationLink href="#">1</PaginationLink>
@@ -28,7 +35,7 @@ export function Pagination() {
           <PaginationEllipsis />
         </PaginationItem>
         <PaginationItem className="hidden sm:block">
-          <div>.</div>
+          <ChevronRight/>
         </PaginationItem>
       </PaginationContent>
     </ShadcnuiPagination>

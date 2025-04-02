@@ -39,6 +39,10 @@ function Inventory() {
     }
   }, [data]);
 
+  function setPageFn(num: number) {
+    setPage(num)
+  }
+
   if (isPending || materials === undefined) {
     return <Loading isCentered={true} />;
   }
@@ -55,7 +59,7 @@ function Inventory() {
 
   const modify = async (d: Material) => {
     if (!token) {
-      window.location.href = "/bejelentkezes";
+      window.location.href = "/login";
       return;
     }
 
@@ -104,7 +108,7 @@ function Inventory() {
 
   const create = async (d: Material) => {
     if (!token) {
-      window.location.href = "/bejelentkezes";
+      window.location.href = "/login";
       return;
     }
 
@@ -139,7 +143,7 @@ function Inventory() {
 
   async function handleDelete(id: string) {
     if (!token) {
-      window.location.href = "/bejelentkezes";
+      window.location.href = "/login";
       return;
     }
 
@@ -178,6 +182,8 @@ function Inventory() {
           tableSelectedIdx={selectedIdx}
           tableRowClickHandle={tableRowClickHandle}
           newButtonHandle={newMaterialButtonClickHandle}
+          maxPage={maxPage}
+          setPage={setPageFn}
         />
         {selectedIdx !== null && (
           <InventoryFormCard
@@ -197,14 +203,15 @@ export default Inventory;
 
 async function getMaterials(page: number, token: string | null): Promise<PaginationResponse<Material[]>> {
   if (!token) {
-    window.location.href = "/bejelentkezes";
+    window.location.href = "/login";
     return Promise.reject("Nincs bejelentkezve, átirányítás történt.");
   }
 
   try {
     const headers: HeadersInit = token ? { Authorization: token } : {};
+    console.log(page)
 
-    const response = await fetch(`${ENDPOINTURL}/material?page=${page}`, {
+    const response = await fetch(`${ENDPOINTURL}/material?page=${page}&limit=2`, {
       method: "GET",
       headers,
     });

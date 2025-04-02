@@ -4,8 +4,8 @@ let authToken;
 
 before(() => {
   // Navigate to login page
-  cy.visit("http://localhost:3000/bejelentkezes");
-  cy.url().should("eq", "http://localhost:3000/bejelentkezes");
+  cy.visit("http://localhost:3000/login");
+  cy.url().should("eq", "http://localhost:3000/login");
 
   // Arrange
   cy.intercept("POST", "/user/login").as("loginRequest");

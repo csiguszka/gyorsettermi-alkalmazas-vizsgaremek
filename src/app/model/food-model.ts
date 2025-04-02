@@ -1,13 +1,17 @@
 export interface Food {
   _id: string;
+  englishName: string;
   name: string;
-  material: Material[];
+  materials: FoodMaterial[];
   price: number;
+  categoryId: string;
+  subCategoryId: string[]
+  isEnabled?: boolean;
+  image: string;
 }
 
-interface Material {
-  name: string;
+export interface FoodMaterial {
   quantity: number;
-  _id: string;
-  id: string;
+  materialId: string;
+  name?: string
 }

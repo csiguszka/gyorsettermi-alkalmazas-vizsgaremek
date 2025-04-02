@@ -57,7 +57,7 @@ const getRegisteredUsersCount = async (
   token: string | null
 ): Promise<RegisteredUsersData> => {
   if (!token) {
-    window.location.href = "/bejelentkezes";
+    window.location.href = "/login";
     return Promise.reject("Nincs bejelentkezve, átirányítás történt.");
   }
   const response = await fetch(

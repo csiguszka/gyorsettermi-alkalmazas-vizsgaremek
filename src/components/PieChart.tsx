@@ -170,7 +170,7 @@ const getCategorizedOrders = async (
 ): Promise<categorizedOrder[]> => {
   try {
     if (!token) {
-      window.location.href = "/bejelentkezes";
+      window.location.href = "/login";
       return Promise.reject("Nincs bejelentkezve, átirányítás történt.");
     }
     const categoriesUrl = categories.map((category) => `&categories=${category}`).join("");
