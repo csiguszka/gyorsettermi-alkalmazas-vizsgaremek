@@ -23,9 +23,8 @@ function SubCategoryCard({mainCategory, setSubCategory, setMainCategory}: {mainC
     const { token } = useSelector((state: RootState) => state.states.user.value)
     const queryClient = useQueryClient();
     const { data: categories, isPending } = useQuery({
-        queryKey: ["subCategories", mainCategory],
+        queryKey: ["subCategories", mainCategory._id],
         queryFn: () => getSubCategories(mainCategory._id, token),
-        staleTime: Infinity,
         enabled: !!token
     })
     const [newSubCategory, setNewSubCategory] = useState<boolean>(false)
