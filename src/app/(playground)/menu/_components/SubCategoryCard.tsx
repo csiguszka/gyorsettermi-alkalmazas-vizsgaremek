@@ -11,11 +11,11 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { RootState } from "@/state/store";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Trash2 } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 import { motion } from "motion/react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import NewSubCategoryForm from "./NewSubCategoryForm";
+import SubCategoryForm from "./SubCategoryForm";
 
 const MotionCard = motion.create(Card);
 
@@ -29,6 +29,8 @@ function SubCategoryCard({mainCategory, setSubCategory, setMainCategory}: {mainC
         enabled: !!token
     })
     const [newSubCategory, setNewSubCategory] = useState<boolean>(false)
+    const [selectedCategory, setSelectedCategory] = useState<Category | undefined>(undefined)
+    console.log(selectedCategory)
     const {toast} = useToast()
     if (isPending) {
         return <Loading isCentered={true}/>
@@ -43,11 +45,21 @@ function SubCategoryCard({mainCategory, setSubCategory, setMainCategory}: {mainC
             toast({title: "A törlés sikertelen!", variant: "destructive"})
         }
     }
+    const handleEditOnClick = (event: React.MouseEvent, category: Category) => {
+        event.stopPropagation();
+        console.log("HMM")
+        console.log(category)
+        setSelectedCategory(category)
+        setNewSubCategory(false)
+    }
     const list = categories?.items.map((category) => {
-        const trush = <Trash2 className="text-destructive" onClick={(event) => handleTrashOnClick(event, category._id)}/>
+        const buttons = <div className="flex gap-2">
+            <Edit onClick={(event) => handleEditOnClick(event, category)}/>
+            <Trash2 className="text-destructive" onClick={(event) => handleTrashOnClick(event, category._id)}/>
+        </div>
         return {
             name: category.name,
-            value: trush
+            value: buttons
         };
     });
     const tableRowClickHandle = (selectedNumber: number) => {
@@ -77,19 +89,12 @@ function SubCategoryCard({mainCategory, setSubCategory, setMainCategory}: {mainC
                     ></Table>
                 }
                 <div className="mt-2">
-                    <PlusButton clickHandle={() => setNewSubCategory(prev => !prev)} />
+                    <PlusButton clickHandle={() => {setNewSubCategory(true); setSelectedCategory(undefined)}} />
                 </div>
             </CardContent>
         </MotionCard>
-        {newSubCategory && <MotionCard
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 100 }}
-            transition={{ type: "spring", stiffness: 100, duration: 0.5 }}
-            className="card max-w-full lg:w-1/3"
-        >
-            <NewSubCategoryForm/>
-        </MotionCard>}
+        {newSubCategory && <SubCategoryForm/>}
+        {selectedCategory && <SubCategoryForm key={selectedCategory._id} category={selectedCategory}/>}
         </div>
     )
 }
