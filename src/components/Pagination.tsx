@@ -12,6 +12,7 @@ interface PaginationProps {
   setPage: (num: number) => void
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function Pagination({maxPage, setPage}: PaginationProps) {
   return (
     <ShadcnuiPagination>
