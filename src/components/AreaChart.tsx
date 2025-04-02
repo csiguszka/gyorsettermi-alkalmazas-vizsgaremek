@@ -38,7 +38,7 @@ interface AreaModel {
 
 const chartConfig = {
   desktop: {
-    label: "Desktop",
+    label: "Megrendelések",
     color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig;

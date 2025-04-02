@@ -59,7 +59,10 @@ export function Login() {
 
   const onSubmit = (data: { name: string; password: string }) => {
     axios
-      .post(`${ENDPOINTURL}/user/login`, data)
+      .post(`${ENDPOINTURL}/user/login`, data, {  headers: {
+        'Content-Type': 'application/json',
+        'accept': '*/*'
+      }})
       .then(function (response) {
         toast({
           variant: "default",

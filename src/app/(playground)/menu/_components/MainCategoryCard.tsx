@@ -1,6 +1,7 @@
 "use client"
 
 import { Category } from "@/app/model/category-model";
+import { PaginationResponse } from "@/app/model/pagination-model";
 import ENDPOINTURL from "@/app/url";
 import BreadcrumpMenu from "@/components/BreadcrumpMenu";
 import Loading from "@/components/Loading";
@@ -24,7 +25,7 @@ function MainCategoryCard({setMainCategory, setSubCategory}: {setMainCategory: (
     if (isPending) {
         return <Loading isCentered={true}/>
     }
-    const list = categories?.map((category) => {
+    const list = categories?.items.map((category) => {
         return {
             name: category.name,
             value: ""
@@ -32,7 +33,7 @@ function MainCategoryCard({setMainCategory, setSubCategory}: {setMainCategory: (
     });
     const tableRowClickHandle = (selectedNumber: number) => {
         if (categories) {
-            setMainCategory(categories[selectedNumber])
+            setMainCategory(categories.items[selectedNumber])
         }
     }
     return (
@@ -63,7 +64,7 @@ function MainCategoryCard({setMainCategory, setSubCategory}: {setMainCategory: (
 }
 export default MainCategoryCard
 
-async function getMainCategories(token: string | null): Promise<Category[]> {
+async function getMainCategories(token: string | null): Promise<PaginationResponse<Category[]>> {
     try {
         if (!token) {
             window.location.href = "/login";
@@ -71,15 +72,17 @@ async function getMainCategories(token: string | null): Promise<Category[]> {
         }
 
         const response = await fetch(
-            `${ENDPOINTURL}/category/main`,
+            `${ENDPOINTURL}/category?isMainCategory=true`,
             {
                 method: "GET",
                 headers: {
                     Authorization: token,
+                    'accept': 'application/json',
+                    'Accept-Language': 'hu',
                 },
             }
         );
-
+        console.log(response)
         return response.json();
     } catch (error: unknown) {
         if (error instanceof Error) {

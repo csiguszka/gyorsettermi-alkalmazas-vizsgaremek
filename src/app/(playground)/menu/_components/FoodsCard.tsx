@@ -79,13 +79,14 @@ async function getFoods(subCategoryId: string, token: string | null): Promise<Pa
             window.location.href = "/login";
             return Promise.reject("Nincs bejelentkezve, átirányítás történt.");
         }
-
+        console.log(subCategoryId);
         const response = await fetch(
-            `${ENDPOINTURL}/category/food?subCategoryId=${subCategoryId}`,
+            `${ENDPOINTURL}/food?subCategoryId=${subCategoryId}`,
             {
                 method: "GET",
                 headers: {
                     Authorization: token,
+                    'Accept-Language': 'hu',
                 },
             }
         );

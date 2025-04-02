@@ -16,7 +16,7 @@ function Table({
   onClick?: (id: number) => void;
 }) {
   if (list.length === 0) {
-    return <p>Nincs elérhető adat.</p>;
+    return <p>Még nincsen adat.</p>;
   }
 
   return (
