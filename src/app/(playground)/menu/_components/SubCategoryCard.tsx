@@ -92,8 +92,8 @@ function SubCategoryCard({mainCategory, setSubCategory, setMainCategory}: {mainC
                 </div>
             </CardContent>
         </MotionCard>
-        {newSubCategory && <SubCategoryForm/>}
-        {selectedCategory && <SubCategoryForm key={selectedCategory._id} category={selectedCategory}/>}
+        {newSubCategory && <SubCategoryForm mainCategory={mainCategory}/>}
+        {selectedCategory && <SubCategoryForm mainCategory={mainCategory} key={selectedCategory._id} category={selectedCategory}/>}
         </div>
     )
 }

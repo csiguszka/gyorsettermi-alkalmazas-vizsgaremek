@@ -3,5 +3,5 @@ export interface Category{
     englishName: string,
     icon: string,
     name: string
-    isMainCategory: false
+    mainCategory: string
 }

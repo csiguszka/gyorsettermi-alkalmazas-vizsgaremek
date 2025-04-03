@@ -9,7 +9,7 @@ import Table from "@/components/Table";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { RootState } from "@/state/store";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Trash2 } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
@@ -33,6 +33,7 @@ function FoodsCard({ mainCategory, subCategory, setSubCategory, setMainCategory 
     enabled: !!token,
   });
   const [newFood, setNewFood] = useState<boolean>();
+  const [selectedFood, setSelectedFood] = useState<Food | undefined>();
   
   const handleTrashOnClick = async (event: React.MouseEvent, id: string) => {
     event.stopPropagation();
@@ -47,6 +48,7 @@ function FoodsCard({ mainCategory, subCategory, setSubCategory, setMainCategory 
   const list = foods?.items.map((food) => {
     const buttons = (
       <div className="flex gap-2">
+        <Edit />
         <Trash2 className="text-destructive" onClick={(event) => handleTrashOnClick(event, food._id)} />
       </div>
     );
@@ -57,10 +59,8 @@ function FoodsCard({ mainCategory, subCategory, setSubCategory, setMainCategory 
   });
 
   const tableRowClickHandle = (selectedNumber: number) => {
-    if (foods) {
-      console.log(selectedNumber);
-      // Set selected food logic
-    }
+    setNewFood(undefined)
+    setSelectedFood(foods?.items[selectedNumber])
   };
 
   if (isPending) {
@@ -85,11 +85,12 @@ function FoodsCard({ mainCategory, subCategory, setSubCategory, setMainCategory 
             <Table list={list} RowSelectedIdx={null} onClick={tableRowClickHandle}></Table>
           )}
           <div className="mt-2">
-            <PlusButton clickHandle={() => setNewFood(true)} />
+            <PlusButton clickHandle={() => {setNewFood(true); setSelectedFood(undefined)}} />
           </div>
         </CardContent>
       </MotionCard>
       {newFood && <FoodForm mainCategory={mainCategory} subCategory={subCategory} />}
+      {selectedFood && <FoodForm key={selectedFood._id} mainCategory={mainCategory} subCategory={subCategory} food={selectedFood}/>}
     </div>
   );
 }
