@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { RootState } from '@/state/store';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -9,11 +10,11 @@ const ImageUploader = () => {
     const {token} = useSelector((state: RootState) => state.states.user.value)
 
     
-  const handleFileChange = (e) => {
+  const handleFileChange = (e: any) => {
     setSelectedFile(e.target.files[0]);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     
     if (!selectedFile) {
