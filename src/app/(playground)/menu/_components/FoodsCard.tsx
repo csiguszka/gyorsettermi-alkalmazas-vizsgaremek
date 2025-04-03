@@ -102,7 +102,7 @@ async function getFoods(subCategoryId: string, token: string | null): Promise<Pa
       return Promise.reject("Nincs bejelentkezve, átirányítás történt.");
     }
     const response = await fetch(
-      `${ENDPOINTURL}/food?subCategoryId=${subCategoryId}`,
+      `${ENDPOINTURL}/food?subCategoryId=${subCategoryId}&fields=englishName`,
       {
         method: "GET",
         headers: {
