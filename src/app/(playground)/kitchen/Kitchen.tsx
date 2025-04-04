@@ -8,6 +8,7 @@ import { Order } from "@/app/model/order-model";
 import IfFullScreen from "@/components/IfFullScreen";
 import { useFectchGet } from "@/app/hooks/useFetchGet";
 import MyWebSocketComponent from "@/components/MyWebSocketComponent";
+import { Button } from "@/components/ui/button";
 
 function Kitchen() {
   const { loading, data: initialOrders } =
@@ -41,6 +42,7 @@ function Kitchen() {
         setOrders={setOrders}
         name="kitchen"
       />
+      <Button className="btn mb-4">Előző Rendelések</Button>
       <div className="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {orders.map((order) => (
           <OrderCardKitchen

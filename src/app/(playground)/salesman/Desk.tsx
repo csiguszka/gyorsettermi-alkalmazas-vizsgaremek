@@ -8,6 +8,7 @@ import IfFullScreen from "@/components/IfFullScreen";
 import { useFectchGet } from "@/app/hooks/useFetchGet";
 import MyWebSocketComponent from "@/components/MyWebSocketComponent";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 function Desk() {
   const { loading, data: initialOrders } =
@@ -41,6 +42,7 @@ function Desk() {
         setOrders={setOrders}
         name="salesman"
       />
+      <Button className="btn mb-4">Előző Rendelések</Button>
       <div className="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {orders?.map((order) => (
           <OrderCardDesk

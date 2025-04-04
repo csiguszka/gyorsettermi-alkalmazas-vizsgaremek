@@ -92,8 +92,8 @@ function SubCategoryCard({mainCategory, setSubCategory, setMainCategory}: {mainC
                 </div>
             </CardContent>
         </MotionCard>
-        {newSubCategory && <SubCategoryForm/>}
-        {selectedCategory && <SubCategoryForm key={selectedCategory._id} category={selectedCategory}/>}
+        {newSubCategory && <SubCategoryForm mainCategory={mainCategory}/>}
+        {selectedCategory && <SubCategoryForm mainCategory={mainCategory} key={selectedCategory._id} category={selectedCategory}/>}
         </div>
     )
 }
@@ -106,7 +106,7 @@ async function getSubCategories(mainCategoryId: string, token: string | null): P
         }
 
         const response = await fetch(
-            `${ENDPOINTURL}/category?mainCategory=${mainCategoryId}&&isMainCategory=false`,
+            `${ENDPOINTURL}/category?mainCategory=${mainCategoryId}&isMainCategory=false&fields=englishName`,
             {
                 method: "GET",
                 headers: {

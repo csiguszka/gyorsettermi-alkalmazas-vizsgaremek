@@ -38,3 +38,6 @@ const user = createSlice({
 export const { changeUser, reduxSignOut } = user.actions;
 
 export default user.reducer;
+
+
+

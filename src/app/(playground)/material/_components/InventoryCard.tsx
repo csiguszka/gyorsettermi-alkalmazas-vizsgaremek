@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { motion } from "motion/react";
+import { Dispatch, SetStateAction } from "react";
 
 const MotionCard = motion.create(Card);
 
@@ -27,18 +28,30 @@ interface InventoryCardProps {
   materials: Material[];
   maxPage: number;
   tableSelectedIdx: number | null;
+  page: number;
   tableRowClickHandle: (id: number) => void;
   newButtonHandle: () => void;
-  setPage: (num: number) => void
+  setPage: (num: number) => void;
+  searchTerm: string; // Az Input mező aktuális értéke
+  setSearchTerm: Dispatch<SetStateAction<string>>; // Az Input mező változásának kezelése
+  handleSearch: () => void; // Keresési gomb kezelése
+  setSearchStatus: Dispatch<SetStateAction<string>>;
+  searchStatus: string;
 }
 
 function InventoryCard({
   materials,
   maxPage,
   tableSelectedIdx,
+  page,
+  searchTerm,
+  searchStatus,
+  setSearchStatus,
   setPage,
   tableRowClickHandle,
   newButtonHandle,
+  setSearchTerm,
+  handleSearch,
 }: InventoryCardProps) {
   const list = materials.map((material) => {
     return {
@@ -49,6 +62,7 @@ function InventoryCard({
         material.unit,
     };
   });
+
   return (
     <MotionCard
       initial={{ opacity: 0, y: -10 }}
@@ -60,11 +74,21 @@ function InventoryCard({
       <CardHeader>
         <h2 className="text-center">Alapanyagok</h2>
         <div className="flex flex-col sm:grid grid-cols-[auto_auto] gap-2">
-          <Input className="mb-none" placeholder="Keresés név alapján" />
-          <Button className="order-last sm:order-none btn row-span-2 sm:self-center">
+          {/* Input mező kötése a searchTerm állapothoz */}
+          <Input
+            className="mb-none"
+            placeholder="Keresés név alapján"
+            value={searchTerm} // Az aktuális érték megjelenítése
+            onChange={(e) => setSearchTerm(e.target.value)} // Az állapot frissítése gépeléskor
+          />
+          {/* Keresési gomb */}
+          <Button
+            className="order-last sm:order-none btn row-span-2 sm:self-center"
+            onClick={handleSearch} // Csak kattintásra történik keresés
+          >
             Keresés
           </Button>
-          <Select>
+          <Select value={searchStatus} onValueChange={(value) => setSearchStatus(value)}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Válasszon státuszt" />
             </SelectTrigger>
@@ -72,8 +96,7 @@ function InventoryCard({
               <SelectGroup>
                 <SelectLabel>Státusz</SelectLabel>
                 <SelectItem value="all">Összes alapanyag</SelectItem>
-                <SelectItem value="no">Nincs raktáron</SelectItem>
-                <SelectItem value="less">Kevés van raktáron</SelectItem>
+                <SelectItem value="no">Kevés van raktáron</SelectItem>
                 <SelectItem value="yes">Raktáron van</SelectItem>
               </SelectGroup>
             </SelectContent>
@@ -90,7 +113,7 @@ function InventoryCard({
       <CardFooter>
         <div className="flex justify-around w-full items-center">
           <PlusButton clickHandle={newButtonHandle} />
-          <Pagination maxPage={maxPage} setPage={setPage}/>
+          <Pagination page={page} maxPage={maxPage} setPage={setPage}/>
         </div>
       </CardFooter>
     </MotionCard>

@@ -12,6 +12,6 @@ export interface Food {
 
 export interface FoodMaterial {
   quantity: number;
-  materialId: string;
+  _id: string;
   name?: string
 }

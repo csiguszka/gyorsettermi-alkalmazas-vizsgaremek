@@ -22,14 +22,22 @@ function Inventory() {
   const [materials, setMaterials] = useState<Material[]>([]);
   const [page, setPage] = useState<number>(1);
   const [maxPage, setMaxPage] = useState<number>(1);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchName, setSearchName] = useState<string>("");
+  const [searchStatus, setSearchStatus] = useState<string>("all");
+  const handleSearch = () => {
+    setSearchName(searchTerm); // Keresési feltétel frissítése csak gombnyomásra
+    setPage(1); // Oldalszám visszaállítása az első oldalra
+  };
+  
   const queryClient = useQueryClient();
 
   const { token } = useSelector((state: RootState) => state.states.user.value);
 
   const { isPending, data } = useQuery({
-    queryKey: ["material", page],
-    queryFn: () => getMaterials(page, token),
-    enabled: !!token, 
+    queryKey: ["material", page, searchName, searchStatus],
+    queryFn: () => getMaterials(page, token, searchName, searchStatus),
+    enabled: !!token,
   });
 
   useEffect(() => {
@@ -177,12 +185,18 @@ function Inventory() {
     <div>
       <h1 className="text-center mb-5">Árukezelés</h1>
       <div className="flex flex-col w-full justify-center lg:flex-row lg:justify-around gap-3">
-        <InventoryCard
+      <InventoryCard
           materials={materials}
           tableSelectedIdx={selectedIdx}
+          page={page}
+          maxPage={maxPage}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm} 
+          handleSearch={handleSearch} 
           tableRowClickHandle={tableRowClickHandle}
           newButtonHandle={newMaterialButtonClickHandle}
-          maxPage={maxPage}
+          setSearchStatus={setSearchStatus}
+          searchStatus={searchStatus}
           setPage={setPageFn}
         />
         {selectedIdx !== null && (
@@ -201,17 +215,26 @@ function Inventory() {
 }
 export default Inventory;
 
-async function getMaterials(page: number, token: string | null): Promise<PaginationResponse<Material[]>> {
+async function getMaterials(  page: number,
+  token: string | null,
+  searchName: string = "",
+  searchStatus: string = "all"): Promise<PaginationResponse<Material[]>> {
   if (!token) {
     window.location.href = "/login";
     return Promise.reject("Nincs bejelentkezve, átirányítás történt.");
+  }
+  let statusParamString = ""
+  if (searchStatus === "no") {
+    statusParamString = "&isEnough=false"
+  }else if (searchStatus === "yes"){
+    statusParamString = "&isEnough=true"
   }
 
   try {
     const headers: HeadersInit = token ? { Authorization: token } : {};
     console.log(page)
 
-    const response = await fetch(`${ENDPOINTURL}/material?page=${page}&limit=2`, {
+    const response = await fetch(`${ENDPOINTURL}/material?page=${page}&limit=5&name=${searchName}${statusParamString}`, {
       method: "GET",
       headers,
     });
