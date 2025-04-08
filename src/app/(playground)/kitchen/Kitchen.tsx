@@ -9,8 +9,10 @@ import IfFullScreen from "@/components/IfFullScreen";
 import { useFectchGet } from "@/app/hooks/useFetchGet";
 import MyWebSocketComponent from "@/components/MyWebSocketComponent";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 function Kitchen() {
+  const router = useRouter();
   const { loading, data: initialOrders } =
     useFectchGet<Order[]>("/order/kitchen");
   const [orders, setOrders] = useState<Order[]>(initialOrders || []);
@@ -42,7 +44,12 @@ function Kitchen() {
         setOrders={setOrders}
         name="kitchen"
       />
-      <Button className="btn mb-4">Előző Rendelések</Button>
+      <Button
+        onClick={() => router.push("/kitchen-orders")}
+        className="btn mb-4"
+      >
+        Előző Rendelések
+      </Button>
       <div className="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {orders.map((order) => (
           <OrderCardKitchen

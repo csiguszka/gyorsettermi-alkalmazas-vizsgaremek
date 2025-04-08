@@ -23,20 +23,18 @@ function InventoryFormCard({
   handleDelete,
   handleModify,
 }: InventoryFormCardProps) {
-
   const [unit, setUnit] = useState<string>(material.unit || "");
   const [error, setError] = useState<string>("");
   const [name, setName] = useState<string>(material.name);
-  const [stock, setStock] = useState<number>(
-    0
-  );
+  const [englishName, setEnglishName] = useState<string>(material.englishName);
+  const [stock, setStock] = useState<number>(0);
   const [isLoading, setIsloading] = useState(false);
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newMaterial: Material = {
       _id: material._id,
-      englishName: name,
+      englishName: englishName,
       name: name,
       inStock: stock,
       unit: unit,
@@ -70,6 +68,14 @@ function InventoryFormCard({
             />
           </div>
           <div>
+            <Label>Angol név</Label>
+            <Input
+              placeholder="Angol név"
+              value={englishName}
+              onChange={(e) => setEnglishName(e.target.value)}
+            />
+          </div>
+          <div>
             <Label>Mértékegység</Label>
             <Input
               placeholder="Mértékegység"
@@ -83,7 +89,9 @@ function InventoryFormCard({
           <div>
             <Label>Mennyiség változás{unit ? `(${unit})` : ""}</Label>
             <br />
-            <Label>Jelenlegi mennyiség: {material.inStock} {unit ? `${unit}` : ""}</Label>
+            <Label>
+              Jelenlegi mennyiség: {material.inStock} {unit ? `${unit}` : ""}
+            </Label>
             <Input
               type="number"
               placeholder="Pl: 1.5"

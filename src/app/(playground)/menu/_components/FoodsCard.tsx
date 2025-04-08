@@ -6,7 +6,12 @@ import BreadcrumpMenu from "@/components/BreadcrumpMenu";
 import Loading from "@/components/Loading";
 import PlusButton from "@/components/PlusButton";
 import Table from "@/components/Table";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import { RootState } from "@/state/store";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Edit, Trash2 } from "lucide-react";
@@ -14,6 +19,7 @@ import { motion } from "motion/react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import FoodForm from "./FoodForm";
+import { Pagination } from "@/components/Pagination";
 
 const MotionCard = motion.create(Card);
 
@@ -24,22 +30,28 @@ interface FoodsCardProps {
   setMainCategory: (category?: Category) => void;
 }
 
-function FoodsCard({ mainCategory, subCategory, setSubCategory, setMainCategory }: FoodsCardProps) {
+function FoodsCard({
+  mainCategory,
+  subCategory,
+  setSubCategory,
+  setMainCategory,
+}: FoodsCardProps) {
+  const [page, setPage] = useState<number>(1);
   const { token } = useSelector((state: RootState) => state.states.user.value);
   const queryClient = useQueryClient();
   const { data: foods, isPending } = useQuery({
-    queryKey: ["Foods", subCategory._id],
-    queryFn: () => getFoods(subCategory._id, token),
+    queryKey: ["Foods", subCategory._id, page],
+    queryFn: () => getFoods(subCategory._id, page, token),
     enabled: !!token,
   });
   const [newFood, setNewFood] = useState<boolean>();
   const [selectedFood, setSelectedFood] = useState<Food | undefined>();
-  
+
   const handleTrashOnClick = async (event: React.MouseEvent, id: string) => {
     event.stopPropagation();
-    console.log("Hmmm")
+    console.log("Hmmm");
     const response = await deleteFood(id, token);
-    console.log(response)
+    console.log(response);
     if (response.status === 200) {
       queryClient.invalidateQueries({ queryKey: ["Foods", subCategory._id] });
     }
@@ -49,7 +61,10 @@ function FoodsCard({ mainCategory, subCategory, setSubCategory, setMainCategory 
     const buttons = (
       <div className="flex gap-2">
         <Edit />
-        <Trash2 className="text-destructive" onClick={(event) => handleTrashOnClick(event, food._id)} />
+        <Trash2
+          className="text-destructive"
+          onClick={(event) => handleTrashOnClick(event, food._id)}
+        />
       </div>
     );
     return {
@@ -59,8 +74,8 @@ function FoodsCard({ mainCategory, subCategory, setSubCategory, setMainCategory 
   });
 
   const tableRowClickHandle = (selectedNumber: number) => {
-    setNewFood(undefined)
-    setSelectedFood(foods?.items[selectedNumber])
+    setNewFood(undefined);
+    setSelectedFood(foods?.items[selectedNumber]);
   };
 
   if (isPending) {
@@ -77,47 +92,88 @@ function FoodsCard({ mainCategory, subCategory, setSubCategory, setMainCategory 
         className="card max-w-full lg:w-1/3"
       >
         <CardHeader>
-          <BreadcrumpMenu mainCategory={mainCategory.name} subCategory={subCategory.name} setMainCategory={setMainCategory} setSubCategory={setSubCategory} />
+          <BreadcrumpMenu
+            mainCategory={mainCategory.name}
+            subCategory={subCategory.name}
+            setMainCategory={setMainCategory}
+            setSubCategory={setSubCategory}
+          />
           <h2 className="text-center">{subCategory.name}</h2>
         </CardHeader>
         <CardContent>
           {list && (
-            <Table list={list} RowSelectedIdx={null} onClick={tableRowClickHandle}></Table>
+            <Table
+              list={list}
+              RowSelectedIdx={null}
+              onClick={tableRowClickHandle}
+            ></Table>
           )}
           <div className="mt-2">
-            <PlusButton clickHandle={() => {setNewFood(true); setSelectedFood(undefined)}} />
+            <PlusButton
+              clickHandle={() => {
+                setNewFood(true);
+                setSelectedFood(undefined);
+              }}
+            />
           </div>
         </CardContent>
+        <CardFooter>
+          {foods && foods?.pageCount > 1 && (
+            <Pagination
+              maxPage={foods?.pageCount}
+              page={page}
+              setPage={setPage}
+            />
+          )}
+        </CardFooter>
       </MotionCard>
-      {newFood && <FoodForm mainCategory={mainCategory} subCategory={subCategory} />}
-      {selectedFood && <FoodForm key={selectedFood._id} mainCategory={mainCategory} subCategory={subCategory} food={selectedFood}/>}
+      {newFood && (
+        <FoodForm mainCategory={mainCategory} subCategory={subCategory} />
+      )}
+      {selectedFood && (
+        <FoodForm
+          key={selectedFood._id}
+          mainCategory={mainCategory}
+          subCategory={subCategory}
+          food={selectedFood}
+        />
+      )}
     </div>
   );
 }
 
-async function getFoods(subCategoryId: string, token: string | null): Promise<PaginationResponse<Food[]>> {
+async function getFoods(
+  subCategoryId: string,
+  page: number,
+  token: string | null
+): Promise<PaginationResponse<Food[]>> {
   try {
     if (!token) {
       window.location.href = "/login";
       return Promise.reject("Nincs bejelentkezve, átirányítás történt.");
     }
     const response = await fetch(
-      `${ENDPOINTURL}/food?subCategoryId=${subCategoryId}&fields=englishName`,
+      `${ENDPOINTURL}/food?subCategoryId=${subCategoryId}&page=${page}&limit=10&fields=englishName`,
       {
         method: "GET",
         headers: {
           Authorization: token,
-          'Accept-Language': 'hu',
+          "Accept-Language": "hu",
         },
       }
     );
     return response.json();
   } catch (error) {
-    throw new Error(error instanceof Error ? error.message : "Something went wrong");
+    throw new Error(
+      error instanceof Error ? error.message : "Something went wrong"
+    );
   }
 }
 
-async function deleteFood(foodId: string, token: string | null): Promise<Response> {
+async function deleteFood(
+  foodId: string,
+  token: string | null
+): Promise<Response> {
   try {
     if (!token) {
       window.location.href = "/login";
@@ -127,12 +183,14 @@ async function deleteFood(foodId: string, token: string | null): Promise<Respons
       method: "DELETE",
       headers: {
         Authorization: token,
-        'Accept-Language': 'hu',
+        "Accept-Language": "hu",
       },
     });
     return response;
   } catch (error) {
-    throw new Error(error instanceof Error ? error.message : "Something went wrong");
+    throw new Error(
+      error instanceof Error ? error.message : "Something went wrong"
+    );
   }
 }
 
