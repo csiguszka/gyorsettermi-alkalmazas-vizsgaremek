@@ -48,8 +48,8 @@ export function Login() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "admin2",
-      password: "Adminn2!",
+      name: "",
+      password: "",
     },
   });
   const redirectRoute = searchParams.get("route") || "/";

@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { LanguageToggle } from "./LanguageToggle";
 import { FormSubmitButton } from "./FormSubmitButton";
 import Link from "next/link";
 
@@ -30,7 +29,7 @@ function FormCard({
             <Logo />
           </div>
           <div className="float-right flex flex-col mr-3 mt-1 gap-3">
-            <LanguageToggle />
+            {/* <LanguageToggle /> */}
             <ModeToggle />
           </div>
         </div>

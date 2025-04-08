@@ -1,4 +1,3 @@
-
 import ENDPOINTURL from "@/app/url";
 import Loading from "@/components/Loading";
 import { Button } from "@/components/ui/button";
@@ -18,7 +17,15 @@ import { Category } from "@/app/model/category-model";
 
 const MotionCard = motion.create(Card);
 
-function FoodForm({ food, mainCategory, subCategory }: { food?: Food, mainCategory: Category, subCategory: Category }) {
+function FoodForm({
+  food,
+  mainCategory,
+  subCategory,
+}: {
+  food?: Food;
+  mainCategory: Category;
+  subCategory: Category;
+}) {
   const { token } = useSelector((state: RootState) => state.states.user.value);
   const [error, setError] = useState<string>("");
   const [formData, setFormData] = useState({
@@ -36,14 +43,20 @@ function FoodForm({ food, mainCategory, subCategory }: { food?: Food, mainCatego
   const handleAddMaterial = (material: Material) => {
     // Ellenőrizzük, hogy az alapanyag már szerepel-e
     if (formData.materials.some((m) => m._id === material._id)) {
-      toast({ title: "Ez az alapanyag már hozzá lett adva.", variant: "destructive" });
+      toast({
+        title: "Ez az alapanyag már hozzá lett adva.",
+        variant: "destructive",
+      });
       return;
     }
 
     // Hozzáadjuk az új alapanyagot alapértelmezett mennyiséggel (pl. 1)
     setFormData((prev) => ({
       ...prev,
-      materials: [...prev.materials, { _id: material._id as string, quantity: 1, name: material.name }],
+      materials: [
+        ...prev.materials,
+        { _id: material._id as string, quantity: 1, name: material.name },
+      ],
     }));
   };
 
@@ -58,7 +71,10 @@ function FoodForm({ food, mainCategory, subCategory }: { food?: Food, mainCatego
     setFormData((prev) => ({ ...prev, materials: updatedMaterials }));
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: string
+  ) => {
     setFormData((prev) => ({
       ...prev,
       [field]: field === "price" ? Number(e.target.value) : e.target.value,
@@ -80,7 +96,10 @@ function FoodForm({ food, mainCategory, subCategory }: { food?: Food, mainCatego
       englishName: formData.englishName,
       name: formData.name,
       price: formData.price,
-      materials: formData.materials.map(({ _id, quantity }) => ({ _id, quantity })),
+      materials: formData.materials.map(({ _id, quantity }) => ({
+        _id,
+        quantity,
+      })),
       categoryId: mainCategory._id,
       subCategoryId: [subCategory._id],
       isEnabled: formData.isEnabled,
@@ -94,12 +113,16 @@ function FoodForm({ food, mainCategory, subCategory }: { food?: Food, mainCatego
 
       if (response?.status === 200) {
         toast({
-          title: food?._id ? "Az étel módosítása sikeres" : "Az étel sikeresen létrehozva",
+          title: food?._id
+            ? "Az étel módosítása sikeres"
+            : "Az étel sikeresen létrehozva",
         });
         queryClient.invalidateQueries({ queryKey: ["Foods"] });
       } else {
         toast({
-          title: food?._id ? "Az étel módosítása sikertelen" : "Az étel létrehozása sikertelen",
+          title: food?._id
+            ? "Az étel módosítása sikertelen"
+            : "Az étel létrehozása sikertelen",
           variant: "destructive",
         });
       }
@@ -120,7 +143,9 @@ function FoodForm({ food, mainCategory, subCategory }: { food?: Food, mainCatego
       className="card max-w-full lg:w-1/3"
     >
       <CardHeader>
-        <h2 className="text-center">{food ? "Étel módosítása" : "Új étel létrehozása"}</h2>
+        <h2 className="text-center">
+          {food ? "Étel módosítása" : "Új étel létrehozása"}
+        </h2>
         <CardContent>
           <form className="flex flex-col gap-4" onSubmit={handleFormSubmit}>
             {renderInputField("Név", "name", formData.name)}
@@ -134,7 +159,12 @@ function FoodForm({ food, mainCategory, subCategory }: { food?: Food, mainCatego
               <input
                 type="checkbox"
                 checked={formData.isEnabled}
-                onChange={(e) => setFormData((prev) => ({ ...prev, isEnabled: e.target.checked }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    isEnabled: e.target.checked,
+                  }))
+                }
               />
               <Label>Elérhető</Label>
             </div>
@@ -149,7 +179,12 @@ function FoodForm({ food, mainCategory, subCategory }: { food?: Food, mainCatego
     </MotionCard>
   );
 
-  function renderInputField(label: string, field: string, value: string | number, type = "text") {
+  function renderInputField(
+    label: string,
+    field: string,
+    value: string | number,
+    type = "text"
+  ) {
     return (
       <div>
         <Label>{label}</Label>
@@ -178,9 +213,14 @@ function FoodForm({ food, mainCategory, subCategory }: { food?: Food, mainCatego
                 type="number"
                 placeholder="Mennyiség"
                 value={material.quantity}
-                onChange={(e) => handleMaterialChange(index, Number(e.target.value))}
+                onChange={(e) =>
+                  handleMaterialChange(index, Number(e.target.value))
+                }
               />
-              <Button variant="destructive" onClick={() => handleRemoveMaterial(index)}>
+              <Button
+                variant="destructive"
+                onClick={() => handleRemoveMaterial(index)}
+              >
                 Törlés
               </Button>
             </div>
@@ -190,7 +230,10 @@ function FoodForm({ food, mainCategory, subCategory }: { food?: Food, mainCatego
     );
   }
 
-  function renderCategorySection(mainCategory: Category, subCategory: Category) {
+  function renderCategorySection(
+    mainCategory: Category,
+    subCategory: Category
+  ) {
     return (
       <div>
         <Label>Kategória</Label>

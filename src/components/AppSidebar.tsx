@@ -19,7 +19,6 @@ import {
   UserPlus,
 } from "lucide-react";
 import Link from "next/link";
-import { LanguageToggle } from "./LanguageToggle";
 import { ModeToggle } from "./ModeToggle";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
@@ -31,7 +30,7 @@ export function AppSheet() {
     setIsOpen(false);
   };
 
-  const user = useSelector((state: RootState) => state.states.user.value)
+  const user = useSelector((state: RootState) => state.states.user.value);
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -45,60 +44,60 @@ export function AppSheet() {
         <section className="flex justify-between items-center mt-3">
           <SheetTitle className="text-xl">Menü</SheetTitle>
           <section className="flex gap-2">
-            <LanguageToggle />
+            {/* <LanguageToggle /> */}
             <ModeToggle />
           </section>
         </section>
-        {user.role === "admin" &&
+        {user.role === "admin" && (
           <Link href={"/"} className="menu" onClick={handleLinkClick}>
             <Home />
             <h3>Főoldal</h3>
           </Link>
-        }
-        {(user.role === "admin" || user.role === "kitchen") &&
+        )}
+        {(user.role === "admin" || user.role === "kitchen") && (
           <Link href={"/kitchen"} className="menu" onClick={handleLinkClick}>
             <ForkKnife />
             <h3>Konyha kijelző</h3>
           </Link>
-        }
-        {(user.role === "admin" || user.role === "salesman") &&
+        )}
+        {(user.role === "admin" || user.role === "salesman") && (
           <Link href={"/salesman"} className="menu" onClick={handleLinkClick}>
             <HandPlatter />
             <h3>Pult kijelző</h3>
           </Link>
-        }
+        )}
         <Link href={"/customer"} className="menu" onClick={handleLinkClick}>
           <User />
           <h3>Vásárló kijelző</h3>
         </Link>
-        {user.role === "admin" &&
+        {user.role === "admin" && (
           <Link href={"/menu"} className="menu" onClick={handleLinkClick}>
             <Drumstick />
             <h3>Étlap</h3>
           </Link>
-        }
-        {user.role === "admin" &&
+        )}
+        {user.role === "admin" && (
           <Link href={"/material"} className="menu" onClick={handleLinkClick}>
             <Package />
             <h3>Árukezelés</h3>
           </Link>
-        }
-        {user.role === "admin" &&
-          <Link
-            href={"/orders"}
-            className="menu"
-            onClick={handleLinkClick}
-          >
+        )}
+        {user.role === "admin" && (
+          <Link href={"/orders"} className="menu" onClick={handleLinkClick}>
             <NotebookText />
             <h3>Megrendelések</h3>
           </Link>
-        }
-        {user.role === "admin" &&
-          <Link href={"/registration"} className="menu" onClick={handleLinkClick}>
+        )}
+        {user.role === "admin" && (
+          <Link
+            href={"/registration"}
+            className="menu"
+            onClick={handleLinkClick}
+          >
             <UserPlus />
-            <h3>Új dolgozó felvétele</h3>
+            <h3>Dolgozó felvétel/elbocsátás</h3>
           </Link>
-        }
+        )}
       </SheetContent>
     </Sheet>
   );

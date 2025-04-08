@@ -242,14 +242,11 @@ async function getMaterials(
   }
 
   try {
-    const headers: HeadersInit = token ? { Authorization: token } : {};
-    console.log(page);
-
     const response = await fetch(
-      `${ENDPOINTURL}/material?page=${page}&limit=5&name=${searchName}${statusParamString}`,
+      `${ENDPOINTURL}/material?page=${page}&fields=englishName&limit=5&name=${searchName}${statusParamString}`,
       {
         method: "GET",
-        headers,
+        headers: { Authorization: token, "Accept-Language": "hu" },
       }
     );
 
