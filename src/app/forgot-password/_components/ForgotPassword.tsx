@@ -10,13 +10,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 function ForgotPassword() {
   const { toast } = useToast();
-  const router = useRouter();
   const formSchema = z.object({
     email: z.string().email({
       message: "Kérjük valós email címet adjon meg.",
@@ -30,7 +28,8 @@ function ForgotPassword() {
   });
 
   const onSubmit = (data: { email: string }) => {
-    console.log(data);
+    console.log("here");
+    const url = process.env.NEXT_PUBLIC_URL;
     fetch(`${ENDPOINTURL}/user/forgetPassword`, {
       headers: {
         "Content-Type": "application/json",
@@ -38,14 +37,22 @@ function ForgotPassword() {
       method: "POST",
       body: JSON.stringify({
         email: data.email,
+        url: url,
       }),
     })
-      .then(() => {
-        toast({
-          title: "A megadott email címre ellenőrző kódot küldtünk",
-          variant: "default",
-        });
-        router.push("/forgot-password-token");
+      .then((response) => {
+        if (response.ok) {
+          toast({
+            title: "A megadott email címre ellenőrző kódot küldtünk",
+            variant: "default",
+          });
+          form.reset();
+        } else {
+          toast({
+            title: "A megadott email cím nincs regisztrálva",
+            variant: "destructive",
+          });
+        }
       })
       .catch(() =>
         toast({

@@ -1,17 +1,16 @@
-"use client";
-
 import FormCard from "@/components/FormCard";
 import ForgotPasswordToken from "./_components/ForgotPasswordToken";
 
-function page() {
+function Page() {
   return (
     <FormCard
       formId="forgotPasswordToken"
       submitButtonText="Küldés"
-      title="Elfelejtett jelszó"
+      title={`Elfelejtett jelszó`}
     >
       <ForgotPasswordToken />
     </FormCard>
   );
 }
-export default page;
+
+export default Page;

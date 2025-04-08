@@ -66,6 +66,7 @@ export function Login() {
         toast({
           variant: "default",
           title: "Sikeres bejelnetkezés",
+          description: "Hamarosan átirányítjuk a következő oldalra.",
         });
         dispatch(
           changeUser({ token: response.data.token, role: response.data.role })

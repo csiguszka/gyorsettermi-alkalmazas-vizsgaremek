@@ -1,3 +1,5 @@
+"use client";
+
 import ENDPOINTURL from "@/app/url";
 import {
   Form,
@@ -10,17 +12,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 function ForgotPasswordToken() {
+  const params = useParams();
+  const token = params.token;
+  console.log(token);
   const { toast } = useToast();
   const router = useRouter();
   const formSchema = z.object({
-    token: z.string().min(6, {
-      message: "A felhasználó név túl rövid.",
-    }),
     password: z
       .string()
       .min(4, {
@@ -36,31 +39,40 @@ function ForgotPasswordToken() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      password: "",
     },
   });
 
-  const onSubmit = (data: { email: string }) => {
+  const onSubmit = (data: { password: string }) => {
     console.log(data);
-    fetch(`${ENDPOINTURL}/user/forgetPassword`, {
+    fetch(`${ENDPOINTURL}/user/changePassword`, {
       headers: {
         "Content-Type": "application/json",
       },
       method: "POST",
       body: JSON.stringify({
-        email: data.email,
+        token: token,
+        password: data.password,
       }),
     })
-      .then(() => {
-        toast({
-          title: "A megadott email címre ellenőrző kódot küldtünk",
-          variant: "default",
-        });
-        router.push("/forgot-password-token");
+      .then((response) => {
+        if (response.ok) {
+          toast({
+            title: "A jelszó módosítása sikerült",
+            description: "Használja az új jelszavát a bejelnetkezéshez",
+            variant: "default",
+          });
+          router.push("/login");
+        } else {
+          toast({
+            title: "Nem sikerült a jelszó módosítása!",
+            variant: "destructive",
+          });
+        }
       })
       .catch(() =>
         toast({
-          title: "A megadott email cím nincs regisztrálva",
+          title: "Nem sikerült a jelszó módosítása!",
           variant: "destructive",
         })
       );
@@ -75,18 +87,18 @@ function ForgotPasswordToken() {
       >
         <FormField
           control={form.control}
-          name="email"
+          name="password"
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Email <span className="text-destructive">*</span>
+                Új jelszó <span className="text-destructive">*</span>
               </FormLabel>
-              <FormControl data-cy="name">
-                <Input placeholder="Email" {...field} />
+              <FormControl data-cy="newPassword">
+                <Input placeholder="Új jelszó" {...field} type="password" />
               </FormControl>
               <FormMessage>
-                {form.formState.errors.email &&
-                  form.formState.errors.email.message}
+                {form.formState.errors.password &&
+                  form.formState.errors.password.message}
               </FormMessage>
             </FormItem>
           )}
