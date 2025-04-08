@@ -9,6 +9,7 @@ import {
 } from "./ui/card";
 import { LanguageToggle } from "./LanguageToggle";
 import { FormSubmitButton } from "./FormSubmitButton";
+import Link from "next/link";
 
 function FormCard({
   children,
@@ -39,8 +40,13 @@ function FormCard({
           </CardTitle>
         </CardHeader>
         <CardContent>{children}</CardContent>
-        <CardFooter>
+        <CardFooter className="flex justify-between items-center gap-3">
           <FormSubmitButton text={submitButtonText} formId={formId} />
+          {formId === "login" && (
+            <Link href="/forgot-password" className="-mb-4 text-primary">
+              Elfelejtettem a jelszavam
+            </Link>
+          )}
         </CardFooter>
       </Card>
     </div>

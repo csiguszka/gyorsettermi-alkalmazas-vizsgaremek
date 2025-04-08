@@ -27,18 +27,17 @@ const formSchema = z.object({
   name: z.string().min(4, {
     message: "A felhasználó név túl rövid.",
   }),
-  password: z.string().min(4, {
-    message: "A jelszónak legalább 4 karakter hosszúnak kell lennie.",
-  }),
-  // .min(4, {
-  //   message: "A jelszónak legalább 8 karakter hosszúnak kell lennie.",
-  // })
-  // .regex(/[A-Z]/, { message: "Legalább egy nagybetűt kell tartalmaznia." })
-  // .regex(/[a-z]/, { message: "Legalább egy kisbetűt kell tartalmaznia." })
-  // .regex(/[0-9]/, { message: "Legalább egy számot kell tartalmaznia." })
-  // .regex(/[^A-Za-z0-9]/, {
-  //   message: "Legalább egy speciális karaktert kell tartalmaznia.",
-  // }),
+  password: z
+    .string()
+    .min(4, {
+      message: "A jelszónak legalább 8 karakter hosszúnak kell lennie.",
+    })
+    .regex(/[A-Z]/, { message: "Legalább egy nagybetűt kell tartalmaznia." })
+    .regex(/[a-z]/, { message: "Legalább egy kisbetűt kell tartalmaznia." })
+    .regex(/[0-9]/, { message: "Legalább egy számot kell tartalmaznia." })
+    .regex(/[^A-Za-z0-9]/, {
+      message: "Legalább egy speciális karaktert kell tartalmaznia.",
+    }),
 });
 export function Login() {
   const router = useRouter();
@@ -49,29 +48,30 @@ export function Login() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      // name: "admin2",
-      // password: "Adminn2!",
-      name: "admin",
-      password: "admin",
+      name: "admin2",
+      password: "Adminn2!",
     },
   });
   const redirectRoute = searchParams.get("route") || "/";
 
   const onSubmit = (data: { name: string; password: string }) => {
     axios
-      .post(`${ENDPOINTURL}/user/login`, data, {  headers: {
-        'Content-Type': 'application/json',
-        'accept': '*/*'
-      }})
+      .post(`${ENDPOINTURL}/user/login`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          accept: "*/*",
+        },
+      })
       .then(function (response) {
         toast({
           variant: "default",
           title: "Sikeres bejelnetkezés",
+          description: "Hamarosan átirányítjuk a következő oldalra.",
         });
         dispatch(
           changeUser({ token: response.data.token, role: response.data.role })
         );
-        console.log(response.data.token + "ÁTIRÁNYÍTÁS")
+        console.log(response.data.token + "ÁTIRÁNYÍTÁS");
         if (response.data.token === "kitchen") {
           router.push("/kitchen");
         } else if (response.data.token === "salesman") {
@@ -89,9 +89,9 @@ export function Login() {
         console.log(error);
       });
   };
-  
+
   useEffect(() => {
-    console.log(user.role + "ÁTIRÁNYÍTÁS 2!")
+    console.log(user.role + "ÁTIRÁNYÍTÁS 2!");
     if (user) {
       if (user.role === "kitchen") {
         router.push("/kitchen");
