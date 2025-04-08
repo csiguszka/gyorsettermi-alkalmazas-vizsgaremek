@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { motion } from "motion/react";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
 const MotionCard = motion.create(Card);
 
@@ -36,6 +36,7 @@ interface InventoryCardProps {
   setSearchTerm: Dispatch<SetStateAction<string>>; // Az Input mező változásának kezelése
   handleSearch: () => void; // Keresési gomb kezelése
   setSearchStatus: Dispatch<SetStateAction<string>>;
+  setSelectedIdx: Dispatch<SetStateAction<number | null>>;
   searchStatus: string;
 }
 
@@ -46,6 +47,7 @@ function InventoryCard({
   page,
   searchTerm,
   searchStatus,
+  setSelectedIdx,
   setSearchStatus,
   setPage,
   tableRowClickHandle,
@@ -53,6 +55,10 @@ function InventoryCard({
   setSearchTerm,
   handleSearch,
 }: InventoryCardProps) {
+  useEffect(() => {
+    setSelectedIdx(null);
+  }, [page]);
+
   const list = materials.map((material) => {
     return {
       name: material.name,
@@ -88,7 +94,10 @@ function InventoryCard({
           >
             Keresés
           </Button>
-          <Select value={searchStatus} onValueChange={(value) => setSearchStatus(value)}>
+          <Select
+            value={searchStatus}
+            onValueChange={(value) => setSearchStatus(value)}
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Válasszon státuszt" />
             </SelectTrigger>
@@ -113,7 +122,7 @@ function InventoryCard({
       <CardFooter>
         <div className="flex justify-around w-full items-center">
           <PlusButton clickHandle={newButtonHandle} />
-          <Pagination page={page} maxPage={maxPage} setPage={setPage}/>
+          <Pagination page={page} maxPage={maxPage} setPage={setPage} />
         </div>
       </CardFooter>
     </MotionCard>
