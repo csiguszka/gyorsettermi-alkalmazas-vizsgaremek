@@ -35,7 +35,7 @@ function Customer() {
       <div className="flex flex-col-reverse sm:flex-row gap-10 w-full overflow-hidden">
         <div className="sm:w-1/2">
           <h1 className="text-5xl text-center sm:text-6xl mb-5">Készül</h1>
-          <div className="grid sm:flex flex-col lg:grid grid-cols-2 gap-5">
+          <div className="grid sm:flex flex-col lg:grid grid-cols-2 gap-3 p-3">
             {display?.map(
               (item, index) =>
                 item.finishedCokingTime === null && (
@@ -51,7 +51,7 @@ function Customer() {
         <div className="hidden sm:w-2 sm:bg-primary sm:fixed sm:block sm:left-[calc(50%-(0.5rem/2))] h-[calc(100vh-65px)]"></div>
         <div className="sm:w-1/2">
           <h1 className="text-5xl text-center sm:text-6xl mb-5">Elkészült</h1>
-          <div className="grid sm:flex flex-col lg:grid grid-cols-2 gap-5">
+          <div className="grid sm:flex flex-col lg:grid grid-cols-2 gap-3 p-3">
             {display?.map(
               (item, index) =>
                 item.finishedCokingTime !== null &&
