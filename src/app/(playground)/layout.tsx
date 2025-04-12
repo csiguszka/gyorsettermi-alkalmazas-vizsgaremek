@@ -8,7 +8,7 @@ export default function Layout({
   return (
     <main>
       <Nav />
-      <div className="px-3 py-5 ">{children}</div>
+      <div className="px-3 py-5">{children}</div>
     </main>
   );
 }
