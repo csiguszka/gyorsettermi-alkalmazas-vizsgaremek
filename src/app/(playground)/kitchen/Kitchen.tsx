@@ -20,14 +20,24 @@ function Kitchen() {
 
   useEffect(() => {
     if (initialOrders) {
+      console.log(initialOrders);
+      console.log("initialOrders");
       setOrders(initialOrders);
     }
   }, [initialOrders]);
 
+  useEffect(() => {
+    console.log(orders);
+  }, [orders]);
+
   const handleRemoveOrder = (orderId: string) => {
-    setOrders((prevOrders) =>
-      prevOrders.filter((order) => order._id !== orderId)
-    );
+    console.log(orderId);
+    setOrders((prevOrders) => {
+      const newOrders = prevOrders.filter((order) => {
+        return order._id !== orderId;
+      });
+      return newOrders;
+    });
   };
 
   if (loading) {
@@ -39,7 +49,7 @@ function Kitchen() {
       <IfFullScreen>
         <h1 className="text-center text-4xl mb-5">Konyhai kijelző</h1>
       </IfFullScreen>
-      <MyWebSocketComponent<Order>
+      <MyWebSocketComponent
         setIsFirstReload={setIsFirstReload}
         setOrders={setOrders}
         name="kitchen"
@@ -51,9 +61,9 @@ function Kitchen() {
         Előző Rendelések
       </Button>
       <div className="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-        {orders.map((order, idx) => (
+        {orders.map((order) => (
           <OrderCardKitchen
-            key={idx}
+            key={order._id}
             order={order}
             onRemoveOrder={handleRemoveOrder}
             isFirstReload={isFirstReload}

@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import ENDPOINTURL from "@/app/url";
 import useWebSocket from "react-use-websocket";
+import { Order } from "@/app/model/order-model";
 
-interface MyWebSocketComponentProps<T> {
-  setOrders: React.Dispatch<React.SetStateAction<T[]>>;
+interface MyWebSocketComponentProps {
+  setOrders: React.Dispatch<React.SetStateAction<Order[]>>;
   setIsFirstReload: React.Dispatch<React.SetStateAction<boolean>>;
   name: "kitchen" | "salesman" | "display";
 }
@@ -20,14 +21,14 @@ function playSound() {
   }
 }
 
-const MyWebSocketComponent = <T,>({
+const MyWebSocketComponent = ({
   setOrders,
   setIsFirstReload,
   name,
-}: MyWebSocketComponentProps<T>) => {
+}: MyWebSocketComponentProps) => {
   const socketUrl = `${ENDPOINTURL}/ws`;
 
-  const { sendJsonMessage, lastJsonMessage } = useWebSocket<T>(socketUrl, {
+  const { sendJsonMessage, lastJsonMessage } = useWebSocket<Order>(socketUrl, {
     shouldReconnect: () => true,
     onOpen: () => {
       sendJsonMessage({ role: name });
@@ -37,8 +38,21 @@ const MyWebSocketComponent = <T,>({
   useEffect(() => {
     if (lastJsonMessage) {
       setIsFirstReload(false);
-      setOrders((prevOrders) => [...prevOrders, lastJsonMessage]);
-      playSound();
+      console.log("lastJsonMessage", lastJsonMessage);
+
+      setOrders((prevOrders) => {
+        const exists = prevOrders.some(
+          (order) => order._id === lastJsonMessage._id
+        );
+        if (exists) {
+          return prevOrders.filter(
+            (order) => order._id !== lastJsonMessage._id
+          );
+        } else {
+          playSound();
+          return [...prevOrders, lastJsonMessage];
+        }
+      });
     }
   }, [lastJsonMessage, setOrders]);
 
