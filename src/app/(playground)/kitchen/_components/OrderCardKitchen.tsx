@@ -33,14 +33,15 @@ function OrderCardKitchen({
     const updateElapsedTime = () => {
       const now = Date.now();
       const past = new Date(order.orderedTime).getTime();
-      const diffMs = now - past;
+      const diffMs = now - past + 1000 * 60;
+      console.log(now, past, diffMs, diffMs / (1000 * 60));
       setElapsedTime(Math.floor(diffMs / (1000 * 60)));
     };
 
     updateElapsedTime();
     const interval = setInterval(updateElapsedTime, 60000);
     return () => clearInterval(interval);
-  }, [order.orderedTime]);
+  }, [order]);
 
   const handleClick = async () => {
     setIsRemoving(true); // Indítsd el az animációt
