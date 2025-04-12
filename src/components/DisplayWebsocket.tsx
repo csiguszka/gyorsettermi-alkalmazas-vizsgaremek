@@ -16,13 +16,15 @@ const DisplayWebsocket = ({
 }: MyWebSocketComponentProps) => {
   const socketUrl = `${ENDPOINTURL}/ws`;
 
-  const { sendJsonMessage, lastJsonMessage, readyState } =
-    useWebSocket<display>(socketUrl, {
+  const { sendJsonMessage, lastJsonMessage } = useWebSocket<display>(
+    socketUrl,
+    {
       shouldReconnect: () => true,
       onOpen: () => {
         sendJsonMessage({ role: name });
       },
-    });
+    }
+  );
 
   useEffect(() => {
     if (lastJsonMessage) {
@@ -41,18 +43,7 @@ const DisplayWebsocket = ({
     }
   }, [lastJsonMessage, setOrders]);
 
-  const colors = [
-    "bg-yellow-300",
-    "bg-green-500",
-    "bg-orange-500",
-    "bg-red-500",
-  ];
-
-  return (
-    <div className="flex items-center space-x-4 mb-5">
-      <div className={`w-6 h-6 rounded-full ${colors[readyState]}`}></div>
-    </div>
-  );
+  return null;
 };
 
 export default DisplayWebsocket;

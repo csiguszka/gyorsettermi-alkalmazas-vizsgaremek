@@ -14,7 +14,13 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import { Pagination } from "@/components/Pagination";
 import { useState } from "react";
-import { Table, TableCell, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 function Orders() {
   const { token } = useSelector((state: RootState) => state.states.user.value);
@@ -33,28 +39,38 @@ function Orders() {
       <CardContent>
         <Table>
           <TableHeader>
-            <TableCell className="text-lg font-bold">Rendelés száma</TableCell>
-            <TableCell className="text-lg font-bold">Rendelés ideje</TableCell>
-            <TableCell className="text-lg font-bold">Ár</TableCell>
+            <TableRow>
+              <TableCell className="text-lg font-bold">
+                Rendelés száma
+              </TableCell>
+              <TableCell className="text-lg font-bold">
+                Rendelés ideje
+              </TableCell>
+              <TableCell className="text-lg font-bold">Ár</TableCell>
+            </TableRow>
           </TableHeader>
-          {data?.items.map((order, idx) => {
-            return (
-              <TableRow key={idx}>
-                <TableCell className="text-lg">{order.orderNumber}</TableCell>
-                <TableCell className="text-lg">
-                  {new Date(order.orderedTime).toLocaleString("hu-HU", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </TableCell>
+          <TableBody>
+            {data?.items.map((order, idx) => {
+              return (
+                <TableRow key={idx}>
+                  <TableCell className="text-lg">{order.orderNumber}</TableCell>
+                  <TableCell className="text-lg">
+                    {new Date(order.orderedTime).toLocaleString("hu-HU", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </TableCell>
 
-                <TableCell className="text-lg">{order.totalPrice} Ft</TableCell>
-              </TableRow>
-            );
-          })}
+                  <TableCell className="text-lg">
+                    {order.totalPrice} Ft
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
         </Table>
       </CardContent>
       <CardFooter>

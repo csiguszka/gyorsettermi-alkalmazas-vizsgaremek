@@ -6,17 +6,31 @@ import ENDPOINTURL from "@/app/url";
 import { RootState } from "@/state/store";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
-import { Table, TableCell, TableHeader, TableRow } from "@/components/ui/table";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import { Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
+import { Pagination } from "@/components/Pagination";
 
 function Workers() {
   const { token } = useSelector((state: RootState) => state.states.user.value);
   const { toast } = useToast();
+  const [page, setPage] = useState<number>(1);
   const { data: users, refetch } = useQuery({
-    queryKey: ["ordersAdmin"],
-    queryFn: () => getOrders(token),
+    queryKey: ["ordersAdmin", page],
+    queryFn: () => getOrders(token, page),
   });
 
   const handleDelete = async (id: string) => {
@@ -56,45 +70,59 @@ function Workers() {
       <CardContent>
         <Table>
           <TableHeader>
-            <TableCell className="text-lg font-bold">Dolgozó neve</TableCell>
-            <TableCell className="text-lg font-bold">
-              Dolgozó email címe
-            </TableCell>
-            <TableCell className="text-lg font-bold">
-              Dolgozó státusza
-            </TableCell>
+            <TableRow>
+              <TableCell className="text-lg font-bold">Dolgozó neve</TableCell>
+              <TableCell className="text-lg font-bold">
+                Dolgozó email címe
+              </TableCell>
+              <TableCell className="text-lg font-bold">
+                Dolgozó státusza
+              </TableCell>
+            </TableRow>
           </TableHeader>
-          {users?.items.map((user, idx) => {
-            return (
-              <TableRow key={idx}>
-                <TableCell className="text-lg">{user.name}</TableCell>
-                <TableCell className="text-lg">{user.email}</TableCell>
-                <TableCell className="text-lg">{user.role}</TableCell>
-                <TableCell className="text-lg">
-                  <Trash2
-                    onClick={() => handleDelete(user._id)}
-                    className="text-destructive"
-                  />
-                </TableCell>
-              </TableRow>
-            );
-          })}
+          <TableBody>
+            {users?.items.map((user, idx) => {
+              return (
+                <TableRow key={idx}>
+                  <TableCell className="text-lg">{user.name}</TableCell>
+                  <TableCell className="text-lg">{user.email}</TableCell>
+                  <TableCell className="text-lg">{user.role}</TableCell>
+                  <TableCell className="text-lg">
+                    <Trash2
+                      onClick={() => handleDelete(user._id)}
+                      className="text-destructive"
+                    />
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
         </Table>
       </CardContent>
+      <CardFooter>
+        {users?.pageCount && users.pageCount > 1 && (
+          <Pagination
+            maxPage={users?.pageCount}
+            page={page}
+            setPage={setPage}
+          />
+        )}
+      </CardFooter>
     </Card>
   );
 }
 export default Workers;
 
 async function getOrders(
-  token: string | null
+  token: string | null,
+  page: number
 ): Promise<PaginationResponse<User[]>> {
   if (!token) {
     window.location.href = "/login";
     return Promise.reject();
   }
   try {
-    const resp = await fetch(`${ENDPOINTURL}/user/all`, {
+    const resp = await fetch(`${ENDPOINTURL}/user/all?page=${page}&limit=5`, {
       method: "GET",
       headers: { Authorization: token },
     });
