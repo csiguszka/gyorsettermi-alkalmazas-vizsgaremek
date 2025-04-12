@@ -9,13 +9,14 @@ import { useFectchGet } from "@/app/hooks/useFetchGet";
 import MyWebSocketComponent from "@/components/MyWebSocketComponent";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 function Desk() {
   const { loading, data: initialOrders } =
     useFectchGet<Order[]>("/order/salesman");
   const [orders, setOrders] = useState<Order[]>(initialOrders || []);
   const [isFirstReload, setIsFirstReload] = useState<boolean>(true);
-
+  const router = useRouter();
   useEffect(() => {
     if (initialOrders) {
       setOrders(initialOrders);
@@ -27,6 +28,9 @@ function Desk() {
       prevOrders.filter((order) => order._id !== orderId)
     );
   };
+  useEffect(() => {
+    console.log(orders);
+  }, [orders]);
 
   if (loading) {
     return <Loading isCentered={true} />;
@@ -42,11 +46,16 @@ function Desk() {
         setOrders={setOrders}
         name="salesman"
       />
-      <Button className="btn mb-4">Előző Rendelések</Button>
+      <Button
+        className="btn mb-4"
+        onClick={() => router.push("salesman-orders")}
+      >
+        Előző Rendelések
+      </Button>
       <div className="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-        {orders?.map((order) => (
+        {orders?.map((order, idx) => (
           <OrderCardDesk
-            key={order._id}
+            key={idx}
             order={order}
             onRemoveOrder={handleRemoveOrder}
             isFirstReload={isFirstReload}

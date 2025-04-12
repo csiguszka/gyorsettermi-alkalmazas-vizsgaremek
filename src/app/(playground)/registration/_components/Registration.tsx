@@ -88,11 +88,12 @@ export function Registration() {
           title: "Sikeresen rögzítette a dolgozót",
         });
         console.log(response.data);
+        form.reset();
         // router.push("/");
       })
       .catch(function (error) {
         const description =
-          error.response.status === 400 ? "Van már ilyen nevű dolgozó" : "";
+          error.response.status === 400 ? error?.response.data.message : "";
         toast({
           variant: "destructive",
           title: "Nem sikerült az új dolgozót felvenni",

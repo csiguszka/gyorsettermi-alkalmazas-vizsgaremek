@@ -51,9 +51,9 @@ function Kitchen() {
         Előző Rendelések
       </Button>
       <div className="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-        {orders.map((order) => (
+        {orders.map((order, idx) => (
           <OrderCardKitchen
-            key={order._id}
+            key={idx}
             order={order}
             onRemoveOrder={handleRemoveOrder}
             isFirstReload={isFirstReload}

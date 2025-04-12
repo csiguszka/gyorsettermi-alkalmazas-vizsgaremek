@@ -27,15 +27,12 @@ const MyWebSocketComponent = <T,>({
 }: MyWebSocketComponentProps<T>) => {
   const socketUrl = `${ENDPOINTURL}/ws`;
 
-  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket<T>(
-    socketUrl,
-    {
-      shouldReconnect: () => true,
-      onOpen: () => {
-        sendJsonMessage({ role: name });
-      },
-    }
-  );
+  const { sendJsonMessage, lastJsonMessage } = useWebSocket<T>(socketUrl, {
+    shouldReconnect: () => true,
+    onOpen: () => {
+      sendJsonMessage({ role: name });
+    },
+  });
 
   useEffect(() => {
     if (lastJsonMessage) {
@@ -45,18 +42,19 @@ const MyWebSocketComponent = <T,>({
     }
   }, [lastJsonMessage, setOrders]);
 
-  const colors = [
-    "bg-yellow-300",
-    "bg-green-500",
-    "bg-orange-500",
-    "bg-red-500",
-  ];
+  // const colors = [
+  //   "bg-yellow-300",
+  //   "bg-green-500",
+  //   "bg-orange-500",
+  //   "bg-red-500",
+  // ];
 
-  return (
-    <div className="flex items-center space-x-4 mb-5">
-      <div className={`w-6 h-6 rounded-full ${colors[readyState]}`}></div>
-    </div>
-  );
+  // return (
+  //   <div className="flex items-center space-x-4 mb-5">
+  //     <div className={`w-6 h-6 rounded-full ${colors[readyState]}`}></div>
+  //   </div>
+  // );
+  return null;
 };
 
 export default MyWebSocketComponent;
