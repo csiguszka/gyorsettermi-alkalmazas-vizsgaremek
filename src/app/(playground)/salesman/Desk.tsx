@@ -53,9 +53,9 @@ function Desk() {
         Előző Rendelések
       </Button>
       <div className="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-        {orders?.map((order, idx) => (
+        {orders?.map((order) => (
           <OrderCardDesk
-            key={idx}
+            key={order._id}
             order={order}
             onRemoveOrder={handleRemoveOrder}
             isFirstReload={isFirstReload}
