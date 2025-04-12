@@ -31,7 +31,7 @@ function OrderCardKitchen({
 
   useEffect(() => {
     const updateElapsedTime = () => {
-      const now = Date.now() + 60 * 60 * 1000;
+      const now = Date.now();
       const past = new Date(order.orderedTime).getTime();
       const diffMs = now - past;
       setElapsedTime(Math.floor(diffMs / (1000 * 60)));
@@ -78,7 +78,8 @@ function OrderCardKitchen({
           <CardContent>
             <Table list={list} />
             <p className="mt-2">
-              Leadás ennyi ideje: {hours !== 0 && `${hours} óra és`} {minutes} perc
+              Leadás ennyi ideje: {hours !== 0 && `${hours} óra és`} {minutes}{" "}
+              perc
             </p>
           </CardContent>
           <CardFooter className="float-right">
