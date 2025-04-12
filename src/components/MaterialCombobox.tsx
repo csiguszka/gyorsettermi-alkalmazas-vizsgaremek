@@ -24,7 +24,11 @@ import ENDPOINTURL from "@/app/url";
 import { PaginationResponse } from "@/app/model/pagination-model";
 import { Material } from "@/app/model/material-model";
 
-export function MaterialCombobox({ onMaterialSelect }: { onMaterialSelect: (material: Material) => void }) {
+export function MaterialCombobox({
+  onMaterialSelect,
+}: {
+  onMaterialSelect: (material: Material) => void;
+}) {
   const { token } = useSelector((state: RootState) => state.states.user.value);
 
   const [open, setOpen] = React.useState(false);
@@ -37,64 +41,63 @@ export function MaterialCombobox({ onMaterialSelect }: { onMaterialSelect: (mate
     enabled: !!token,
   });
 
-return (
-  <Popover open={open} onOpenChange={setOpen}>
-    <PopoverTrigger asChild>
-      <Button
-        variant="outline"
-        role="combobox"
-        aria-expanded={open}
-        className="w-[200px] justify-between"
-      >
-        {value
-          ? materialList?.find((item) => item.name === value)?.name
-          : "Válassz alapanyagot..."}
-        <ChevronsUpDown className="opacity-50" />
-      </Button>
-    </PopoverTrigger>
-    <PopoverContent className="w-[200px] p-0">
-      <Command>
-        <CommandInput placeholder="Alapanyag keresése..." className="h-9" />
-        <CommandList>
-          <CommandEmpty>Nem találtunk ilyen alapanyagot.</CommandEmpty>
-          <CommandGroup>
-            {materialList?.map((item) => (
-              <CommandItem
-                key={item.name}
-                value={item.name}
-                onSelect={(currentValue) => {
-                  const selectedMaterial = materialList.find(
-                    (material) => material.name === currentValue
-                  );
-                  if (selectedMaterial) {
-                    onMaterialSelect(selectedMaterial); // Hívjuk meg a propot
-                    setValue(currentValue);
-                  }
-                  setOpen(false);
-                }}
-              >
-                {item.name}
-                <Check
-                  className={cn(
-                    "ml-auto",
-                    value === item.name ? "opacity-100" : "opacity-0"
-                  )}
-                />
-              </CommandItem>
-            ))}
-          </CommandGroup>
-        </CommandList>
-      </Command>
-    </PopoverContent>
-  </Popover>
-);
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className="w-full justify-between"
+        >
+          {value
+            ? materialList?.find((item) => item.name === value)?.name
+            : "Válassz alapanyagot..."}
+          <ChevronsUpDown className="opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-full p-0">
+        <Command>
+          <CommandInput placeholder="Alapanyag keresése..." className="h-9" />
+          <CommandList>
+            <CommandEmpty>Nem találtunk ilyen alapanyagot.</CommandEmpty>
+            <CommandGroup>
+              {materialList?.map((item) => (
+                <CommandItem
+                  key={item.name}
+                  value={item.name}
+                  onSelect={(currentValue) => {
+                    const selectedMaterial = materialList.find(
+                      (material) => material.name === currentValue
+                    );
+                    if (selectedMaterial) {
+                      onMaterialSelect(selectedMaterial); // Hívjuk meg a propot
+                      setValue(currentValue);
+                    }
+                    setOpen(false);
+                  }}
+                >
+                  {item.name}
+                  <Check
+                    className={cn(
+                      "ml-auto",
+                      value === item.name ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
 }
-
 
 async function getMaterials(token: string | null): Promise<Material[]> {
   if (!token) {
-      window.location.href = "/login";
-      return Promise.reject("Nincs bejelentkezve, átirányítás történt.");
+    window.location.href = "/login";
+    return Promise.reject("Nincs bejelentkezve, átirányítás történt.");
   }
 
   let page = 1;
@@ -102,35 +105,39 @@ async function getMaterials(token: string | null): Promise<Material[]> {
   let hasMore = true;
 
   try {
-      while (hasMore) {
-          const response = await fetch(
-              `${ENDPOINTURL}/material?page=${page}&&limit=100`,
-              {
-                  method: "GET",
-                  headers: {
-                      Authorization: token,
-                      "Accept-Language": "hu",
-                  },
-              }
-          );
-          
-          const data: PaginationResponse<Material[]> = await response.json();
-          
-          if (data.items.length === 0) {
-              break; // Ha nincs több találat, kilépünk a ciklusból
-          }
+    while (hasMore) {
+      const response = await fetch(
+        `${ENDPOINTURL}/material?page=${page}&&limit=100`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: token,
+            "Accept-Language": "hu",
+          },
+        }
+      );
 
-          allMaterials = [...allMaterials, ...data.items];
+      const data: PaginationResponse<Material[]> = await response.json();
 
-          if (page >= data.pageCount) {
-              hasMore = false; // Ha az utolsó oldalon vagyunk, befejezzük a kéréseket
-          } else {
-              page++; // Kérjük a következő oldalt
-          }
+      if (data.items.length === 0) {
+        break; // Ha nincs több találat, kilépünk a ciklusból
       }
 
-      return allMaterials;
+      allMaterials = [...allMaterials, ...data.items];
+
+      if (page >= data.pageCount) {
+        hasMore = false; // Ha az utolsó oldalon vagyunk, befejezzük a kéréseket
+      } else {
+        page++; // Kérjük a következő oldalt
+      }
+    }
+
+    return allMaterials;
   } catch (error) {
-      throw new Error(error instanceof Error ? `Hiba történt: ${error.message}` : "Ismeretlen hiba történt");
+    throw new Error(
+      error instanceof Error
+        ? `Hiba történt: ${error.message}`
+        : "Ismeretlen hiba történt"
+    );
   }
 }

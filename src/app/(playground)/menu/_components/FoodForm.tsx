@@ -14,6 +14,8 @@ import { Food } from "@/app/model/food-model";
 import { MaterialCombobox } from "@/components/MaterialCombobox";
 import { Material } from "@/app/model/material-model";
 import { Category } from "@/app/model/category-model";
+import ImageUploader from "./ImageUploader";
+import { Trash2 } from "lucide-react";
 
 const MotionCard = motion.create(Card);
 
@@ -69,6 +71,13 @@ function FoodForm({
   const handleRemoveMaterial = (index: number) => {
     const updatedMaterials = formData.materials.filter((_, i) => i !== index);
     setFormData((prev) => ({ ...prev, materials: updatedMaterials }));
+  };
+
+  const handleImageUrlChange = (url: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      image: url,
+    }));
   };
 
   const handleInputChange = (
@@ -148,13 +157,16 @@ function FoodForm({
         </h2>
         <CardContent>
           <form className="flex flex-col gap-4" onSubmit={handleFormSubmit}>
+            {renderCategorySection(mainCategory, subCategory)}
             {renderInputField("Név", "name", formData.name)}
             {renderInputField("Angol név", "englishName", formData.englishName)}
             {renderInputField("Ár", "price", formData.price, "number")}
+            <ImageUploader
+              key={formData.image}
+              imageUrl={formData.image}
+              handleImageUrlChange={handleImageUrlChange}
+            />
             {renderMaterialsSection()}
-            {renderCategorySection(mainCategory, subCategory)}
-            {renderInputField("Kép URL", "image", formData.image)}
-
             <div className="flex items-center gap-2">
               <input
                 type="checkbox"
@@ -168,7 +180,6 @@ function FoodForm({
               />
               <Label>Elérhető</Label>
             </div>
-
             {error && <p className="text-destructive">{error}</p>}
             <Button type="submit" disabled={isLoading}>
               Mentés {isLoading && <Loading />}
@@ -201,14 +212,20 @@ function FoodForm({
   function renderMaterialsSection() {
     return (
       <div>
-        <Label>Alapanyagok</Label>
-        <div className="mb-2">
+        <div className="flex items-center gap-5 mb-2">
+          <Label>Alapanyagok:</Label>
           <MaterialCombobox onMaterialSelect={handleAddMaterial} />
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="ml-8 flex flex-col gap-2">
           {formData.materials.map((material, index) => (
-            <div key={index} className="flex items-center gap-2">
-              <Label>{material.name}</Label>
+            <div key={index}>
+              <div className="flex justify-between items-center mb-1">
+                <Label className="font-bold">{material.name}</Label>
+                <Trash2
+                  className="text-destructive cursor-pointer"
+                  onClick={() => handleRemoveMaterial(index)}
+                ></Trash2>
+              </div>
               <Input
                 type="number"
                 placeholder="Mennyiség"
@@ -217,12 +234,6 @@ function FoodForm({
                   handleMaterialChange(index, Number(e.target.value))
                 }
               />
-              <Button
-                variant="destructive"
-                onClick={() => handleRemoveMaterial(index)}
-              >
-                Törlés
-              </Button>
             </div>
           ))}
         </div>
@@ -235,11 +246,15 @@ function FoodForm({
     subCategory: Category
   ) {
     return (
-      <div>
-        <Label>Kategória</Label>
-        <p>{mainCategory.name}</p>
-        <Label>Alkategória</Label>
-        <p>{subCategory.name}</p>
+      <div className="flex justify-between">
+        <div>
+          <Label>Kategória</Label>
+          <p>{mainCategory.name}</p>
+        </div>
+        <div>
+          <Label>Alkategória</Label>
+          <p>{subCategory.name}</p>
+        </div>
       </div>
     );
   }
