@@ -1,66 +1,88 @@
+"use client";
+
+import Loading from "@/components/Loading";
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { RootState } from '@/state/store';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { Input } from "@/components/ui/input";
+import { RootState } from "@/state/store";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Label } from "recharts";
 
-const ImageUploader = () => {
+const ImageUploader = ({
+  handleImageUrlChange,
+  imageUrl,
+}: {
+  handleImageUrlChange: (url: string) => void;
+  imageUrl: string;
+}) => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
-    const {token} = useSelector((state: RootState) => state.states.user.value)
+  const [loading, setLoading] = useState<boolean>(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const { token } = useSelector((state: RootState) => state.states.user.value);
 
-    
   const handleFileChange = (e: any) => {
     setSelectedFile(e.target.files[0]);
   };
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    
-    if (!selectedFile) {
-      setError('Válassz ki egy fájlt!');
-      return;
-    }
+  useEffect(() => {
+    setLoading(true);
+    const handleSubmit = async () => {
+      if (!selectedFile) {
+        setLoading(false);
+        return;
+      }
 
-    const formData = new FormData();
-    formData.append('image', selectedFile);
+      const formData = new FormData();
+      formData.append("image", selectedFile);
 
-    try {
-      const response = await fetch('https://mateszadam.koyeb.app/images', {
-        method: 'POST',
-        headers: {
-          'Accept-Language': 'hu',
-          'Authorization': `Bearer ${token}`
-        },
-        body: formData
-      });
+      try {
+        const response = await fetch("https://mateszadam.koyeb.app/images", {
+          method: "POST",
+          headers: {
+            "Accept-Language": "hu",
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
+        console.log(response);
+        if (!response.ok) throw new Error("Hiba a feltöltés során");
 
-      if (!response.ok) throw new Error('Hiba a feltöltés során');
-
-      const result = await response.json();
-      setMessage('Sikeres feltöltés!');
-      setError('');
-      console.log(result);
-    } catch (err) {
-        console.log(err)
-      setError("hulye");
-      setMessage('');
-    }
-  };
+        const result = await response.json();
+        setMessage("Sikeres feltöltés!");
+        setError("");
+        console.log(result);
+        handleImageUrlChange(result.url);
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+        setError(
+          "A kép feltöltése sikertelen. Próbáljon másik fényképet feltölteni"
+        );
+        setMessage("");
+        setLoading(false);
+      }
+    };
+    handleSubmit();
+  }, [selectedFile]);
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <input
+      <Label>Képfeltöltés</Label>
+      <Link className="text-sm" href={imageUrl} target="_blank">
+        Jelenlegi kép: {imageUrl}
+      </Link>
+      <div className="flex items-center">
+        <Input
           type="file"
           onChange={handleFileChange}
           accept="image/png, image/jpeg"
         />
-        <button type="submit">Feltöltés</button>
-      </form>
-      
-      {message && <p style={{ color: 'green' }}>{message}</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+        {loading && <Loading />}
+      </div>
+      {message && <p style={{ color: "green" }}>{message}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 };
