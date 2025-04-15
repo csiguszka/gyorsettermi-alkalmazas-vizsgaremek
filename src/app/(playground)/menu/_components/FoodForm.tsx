@@ -36,7 +36,7 @@ function FoodForm({
     price: food?.price || 0,
     materials: food?.materials || [],
     isEnabled: food?.isEnabled ?? true,
-    image: food?.image || "",
+    image: food?.image.split("/").at(-1) || "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
@@ -73,7 +73,7 @@ function FoodForm({
     setFormData((prev) => ({ ...prev, materials: updatedMaterials }));
   };
 
-  const handleImageUrlChange = (url: string) => {
+  const handleImageChange = (url: string) => {
     setFormData((prev) => ({
       ...prev,
       image: url,
@@ -163,8 +163,8 @@ function FoodForm({
             {renderInputField("Ár", "price", formData.price, "number")}
             <ImageUploader
               key={formData.image}
-              imageUrl={formData.image}
-              handleImageUrlChange={handleImageUrlChange}
+              image={formData.image}
+              handleImageChange={handleImageChange}
             />
             {renderMaterialsSection()}
             <div className="flex items-center gap-2">
@@ -268,6 +268,7 @@ async function handleCreate(food: Food, token: string | null) {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { _id, ...filteredFood } = food;
+  console.log(food);
 
   const response = await fetch(`${ENDPOINTURL}/food`, {
     method: "POST",
@@ -286,7 +287,7 @@ async function handleModify(food: Food, token: string | null) {
     window.location.href = "/login";
     return;
   }
-
+  console.log(food);
   const response = await fetch(`${ENDPOINTURL}/food/${food._id}`, {
     method: "PUT",
     headers: {
