@@ -12,47 +12,60 @@ import { FormEvent, useState } from "react";
 import { useSelector } from "react-redux";
 import { motion } from "motion/react";
 
-
 const MotionCard = motion.create(Card);
 
-
-function SubCategoryForm({ category, mainCategory }: { category?: Category, mainCategory: Category }) {
-  const { token } = useSelector((state: RootState) => state.states.user.value)
+function SubCategoryForm({
+  category,
+  mainCategory,
+}: {
+  category?: Category;
+  mainCategory: Category;
+}) {
+  const { token } = useSelector((state: RootState) => state.states.user.value);
   const [error, setError] = useState<string>("");
   const [name, setName] = useState<string>(category?.name || "");
-  const [englishName, setEnglishName] = useState<string>(category?.englishName || "");
+  const [englishName, setEnglishName] = useState<string>(
+    category?.englishName || ""
+  );
   const [isLoading, setIsloading] = useState(false);
   const queryClient = useQueryClient();
 
-  const { toast } = useToast()
+  const { toast } = useToast();
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!name || !englishName) {
-      setError("A név és angol név mezőt kötelező kitölteni.")
+      setError("A név és angol név mezőt kötelező kitölteni.");
       setIsloading(false);
-      return
+      return;
     }
     const newSubCategory: Category = {
       _id: category?._id || "",
       englishName: englishName,
       icon: "",
       name: name,
-      mainCategory: mainCategory._id
+      mainCategory: mainCategory._id,
     };
-    const response = category?._id ? await handleModify(newSubCategory, token) : await handleCreate(newSubCategory, token)
+    const response = category?._id
+      ? await handleModify(newSubCategory, token)
+      : await handleCreate(newSubCategory, token);
     if (response?.status === 200) {
       if (category?._id) {
-        toast({ title: "Az alkategória módosítása sikeres" })
-
+        toast({ title: "Az alkategória módosítása sikeres" });
       } else {
-        toast({ title: "Az alkategória sikeresen létrehozva" })
+        toast({ title: "Az alkategória sikeresen létrehozva" });
       }
       queryClient.invalidateQueries({ queryKey: ["subCategories"] });
     } else {
       if (category?._id) {
-        toast({ title: "Az alkategória mósoítása sikertelen", variant: "destructive" })
+        toast({
+          title: "Az alkategória mósoítása sikertelen",
+          variant: "destructive",
+        });
       } else {
-        toast({ title: "Az alkategória létrehozása sikertelen", variant: "destructive" })
+        toast({
+          title: "Az alkategória létrehozása sikertelen",
+          variant: "destructive",
+        });
       }
     }
     setIsloading(false);
@@ -67,7 +80,7 @@ function SubCategoryForm({ category, mainCategory }: { category?: Category, main
     >
       <CardHeader>
         <h2 className="text-center">
-          Új alapanyag
+          {category ? "Alkategória módosítása" : "Új alkategória létrehozása"}
         </h2>
         <CardContent>
           <form
@@ -104,18 +117,17 @@ function SubCategoryForm({ category, mainCategory }: { category?: Category, main
         </CardContent>
       </CardHeader>
     </MotionCard>
-  )
+  );
 }
-export default SubCategoryForm
-
+export default SubCategoryForm;
 
 const handleCreate = async (category: Category, token: string | null) => {
   if (!token) {
     window.location.href = "/login";
     return;
   }
-  console.log("POST")
-  console.log(category)
+  console.log("POST");
+  console.log(category);
   const response = await fetch(`${ENDPOINTURL}/category`, {
     method: "POST",
     headers: {
@@ -129,32 +141,32 @@ const handleCreate = async (category: Category, token: string | null) => {
       mainCategory: category.mainCategory,
     }),
   });
-  console.log(response)
-  return response
-}
+  console.log(response);
+  return response;
+};
 
 const handleModify = async (category: Category, token: string | null) => {
   if (!token) {
     window.location.href = "/login";
     return;
   }
-  console.log(category)
-  console.log(`${ENDPOINTURL}/category/${category._id}`)
+  console.log(category);
+  console.log(`${ENDPOINTURL}/category/${category._id}`);
   const response = await fetch(`${ENDPOINTURL}/category/${category._id}`, {
     method: "PUT",
     headers: {
-      "accept": "*/*",
+      accept: "*/*",
       "Content-Type": "application/json",
       "Accept-Language": "hu",
       Authorization: token,
     },
     body: JSON.stringify({
-      "name": category.name,
-      "icon": "no.svg",
-      "englishName": category.englishName,
-      "mainCategory": category.mainCategory
+      name: category.name,
+      icon: "no.svg",
+      englishName: category.englishName,
+      mainCategory: category.mainCategory,
     }),
   });
-  console.log(response)
-  return response
-}
+  console.log(response);
+  return response;
+};

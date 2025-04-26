@@ -122,10 +122,13 @@ async function getOrders(
     return Promise.reject();
   }
   try {
-    const resp = await fetch(`${ENDPOINTURL}/user/all?page=${page}&limit=5`, {
-      method: "GET",
-      headers: { Authorization: token },
-    });
+    const resp = await fetch(
+      `${ENDPOINTURL}/user/all?page=${page}&limit=5&role=admin&role=salesman&role=kitchen`,
+      {
+        method: "GET",
+        headers: { Authorization: token },
+      }
+    );
     if (!resp.ok) {
       return Promise.reject();
     }

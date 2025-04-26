@@ -14,7 +14,6 @@ export default function Home() {
         <h2>Áttekintés</h2>
         <div className="flex flex-col gap-3 lg:grid lg:grid-cols-2">
           <Overview />
-          <Overview />
         </div>
       </div>
     </Authorize>

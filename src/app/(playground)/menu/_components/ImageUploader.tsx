@@ -10,11 +10,11 @@ import { useSelector } from "react-redux";
 import { Label } from "recharts";
 
 const ImageUploader = ({
-  handleImageUrlChange,
-  imageUrl,
+  handleImageChange,
+  image,
 }: {
-  handleImageUrlChange: (url: string) => void;
-  imageUrl: string;
+  handleImageChange: (url: string) => void;
+  image: string;
 }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -53,7 +53,7 @@ const ImageUploader = ({
         setMessage("Sikeres feltöltés!");
         setError("");
         console.log(result);
-        handleImageUrlChange(result.url);
+        handleImageChange(result.url.split("/").at(-1));
         setLoading(false);
       } catch (err) {
         console.log(err);
@@ -70,8 +70,12 @@ const ImageUploader = ({
   return (
     <div>
       <Label>Képfeltöltés</Label>
-      <Link className="text-sm" href={imageUrl} target="_blank">
-        Jelenlegi kép: {imageUrl}
+      <Link
+        className="text-sm"
+        href={"https://mateszadam.koyeb.app/images/name/" + image}
+        target="_blank"
+      >
+        Jelenlegi kép: {image}
       </Link>
       <div className="flex items-center">
         <Input
